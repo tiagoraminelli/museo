@@ -1,0 +1,40 @@
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.auth-form {
+    max-width: 400px;
+    width: 100%;
+    padding: 30px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background-color: #ffffff;
+    margin-bottom: 20px;
+    position: relative;
+}
+.auth-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.toggle-link {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.show-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 10;
+}
+.password-container {
+    position: relative;
+}
+

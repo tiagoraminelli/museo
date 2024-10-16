@@ -1,0 +1,25 @@
+
+.navbar-brand img {
+    height: 40px; /* Ajusta la altura de la imagen */
+    width: auto; /* Mantiene la proporción */
+}
+.museum-img {
+    max-width: 100%; /* Asegura que la imagen no exceda el contenedor */
+    height: auto; /* Mantiene la proporción */
+}
+.team-member {
+    text-align: center; /* Centra el texto */
+}
+.map-container {
+    height: 300px; /* Altura del mapa */
+}
+.hover-effect {
+    transition: transform 0.3s; /* Transición suave */
+}
+.hover-effect:hover {
+    transform: scale(1.05); /* Escala la imagen al pasar el cursor */
+}
+.image-description {
+    height: 100px; /* Altura del contenedor de la descripción */
+    overflow: hidden; /* Oculta el desbordamiento */
+}

@@ -1,0 +1,147 @@
+ID Usuario: 1
+ID Pieza: 44
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 45
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 46
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 47
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 48
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 49
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 50
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 51
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 52
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 53
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 54
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 55
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 56
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 57
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 58
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 59
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 60
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 61
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 62
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 63
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-21
+----------------------
+ID Usuario: 1
+ID Pieza: 70
+DNI: 43456321
+NOMBRE: tiago
+APELLIDO: raminelli
+FECHA DE INGRESO: 2024-10-16
+----------------------
