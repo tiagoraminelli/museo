@@ -52,6 +52,7 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
             <tr>
                 <th>ID Usuario</th>
                 <th>ID Pieza</th>
+                <th>Fecha de registro</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -61,6 +62,7 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
                     <tr id="usuario-pieza-<?php echo $registro['Usuario_idUsuario']; ?>-<?php echo $registro['Pieza_idPieza']; ?>" class="text-center">
                         <td><?php echo $registro['Usuario_idUsuario']; ?></td>
                         <td><?php echo $registro['Pieza_idPieza']; ?></td>
+                        <td><?php echo $registro['fecha_registro']; ?></td>
                         <td>
                             <a href="funciones/eliminarHistorial.php?usuario=<?php echo $registro['Usuario_idUsuario']; ?>&pieza=<?php echo $registro['Pieza_idPieza']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
                         </td>

@@ -16,7 +16,7 @@ require_once "../../modelo/usuarioPieza.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener datos del formulario y almacenarlos en un array
-    //var_dump($_POST);
+    var_dump($_POST);
     $parametro = [
         'num_inventario' => $_POST['num_inventario'],
         'especie' => $_POST['especie'],
@@ -95,7 +95,7 @@ if (isset($_POST['donante_nombre']) && !empty($_POST['donante_nombre']) && isset
         $pieza = new Pieza(); // Asegúrate de que la clase Pieza esté bien definida
         $pieza->save($parametro);
         echo "Pieza actualizada con éxito.";
-        header("Location: ./listados/piezasListado.php");
+        header("Location: ../../listados/piezasListado.php");
     } else {
         // Llamar a la función save para insertar
         $pieza = new Pieza(); // Asegúrate de que la clase Pieza esté bien definida
@@ -120,6 +120,7 @@ if (isset($_SESSION['id']) && isset($parametro['idPieza'])){
     // Llamar a la función saveUsuarioPieza para insertar o actualizar
     if ($usuarioPieza->saveUsuarioPieza($parametro)) {
         echo "Relación usuario-pieza guardada con éxito.";
+        header("Location: ../../listados/piezasListado.php");
     } else {
         echo "Error al guardar la relación usuario-pieza." . "<br>";
     }
@@ -142,6 +143,7 @@ if ($_POST['clasificacion'] === 'Arqueología') {
 
     if ($arqueologia->saveArqueologia($datosArqueologia)) {
         echo "Registro de Arqueología procesado con éxito (insert o update).<br>";
+        header("Location: ../../listados/piezasListado.php");
     } else {
         echo "Error al procesar el registro de Arqueología.<br>";
     }

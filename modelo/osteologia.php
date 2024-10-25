@@ -116,11 +116,13 @@ class Osteologia extends Pieza {
         // Si la osteología ya existe, se actualiza
         if ($exists) {
             $sql = "UPDATE " . $this->table . " SET especie = ?, clasificacion = ?, Pieza_idPieza = ? WHERE idOsteologia = ?";
+            //die($sql);
             $stmt = $this->conection->prepare($sql);
             $stmt->execute([$this->especie, $this->clasificacion, $this->Pieza_idPieza, $this->idOsteologia]);
         } else {
             // Si no existe, se inserta uno nuevo
             $sql = "INSERT INTO " . $this->table . " (especie, clasificacion, Pieza_idPieza) VALUES (?, ?, ?)";
+            //die($sql);
             $stmt = $this->conection->prepare($sql);
             $stmt->execute([$this->especie, $this->clasificacion, $this->Pieza_idPieza]);
             $this->idOsteologia = $this->conection->lastInsertId();

@@ -389,7 +389,7 @@ private function getImagePath($imagen) {
         if ($exists) {
             $sql = "UPDATE " . $this->table . " SET num_inventario = ?, especie = ?, estado_conservacion = ?, fecha_ingreso = ?, cantidad_de_piezas = ?, clasificacion = ?, observacion = ?, imagen = ?, Donante_idDonante = ? WHERE idPieza = ?";
             $stmt = $this->conection->prepare($sql);
-            die($sql);
+            //die($sql);
             $stmt->execute([
                 $this->numInventario, $this->especie, $this->estadoConservacion, $this->fechaIngreso,
                 $this->cantidadPiezas, $this->clasificacion, $this->observacion, $this->imagen, $this->donanteIdDonante, $this->idPrimaria

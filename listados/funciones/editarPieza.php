@@ -105,11 +105,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <div class="mb-4 bg-white rounded ">
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre del donante</label>
-                <input type="text" id="nombre" class="form-control" name="nombre" value="<?= htmlspecialchars($datos['nombre']) ?>" >
+                <input type="text" id="donante_nombre" class="form-control" name="donante_nombre" value="<?= htmlspecialchars($datos['nombre']) ?>" >
             </div>
             <div class="mb-3">
                 <label for="apellido" class="form-label">Apellido del donante</label>
-                <input type="text" id="apellido" class="form-control" name="apellido" value="<?= htmlspecialchars($datos['apellido']) ?>" >
+                <input type="text" id="donante_apellido" class="form-control" name="donante_apellido" value="<?= htmlspecialchars($datos['apellido']) ?>" >
             </div>
         </div>
 
