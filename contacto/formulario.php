@@ -4,132 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión / Registro</title>
+    
+    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="stylesheet" href="../public/css/formularioLogin.css">
 </head>
-<body>
+<body class="bg-gray-100">
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <a class="navbar-brand" href="#">Logo</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Inicio</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Acerca de</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Contacto</a>
-            </li>
-        </ul>
+<nav class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+            <a class="text-lg font-bold text-gray-700" href="#">Logo</a>
+            <div class="md:hidden">
+                <button class="navbar-toggler" type="button" onclick="toggleNavbar()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden md:flex space-x-4">
+                <a href="../index.php" class="text-gray-700 hover:text-blue-500">Inicio</a>
+                <a href="#" class="text-gray-700 hover:text-blue-500">Acerca de</a>
+                <a href="../contacto/formulario.php" class="text-gray-700 hover:text-blue-500">Contacto</a>
+            </div>
+        </div>
     </div>
 </nav>
 
-
-
-<div class="container auth-container">
-    <div class="row">
-        <!-- Columna para los formularios -->
-        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
-            <!-- Formulario de Iniciar Sesión -->
-            <div class="auth-form" id="login-form">
-                <h3 class="text-center">Iniciar Sesión</h3>
+<!-- Formulario de autenticación -->
+<div class="container mx-auto mt-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Formulario de Iniciar Sesión -->
+        <div class="flex flex-col justify-center items-center bg-white p-6 rounded-lg shadow-lg">
+            <div id="login-form">
+                <h3 class="text-center text-2xl font-bold mb-4">Iniciar Sesión</h3>
                 <form action="../funciones/procesar_login.php" method="post">
                     <div class="form-group">
-                        <label for="email">Correo electrónico</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Ingresa tu correo" required>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                        <input type="email" id="email" name="email" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ingresa tu correo" required>
                     </div>
 
-                    <div class="input-group mb-3">
-                        
-                    <input id="password" name="clave" type="password" class="form-control" placeholder="Ingresa tu contraseña" aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button onclick="togglePassword('password')" class="btn btn-outline-secondary" type="button" id="button-addon2">ver</button>
+                    <div class="form-group">
+                        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                        <div class="input-group">
+                            <input id="password" name="clave" type="password" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-l-md" placeholder="Ingresa tu contraseña" required>
+                            <div class="input-group-append">
+                                <button type="button" onclick="togglePassword('password')" class="btn btn-outline-secondary">Ver</button>
+                            </div>
+                        </div>
                     </div>
 
-                   
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="remember">
-                        <label class="form-check-label" for="remember">Recuérdame</label>
+                    <div class="form-check mb-4">
+                        <input type="checkbox" id="remember" class="form-check-input">
+                        <label for="remember" class="form-check-label text-sm text-gray-600">Recuérdame</label>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                    <button type="submit" class="btn btn-primary w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Iniciar Sesión</button>
                 </form>
-                <span class="toggle-link" onclick="toggleForms()">¿No tienes una cuenta? Regístrate</span>
+                <span class="text-blue-500 cursor-pointer mt-4" onclick="toggleForms()">¿No tienes una cuenta? Regístrate</span>
             </div>
-            
+
             <!-- Formulario de Registro -->
-            <div class="auth-form" id="register-form" style="display: none;">
-                <h3 class="text-center">Registro</h3>
+            <div id="register-form" class="hidden">
+                <h3 class="text-center text-2xl font-bold mb-4">Registro</h3>
                 <form action="../funciones/procesar_login.php" method="post">
                     <div class="form-group">
-                        <label for="dni">DNI</label>
-                        <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingresa tu DNI" required>
+                        <label for="dni" class="block text-sm font-medium text-gray-700">DNI</label>
+                        <input type="text" id="dni" name="dni" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ingresa tu DNI" required>
                     </div>
                     <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+                        <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ingresa tu nombre" required>
                     </div>
                     <div class="form-group">
-                        <label for="apellido">Apellido</label>
-                        <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ingresa tu apellido" required>
+                        <label for="apellido" class="block text-sm font-medium text-gray-700">Apellido</label>
+                        <input type="text" id="apellido" name="apellido" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ingresa tu apellido" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Correo electrónico</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Ingresa tu correo" required>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                        <input type="email" id="email" name="email" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ingresa tu correo" required>
                     </div>
-                    <div class="form-group password-container">
-                        <label for="clave">Contraseña</label>
-                        <input type="password" class="form-control" id="clave" name="clave" placeholder="Ingresa tu contraseña" required>
-                        <span class="show-password" onclick="togglePassword('clave')">
-                            <svg id="icon-eye" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/>
-                            </svg>
-                        </span>
+                    <div class="form-group">
+                        <label for="clave" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                        <div class="input-group">
+                            <input id="clave" name="clave" type="password" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-l-md" placeholder="Ingresa tu contraseña" required>
+                            <div class="input-group-append">
+                                <button type="button" onclick="togglePassword('clave')" class="btn btn-outline-secondary">Ver</button>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
+                    <button type="submit" class="btn btn-primary w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Registrarse</button>
                 </form>
-                <span class="toggle-link" onclick="toggleForms()">¿Ya tienes una cuenta? Inicia sesión</span>
+                <span class="text-blue-500 cursor-pointer mt-4" onclick="toggleForms()">¿Ya tienes una cuenta? Inicia sesión</span>
             </div>
         </div>
-        <!-- Columna para la imagen -->
-        <div class="col-md-6 d-flex justify-content-center align-items-center">
-            <img src="https://via.placeholder.com/400x400" alt="Imagen Random" class="auth-image">
+
+        <!-- Imagen lateral -->
+        <div class="hidden md:flex justify-center items-center">
+            <img src="../assets/img/contacto.jpg" alt="Imagen Random" class="rounded-lg shadow-md">
         </div>
     </div>
 </div>
 
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Función para alternar entre los formularios de inicio de sesión y registro
     function toggleForms() {
         var loginForm = document.getElementById('login-form');
         var registerForm = document.getElementById('register-form');
-        if (loginForm.style.display === 'none') {
-            loginForm.style.display = 'block';
-            registerForm.style.display = 'none';
-        } else {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
-        }
+        loginForm.classList.toggle('hidden');
+        registerForm.classList.toggle('hidden');
     }
 
-    // Función para mostrar/ocultar la contraseña
     function togglePassword(inputId) {
         var input = document.getElementById(inputId);
-        if (input.type === "password") {
-            input.type = "text";
-        } else {
-            input.type = "password";
-        }
+        input.type = input.type === "password" ? "text" : "password";
     }
 </script>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
 <?php include('../includes/footer.php'); ?>
+</body>
 </html>

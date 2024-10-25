@@ -198,6 +198,43 @@ public function getPiezaByIdAndClasificacion($id, $clasificacion) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+public function getPiezaByIdAndClasificacionAndDonante($id, $clasificacion) {
+    // Mapeo de las clasificaciones a sus respectivas tablas
+    $clasificacionTablaMap = [
+        'Paleontología' => 'Paleontologia',
+        'Osteología' => 'Osteologia',
+        'Ictiología' => 'Ictiologia',
+        'Geología' => 'Geologia',
+        'Botánica' => 'botanica',
+        'Zoología' => 'Zoologia',
+        'Arqueología' => 'Arqueologia',
+        'Octología' => 'Octologia'
+    ];
+
+    // Verificar si la clasificación es válida
+    if (!array_key_exists($clasificacion, $clasificacionTablaMap)) {
+        throw new Exception("Clasificación no válida");
+    }
+
+    // Obtener el nombre de la tabla relacionada según la clasificación
+    $tablaRelacionada = $clasificacionTablaMap[$clasificacion];
+
+    // Construir la consulta SQL
+    $sql = "SELECT * 
+    FROM pieza
+    INNER JOIN $tablaRelacionada ON pieza.idPieza = $tablaRelacionada.Pieza_idPieza
+    INNER JOIN donante ON pieza.Donante_idDonante = donante.idDonante
+    WHERE pieza.idPieza = ?;
+    ";
+
+    // Preparar y ejecutar la consulta
+    $stmt = $this->conection->prepare($sql);
+    $stmt->execute([$id]);
+
+    // Retornar los resultados de la consulta
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 
 
     // Método para obtener la ruta completa de la imagen

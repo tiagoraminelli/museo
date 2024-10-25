@@ -1,8 +1,18 @@
-Paleontología - listo
-osteologíaLista -listo
-ictiología - listo
-geología - listo
-botánica - listo
-zoología - 
-arqueología - lista
-octología - listo
+Paleontología 
+osteologíaLista
+ictiología 
+geología 
+botánica 
+zoología
+arqueología
+octología 
+
+COMO SE CARGAN EN LOS CAMPOS
+<option value="Paleontología">Paleontología</option>
+<option value="Osteología">Osteología</option>
+<option value="Ictiología">Ictiología</option>
+<option value="Geología">Geología</option>
+<option value="Botánica">Botánica</option>
+<option value="Zoología">Zoología</option>
+<option value="Arqueología">Arqueología</option>
+<option value="Octología">Octología</option>
