@@ -12,9 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $pieza = new Pieza();
             // Obtener los detalles de la pieza
             $datos = $pieza->getPiezaByIdAndClasificacionAndDonante($idPieza, $clasificacion);
-            var_dump($datos);
+            //var_dump($datos);
             if (!$datos) {
                 echo "No se encontró la pieza.";
+                header("Location: ../../listados/piezasListado.php?no_datos=true");
             }
         } else {
             echo "ID o clasificación no válidos.";
@@ -143,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <input type="text" class="form-control" id="periodo" name="periodo" value="<?= isset($datos['periodo']) ? htmlspecialchars($datos['periodo']) : '' ?>" required>
 
         <label for="descripcion" class="form-label">Descripción</label>
-        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required><?= isset($datos['descripcion']) ? htmlspecialchars($datos['descripcion']) : '' ?></textarea>
+        <textarea class="form-control" id="descripcionPal" name="descripcionPal" rows="3" required><?= isset($datos['descripcion']) ? htmlspecialchars($datos['descripcion']) : '' ?></textarea>
     </div>
 <?php } elseif ($clasificacion == 'Osteología') { ?>
     <!-- Osteología -->
@@ -151,10 +152,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <label for="idOsteologia" class="form-label">idOsteologia</label>
         <input type="text" class="form-control" name="idOsteologia" value="<?= isset($datos['idOsteologia']) ? htmlspecialchars($datos['idOsteologia']) : '' ?>" readonly>
         <label for="especie" class="form-label">Especie</label>
-        <input type="text" class="form-control" id="especie" name="especie" value="<?= isset($datos['especie']) ? htmlspecialchars($datos['especie']) : '' ?>" required>
+        <input type="text" class="form-control" id="especieOst" name="especieOst" value="<?= isset($datos['especie']) ? htmlspecialchars($datos['especie']) : '' ?>" required>
 
         <label for="clasificacion" class="form-label">Clasificación</label>
-        <input type="text" class="form-control" id="clasificacion" name="clasificacion" value="<?= isset($datos['clasificacion']) ? htmlspecialchars($datos['clasificacion']) : '' ?>" required>
+        <input type="text" class="form-control" id="clasificacionOst" name="clasificacionOst" value="<?= isset($datos['clasificacion']) ? htmlspecialchars($datos['clasificacion']) : '' ?>" required>
     </div>
 <?php } elseif ($clasificacion == 'Ictiología') { ?>
     <!-- Ictiología -->
@@ -163,13 +164,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <input type="text" class="form-control" name="idIctiologia" value="<?= isset($datos['idIctiologia']) ? htmlspecialchars($datos['idIctiologia']) : '' ?>" readonly>
 
         <label for="clasificacion" class="form-label">Clasificación</label>
-        <input type="text" class="form-control" id="clasificacion" name="clasificacion" value="<?= isset($datos['clasificacion']) ? htmlspecialchars($datos['clasificacion']) : '' ?>" required>
+        <input type="text" class="form-control" id="clasificacionIct" name="clasificacionIct" value="<?= isset($datos['clasificacion']) ? htmlspecialchars($datos['clasificacion']) : '' ?>" required>
 
         <label for="especies" class="form-label">Especies</label>
-        <input type="text" class="form-control" id="especies" name="especies" value="<?= isset($datos['especies']) ? htmlspecialchars($datos['especies']) : '' ?>" required>
+        <input type="text" class="form-control" id="especiesIct" name="especiesIct" value="<?= isset($datos['especies']) ? htmlspecialchars($datos['especies']) : '' ?>" required>
 
         <label for="descripcion" class="form-label">Descripción</label>
-        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required><?= isset($datos['descripcion']) ? htmlspecialchars($datos['descripcion']) : '' ?></textarea>
+        <textarea class="form-control" id="descripcionIct" name="descripcionIct" rows="3" required><?= isset($datos['descripcion']) ? htmlspecialchars($datos['descripcion']) : '' ?></textarea>
     </div>
 <?php } elseif ($clasificacion == 'Geología') { ?>
     <!-- Geología -->
@@ -252,16 +253,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <input type="text" class="form-control" name="idOctologia" value="<?= isset($datos['idOctologia']) ? htmlspecialchars($datos['idOctologia']) : '' ?>" readonly>
 
         <label for="clasificacion" class="form-label">Clasificación</label>
-        <input type="text" class="form-control" id="clasificacion" name="clasificacion" value="<?= isset($datos['clasificacion']) ? htmlspecialchars($datos['clasificacion']) : '' ?>" required>
+        <input type="text" class="form-control" id="clasificacionOct" name="clasificacionOct" value="<?= isset($datos['clasificacion']) ? htmlspecialchars($datos['clasificacion']) : '' ?>" required>
 
         <label for="tipo" class="form-label">Tipo</label>
-        <input type="text" class="form-control" id="tipo" name="tipo" value="<?= isset($datos['tipo']) ? htmlspecialchars($datos['tipo']) : '' ?>" required>
+        <input type="text" class="form-control" id="tipoOct" name="tipoOct" value="<?= isset($datos['tipo']) ? htmlspecialchars($datos['tipo']) : '' ?>" required>
 
         <label for="especie" class="form-label">Especie</label>
-        <input type="text" class="form-control" id="especie" name="especie" value="<?= isset($datos['especie']) ? htmlspecialchars($datos['especie']) : '' ?>" required>
+        <input type="text" class="form-control" id="especieOct" name="especieOct" value="<?= isset($datos['especie']) ? htmlspecialchars($datos['especie']) : '' ?>" required>
 
         <label for="descripcion" class="form-label">Descripción</label>
-        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required><?= isset($datos['descripcion']) ? htmlspecialchars($datos['descripcion']) : '' ?></textarea>
+        <textarea class="form-control" id="descripcionOct" name="descripcionOct" rows="3" required><?= isset($datos['descripcion']) ? htmlspecialchars($datos['descripcion']) : '' ?></textarea>
     </div>
 <?php } ?>
 

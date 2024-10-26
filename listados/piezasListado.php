@@ -165,6 +165,25 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
     </div>
 </div>
 
+<!-- Modal de mensaje -->
+<div id="modalNoDatos" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content rounded-lg shadow-lg border-0">
+            <div class="modal-body p-5 text-center">
+                <!-- Imagen de marcador de posición -->
+                <img src="../assets/img/error.webp" alt="No data" class="mb-4 mx-auto rounded-full">
+
+                <!-- Mensaje profesional -->
+                <h5 class="text-lg font-semibold text-gray-800">No se han encontrado datos asociados</h5>
+                <p class="text-gray-600">La pieza solicitada no tiene datos asociados en la clasificación seleccionada. Por favor, verifica los detalles y vuelve a intentarlo.</p>
+                
+                <!-- Botón para cerrar el modal -->
+                <button type="button" class="btn btn-primary mt-4" onclick="cerrarModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Mostrar el modal al cargar la página si hay un mensaje de eliminación
@@ -217,6 +236,28 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
             })
             .catch(error => console.error('Error:', error));
     });
+</script>
+<!-- Script para activar el modal -->
+<script>
+    function cerrarModal() {
+        // Oculta el modal cuando se cierra
+        document.getElementById('modalNoDatos').classList.remove('show');
+        document.getElementById('modalNoDatos').style.display = 'none';
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';  // Restaura el scroll
+    }
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('no_datos')) {
+            // Muestra el modal
+            const modal = document.getElementById('modalNoDatos');
+            modal.classList.add('show');
+            modal.style.display = 'block';
+            document.body.classList.add('modal-open');
+            document.body.style.overflow = 'hidden';  // Desactiva el scroll
+        }
+    };
 </script>
 </body>
 <?php include('../includes/footer.php') ?>

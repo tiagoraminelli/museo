@@ -125,8 +125,8 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
         </div>
     </div>
     <div class="mb-3">
-        <label for="descripcion" class="form-label">Descripción</label>
-        <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+    <label for="descripcion" class="form-label">Descripción</label>
+    <textarea class="form-control" id="descripcionPal" name="descripcionPal" rows="3" ></textarea>
     </div>
 </div>
 
@@ -137,11 +137,11 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="especieOsteologia" class="form-label">Especie</label>
-                    <input type="text" class="form-control" id="especieOsteologia" name="especieOsteologia">
+                    <input type="text" class="form-control" id="especieOst" name="especieOst">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="clasificacionOsteologia" class="form-label">Clasificación</label>
-                    <input type="text" class="form-control" id="clasificacionOsteologia" name="clasificacionOsteologia">
+                    <input type="text" class="form-control" id="clasificacionOst" name="clasificacionOst">
                 </div>
             </div>
         </div>
@@ -152,16 +152,16 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
     <div class="row">
         <div class="col-md-6 mb-3">
             <label for="clasificacionIctiologia" class="form-label">Clasificación</label>
-            <input type="text" class="form-control" id="clasificacionIctiologia" name="clasificacionIctiologia">
+            <input type="text" class="form-control" id="clasificacionIct" name="clasificacionIct">
         </div>
         <div class="col-md-6 mb-3">
             <label for="especies" class="form-label">Especies</label>
-            <input type="text" class="form-control" id="especies" name="especies">
+            <input type="text" class="form-control" id="especiesIct" name="especiesIct">
         </div>
     </div>
     <div class="mb-3">
         <label for="descripcionIctiologia" class="form-label">Descripción</label>
-        <textarea class="form-control" id="descripcionIctiologia" name="descripcionIctiologia"></textarea>
+        <textarea class="form-control" id="descripcionIct" name="descripcionIct"></textarea>
     </div>
 </div>
 
@@ -181,7 +181,7 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
         </div>
         <div class="col-md-6 mb-3">
             <label for="descripcionGeologia" class="form-label">Descripción</label>
-            <textarea class="form-control" id="descripcionGeologia" name="descripcionGeologia"></textarea>
+            <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
         </div>
     </div>
 </div>
@@ -220,7 +220,7 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
             </div>
             <div class="mb-3">
                 <label for="descripcionBotanica" class="form-label">Descripción</label>
-                <textarea class="form-control" id="descripcionBotanica" name="descripcionBotanica"></textarea>
+                <textarea class="form-control" id="descripcionBot" name="descripcionBot"></textarea>
             </div>
         </div>
 
@@ -230,21 +230,21 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="reinoZoologia" class="form-label">Reino</label>
-                    <input type="text" class="form-control" id="reinoZoologia" name="reinoZoologia">
+                    <input type="text" class="form-control" id="reino" name="reino">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="familiaZoologia" class="form-label">Familia</label>
-                    <input type="text" class="form-control" id="familiaZoologia" name="familiaZoologia">
+                    <input type="text" class="form-control" id="familia" name="familia">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="especieZoologia" class="form-label">Especie</label>
-                    <input type="text" class="form-control" id="especieZoologia" name="especieZoologia">
+                    <label for="especie" class="form-label">Especie</label>
+                    <input type="text" class="form-control" id="especie" name="especie">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="ordenZoologia" class="form-label">Orden</label>
-                    <input type="text" class="form-control" id="ordenZoologia" name="ordenZoologia">
+                    <label for="orden" class="form-label">Orden</label>
+                    <input type="text" class="form-control" id="orden" name="orden">
                 </div>
             </div>
             <div class="row">
@@ -253,8 +253,8 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
                     <input type="text" class="form-control" id="phylum" name="phylum">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="claseZoologia" class="form-label">Clase</label>
-                    <input type="text" class="form-control" id="claseZoologia" name="claseZoologia">
+                    <label for="clase" class="form-label">Clase</label>
+                    <input type="text" class="form-control" id="clase" name="clase">
                 </div>
             </div>
             <div class="mb-3">
@@ -262,8 +262,8 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
                 <input type="text" class="form-control" id="genero" name="genero">
             </div>
             <div class="mb-3">
-                <label for="descripcionZoologia" class="form-label">Descripción</label>
-                <textarea class="form-control" id="descripcionZoologia" name="descripcionZoologia"></textarea>
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
             </div>
         </div>
 
@@ -292,20 +292,20 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="clasificacionOctologia" class="form-label">Clasificación</label>
-                    <input type="text" class="form-control" id="clasificacionOctologia" name="clasificacionOctologia">
+                    <input type="text" class="form-control" id="clasificacionOct" name="clasificacionOct">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="tipo" class="form-label">Tipo</label>
-                    <input type="text" class="form-control" id="tipo" name="tipo">
+                    <input type="text" class="form-control" id="tipoOct" name="tipoOct">
                 </div>
             </div>
             <div class="mb-3">
                 <label for="especieOctologia" class="form-label">Especie</label>
-                <input type="text" class="form-control" id="especieOctologia" name="especieOctologia">
+                <input type="text" class="form-control" id="especieOct" name="especieOct">
             </div>
             <div class="mb-3">
                 <label for="descripcionOctologia" class="form-label">Descripción</label>
-                <textarea class="form-control" id="descripcionOctologia" name="descripcionOctologia"></textarea>
+                <textarea class="form-control" id="descripcionOct" name="descripcionOct"></textarea>
             </div>
         </div>
 

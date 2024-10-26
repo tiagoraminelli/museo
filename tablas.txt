@@ -1,11 +1,22 @@
-Paleontología 
-osteologíaLista
-ictiología 
-geología 
-botánica 
-zoología
-arqueología
-octología 
+--EDITAR--- //- funciona
+Paleontología - funciona
+osteologíaLista - funciona
+ictiología - funciona
+geología - funciona
+botánica - funciona
+zoología - funciona
+arqueología - funciona
+octología - funciona
+
+--cargar--- //- funciona
+Paleontología - funciona
+osteologíaLista - funciona
+ictiología - funciona
+geología - funciona
+botánica - funciona
+zoología - funciona
+arqueología - funciona
+octología  funciona
 
 COMO SE CARGAN EN LOS CAMPOS
 <option value="Paleontología">Paleontología</option>

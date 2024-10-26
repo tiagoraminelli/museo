@@ -115,7 +115,7 @@ class Arqueologia extends Pieza {
         if ($exists) {
             $sql = "UPDATE " . $this->table . " SET integridad_historica = ?, estetica = ?, material = ?, Pieza_idPieza = ? WHERE idArqueologia = ?";
             $stmt = $this->conection->prepare($sql);
-            die($sql);
+            //die($sql);
             $stmt->execute([
                 $this->integridad_historica, $this->estetica, $this->material, $this->Pieza_idPieza, $this->idArqueologia
             ]);

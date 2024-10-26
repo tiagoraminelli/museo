@@ -16,7 +16,7 @@ require_once "../../modelo/usuarioPieza.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener datos del formulario y almacenarlos en un array
-    var_dump($_POST);
+    //var_dump($_POST);
     $parametro = [
         'num_inventario' => $_POST['num_inventario'],
         'especie' => $_POST['especie'],
@@ -102,14 +102,7 @@ if (isset($_POST['donante_nombre']) && !empty($_POST['donante_nombre']) && isset
         //var_dump($parametro)."<br>";
         if($parametro['idPieza'] = $pieza->save($parametro)){
             echo "Pieza insertada con éxito."."<br>";
-        }else{
-            echo "Error en la Pieza insertada."."<br>";
-        }
-        
-    }
-
-
-    // Comprobar si existe idPieza y usuario está logueado
+                // Comprobar si existe idPieza y usuario está logueado
 if (isset($_SESSION['id']) && isset($parametro['idPieza'])){
     $parametro['Usuario_idUsuario'] = $_SESSION['id']; // Obtener el ID del usuario de la sesión
     $parametro['Pieza_idPieza'] = $parametro['idPieza']; // Agregar idPieza al array
@@ -128,6 +121,14 @@ if (isset($_SESSION['id']) && isset($parametro['idPieza'])){
     // Manejar el caso en que falta idPieza o el usuario no está logueado
     echo "Falta el ID de la pieza o el usuario no está logueado." . "<br>";
 }
+        }else{
+            echo "Error en la Pieza insertada."."<br>";
+        }
+        
+    }
+
+
+
 
     // Si la clasificación es Arqueología, realizar la inserción o actualización en la tabla específica
 if ($_POST['clasificacion'] === 'Arqueología') {
@@ -143,7 +144,7 @@ if ($_POST['clasificacion'] === 'Arqueología') {
 
     if ($arqueologia->saveArqueologia($datosArqueologia)) {
         echo "Registro de Arqueología procesado con éxito (insert o update).<br>";
-        header("Location: ../../listados/piezasListado.php");
+       
     } else {
         echo "Error al procesar el registro de Arqueología.<br>";
     }
@@ -157,7 +158,7 @@ if ($_POST['clasificacion'] === 'Paleontología') {
         'idPaleontologia' => $_POST['idPaleontologia'] ?? null, // Incluir el ID si existe
         'era' => $_POST['era'],
         'periodo' => $_POST['periodo'],
-        'descripcion' => $_POST['descripcion'],
+        'descripcion' => $_POST['descripcionPal'],
         'Pieza_idPieza' => $parametro['idPieza'] // Vincular con el ID de la pieza
     ];
 
@@ -174,8 +175,8 @@ if ($_POST['clasificacion'] === 'Osteología') {
     $osteologia = new Osteologia();
     $datosOsteologia = [
         'idOsteologia' => $_POST['idOsteologia'] ?? null, // Incluir el ID si existe
-        'especie' => $_POST['especie'],
-        'clasificacion' => $_POST['clasificacion'],
+        'especie' => $_POST['especieOst'],
+        'clasificacion' => $_POST['clasificacionOst'],
         'Pieza_idPieza' => $parametro['idPieza'] // Vincular con el ID de la pieza
     ];
 
@@ -193,7 +194,7 @@ if ($_POST['clasificacion'] === 'Geología') {
     $datosGeologia = [
         'idGeologia' => $_POST['idGeologia'] ?? null, // Incluir el ID si existe
         'tipo_rocas' => $_POST['tipo_rocas'],
-        'descripcion' => $_POST['descripcionGeologia'],
+        'descripcion' => $_POST['descripcion'],
         'Pieza_idPieza' => $parametro['idPieza'] // Vincular con el ID de la pieza
     ];
 
@@ -210,9 +211,9 @@ if ($_POST['clasificacion'] === 'Ictiología') {
     $ictiologia = new Ictiologia(); // Asumiendo que tienes una clase Ictiologia definida
     $datosIctiologia = [
         'idIctiologia' => $_POST['idIctiologia'] ?? null, // Incluir el ID si existe
-        'clasificacion' => $_POST['clasificacionIctiologia'],
-        'especies' => $_POST['especies'],
-        'descripcion' => $_POST['descripcionIctiologia'],
+        'clasificacion' => $_POST['clasificacionIct'],
+        'especies' => $_POST['especiesIct'],
+        'descripcion' => $_POST['descripcionIct'],
         'Pieza_idPieza' => $parametro['idPieza'] // Vincular con el ID de la pieza
     ];
 
@@ -231,11 +232,11 @@ if ($_POST['clasificacion'] === 'Botánica') {
         'idBotanica' => $_POST['idBotanica'] ?? null, // Incluir el ID si existe
         'reino' => $_POST['reino'],
         'familia' => $_POST['familia'],
-        'especie' => $_POST['especieBotanica'],
+        'especie' => $_POST['especie'],
         'orden' => $_POST['orden'],
         'division' => $_POST['division'],
         'clase' => $_POST['clase'],
-        'descripcion' => $_POST['descripcionBotanica'],
+        'descripcion' => $_POST['descripcionBot'],
         'Pieza_idPieza' => $parametro['idPieza'] // Vincular con el ID de la pieza
     ];
 
@@ -253,10 +254,10 @@ if ($_POST['clasificacion'] === 'Octología') {
     $octologia = new Octologia(); // Asumiendo que tienes una clase Octologia definida
     $datosOctologia = [
         'idOctologia' => $_POST['idOctologia'] ?? null, // Incluir el ID si existe
-        'clasificacion' => $_POST['clasificacion'],
-        'tipo' => $_POST['tipo'],
-        'especie' => $_POST['especieOctologia'],
-        'descripcion' => $_POST['descripcionOctologia'],
+        'clasificacion' => $_POST['clasificacionOct'],
+        'tipo' => $_POST['tipoOct'],
+        'especie' => $_POST['especieOct'],
+        'descripcion' => $_POST['descripcionOct'],
         'Pieza_idPieza' => $parametro['idPieza'] // Vincular con el ID de la pieza
     ];
 
@@ -273,14 +274,14 @@ if ($_POST['clasificacion'] === 'Zoología') {
     $zoologia = new Zoologia(); // Asumiendo que tienes una clase Zoologia definida
     $datosZoologia = [
         'idZoologia' => $_POST['idZoologia'] ?? null, // Incluir el ID si existe
-        'reino' => $_POST['reinoZoologia'],
-        'familia' => $_POST['familiaZoologia'],
-        'especie' => $_POST['especieZoologia'],
-        'orden' => $_POST['ordenZoologia'],
+        'reino' => $_POST['reino'],
+        'familia' => $_POST['familia'],
+        'especie' => $_POST['especie'],
+        'orden' => $_POST['orden'],
         'phylum' => $_POST['phylum'],
-        'clase' => $_POST['claseZoologia'],
+        'clase' => $_POST['clase'],
         'genero' => $_POST['genero'],
-        'descripcion' => $_POST['descripcionZoologia'],
+        'descripcion' => $_POST['descripcion'],
         'Pieza_idPieza' => $parametro['idPieza'] // Vincular con el ID de la pieza
     ];
 
