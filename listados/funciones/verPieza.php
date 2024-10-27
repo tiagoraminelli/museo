@@ -142,7 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 <div class="container my-5 shadow-lg p-4 bg-white rounded-lg">
     <div class="row align-items-center">
-
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">

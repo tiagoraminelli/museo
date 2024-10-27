@@ -178,19 +178,22 @@ class Usuario {
             $this->email = $param['email'];
         }
         if (isset($param['clave'])) {
-            $this->clave = $this->$param['clave'];
+            $this->clave = $param['clave'];
+           
         }
 
         // Insert or update logic
         if ($exists) {
             $sql = "UPDATE `usuario` SET `dni` = ?, `nombre` = ?, `apellido` = ?, `email` = ?, `clave` = ? WHERE `idUsuario` = ?";
             $stmt = $this->conection->prepare($sql);
+            //die($sql);
             $stmt->execute([
                 $this->dni, $this->nombre, $this->apellido, $this->email, $this->clave, $this->idUsuario
             ]);
         } else {
             $sql = "INSERT INTO `usuario` (`dni`, `nombre`, `apellido`, `email`, `clave`) VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->conection->prepare($sql);
+            //die($sql);
             $stmt->execute([
                 $this->dni, $this->nombre, $this->apellido, $this->email, $this->clave
             ]);
@@ -199,10 +202,6 @@ class Usuario {
 
         return $this->idUsuario;
     }
-
-
-
-
 
     
 } //fin de la clase

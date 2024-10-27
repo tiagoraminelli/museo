@@ -71,7 +71,7 @@
             <!-- Formulario de Registro -->
             <div id="register-form" class="hidden">
                 <h3 class="text-center text-2xl font-bold mb-4">Registro</h3>
-                <form action="../funciones/procesar_login.php" method="post">
+                <form action="../funciones/cargarUsuario.php" method="post">
                     <div class="form-group">
                         <label for="dni" class="block text-sm font-medium text-gray-700">DNI</label>
                         <input type="text" id="dni" name="dni" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ingresa tu DNI" required>
@@ -109,6 +109,45 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Se produjo un error al enviar el formulario. Por favor, inténtalo de nuevo.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a href="../contacto/formulario.php" class="btn btn-primary">Volver al formulario</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <!-- Modal -->
+ <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Éxito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¡La operación se realizó con éxito! Has enviado el formulario correctamente.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='../contacto/formulario.php'">Ir al Formulario</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -126,6 +165,24 @@
         input.type = input.type === "password" ? "text" : "password";
     }
 </script>
+<script>
+    // Verificar si hay un parámetro "error" en la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error')) {
+        // Mostrar el modal
+        $('#errorModal').modal('show');
+    }
+</script>
+<script>
+        // Función para mostrar el modal si hay un parámetro de éxito en la URL
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('success')) {
+                const modal = new bootstrap.Modal(document.getElementById('successModal'));
+                modal.show();
+            }
+        });
+    </script>
 
 <?php include('../includes/footer.php'); ?>
 </body>

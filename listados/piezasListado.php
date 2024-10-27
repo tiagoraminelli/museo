@@ -32,7 +32,7 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
  
-    <link rel="stylesheet" href="./public/css/index.css">
+    <link rel="stylesheet" href="../public/css/index.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
@@ -56,7 +56,7 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
         <p class="mb-2 text-gray-600">
             También puedes descargar el PDF con información de todas las piezas. Esto es útil para la documentación, auditorías o para compartir información con otros interesados.
         </p>
-        <a href="" class="text-blue-600 hover:underline">Descargar PDF de Todas las Piezas</a>
+        <a target="_blank" href="./funciones/generarPDFall.php" class="text-blue-600 hover:underline">Descargar PDF de Todas las Piezas</a>
     </div>
 </div>
 

@@ -87,11 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             </div>
         </div>
 
-        <!-- Descripción y Observación -->
-        <div class="mb-4">
-            <label for="descripcion" class="form-label">Descripción</label>
-            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required><?= isset($datos['descripcion']) ? htmlspecialchars($datos['descripcion']) : '' ?></textarea>
-        </div>
+        <!-- Observación -->
+
         <div class="mb-4">
             <label for="observacion" class="form-label">Observación</label>
             <textarea class="form-control" id="observacion" name="observacion" rows="3" required><?= isset($datos['observacion']) ? htmlspecialchars($datos['observacion']) : '' ?></textarea>

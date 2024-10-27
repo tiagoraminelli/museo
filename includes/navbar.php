@@ -2,6 +2,9 @@
 
 # src="https://via.placeholder.com/150x40" placeholder de imagen generico
 // Verifica si existe una sesión activa
+if (isset($_SESSION['usuario_activo']) and isset($_SESSION['nivel']) and ($_SESSION['nivel']=='administrador')){
+
+}
 if (isset($_SESSION['usuario_activo'])){
     // Navbar para usuarios con sesión activa
     ?>

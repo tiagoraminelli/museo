@@ -4,6 +4,22 @@ require_once "../../modelo/bd.php";
 require_once "../../modelo/pieza.php";
 require_once '../../fpdf/fpdf.php'; // Asegúrate de que FPDF esté en la ubicación correcta
 
+class PDF extends FPDF {
+    // Encabezado
+    function Header() {
+        $this->SetFont('Arial', 'B', 15);
+        $this->Cell(0, 10, 'Detalles de la Pieza', 0, 1, 'C');
+        $this->Ln(5); // Salto de línea
+    }
+
+    // Pie de página
+    function Footer() {
+        $this->SetY(-15);
+        $this->SetFont('Arial', 'I', 8);
+        $this->Cell(0, 10, 'Página ' . $this->PageNo(), 0, 0, 'C');
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $idPieza = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -14,44 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // Inicializar el array $resultados
         $resultados = [];
 
-        // Paleontología
-        if (isset($resultado['paleontologia']) && !empty($resultado['paleontologia'])) {
-            $resultados['paleontologia'] = $resultado['paleontologia'];
-        }
-
-        // Osteología
-        if (isset($resultado['osteologia']) && !empty($resultado['osteologia'])) {
-            $resultados['osteologia'] = $resultado['osteologia'];
-        }
-
-        // Ictiología
-        if (isset($resultado['ictiologia']) && !empty($resultado['ictiologia'])) {
-            $resultados['ictiologia'] = $resultado['ictiologia'];
-        }
-
-        // Geología
-        if (isset($resultado['geologia']) && !empty($resultado['geologia'])) {
-            $resultados['geologia'] = $resultado['geologia'];
-        }
-
-        // Botánica
-        if (isset($resultado['botanica']) && !empty($resultado['botanica'])) {
-            $resultados['botanica'] = $resultado['botanica'];
-        }
-
-        // Zoología
-        if (isset($resultado['zoologia']) && !empty($resultado['zoologia'])) {
-            $resultados['zoologia'] = $resultado['zoologia'];
-        }
-
-        // Arqueología
-        if (isset($resultado['arqueologia']) && !empty($resultado['arqueologia'])) {
-            $resultados['arqueologia'] = $resultado['arqueologia'];
-        }
-
-        // Octología
-        if (isset($resultado['octologia']) && !empty($resultado['octologia'])) {
-            $resultados['octologia'] = $resultado['octologia'];
+        // Agregar los resultados según las tablas
+        $tablas = ['paleontologia', 'osteologia', 'ictiologia', 'geologia', 'botanica', 'zoologia', 'arqueologia', 'octologia'];
+        foreach ($tablas as $tabla) {
+            if (isset($resultado[$tabla]) && !empty($resultado[$tabla])) {
+                $resultados[$tabla] = $resultado[$tabla];
+            }
         }
     } else {
         echo "ID de pieza no válido.";
@@ -59,41 +43,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     // Crear PDF con FPDF
-    $pdf = new FPDF();
+    $pdf = new PDF();
     $pdf->AddPage();
-    $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(190, 10, "Detalles de la Pieza", 0, 1, 'C');
+    $pdf->SetFont('Arial', 'B', 14);
     $pdf->Ln(10); // Salto de línea
 
     if (!empty($resultados)) {
-        // Mostrar tablas por cada tipo de resultado
         foreach ($resultados as $tabla => $filas) {
+            // Mostrar el título
             $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell(190, 10, ucfirst($tabla), 0, 1, 'C');
+            $pdf->Cell(0, 10, "Asociada a la tabla: ".ucfirst($tabla), 0, 1, 'L');
+            $pdf->SetFont('Arial', 'I', 10);
             $pdf->Ln(5); // Salto de línea
 
-            if (!empty($filas)) {
-                // Mostrar encabezados dinámicos
-                $pdf->SetFont('Arial', 'B', 10);
-                foreach (array_keys($filas[0]) as $campo) {
-                    $pdf->Cell(40, 10, ucfirst(str_replace('_', ' ', $campo)), 1);
+            // Mostrar cada fila como subtítulo con sus valores
+            foreach ($filas as $fila) {
+                foreach ($fila as $campo => $valor) {
+                    // Subtítulo con el nombre del campo
+                    $pdf->SetFont('Arial', 'B', 10);
+                    $pdf->Cell(0, 10, ucfirst(str_replace('_', ' ', $campo)), 0, 1, 'L');
+                    // Valor debajo del subtítulo
+                    $pdf->SetFont('Arial', '', 10);
+                    $pdf->MultiCell(0, 10, htmlspecialchars($valor), 0, 'L');
+                    $pdf->Ln(2); // Espacio entre cada campo
                 }
-                $pdf->Ln();
-
-                // Mostrar filas dinámicas
-                $pdf->SetFont('Arial', '', 10);
-                foreach ($filas as $fila) {
-                    foreach ($fila as $valor) {
-                        $pdf->Cell(40, 10, htmlspecialchars($valor), 1);
-                    }
-                    $pdf->Ln();
-                }
-                $pdf->Ln(10); // Salto de línea al final de cada tabla
+                $pdf->Ln(5); // Salto de línea al final de cada fila
             }
+            $pdf->Ln(10); // Espacio entre tablas
         }
     } else {
         $pdf->SetFont('Arial', 'I', 12);
-        $pdf->Cell(190, 10, "No se encontraron resultados relacionados con la pieza.", 0, 1, 'C');
+        $pdf->Cell(0, 10, "No se encontraron resultados relacionados con la pieza.", 0, 1, 'C');
     }
 
     // Salida del PDF
