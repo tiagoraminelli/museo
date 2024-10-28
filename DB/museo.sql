@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-10-2024 a las 00:43:58
+-- Tiempo de generación: 28-10-2024 a las 17:22:31
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -224,7 +224,6 @@ INSERT INTO `paleontologia` (`idPaleontologia`, `era`, `periodo`, `descripcion`,
 (11, 'Paleozoico', 'Neógeno', '', 36),
 (12, 'Paleozoico', 'Silúrico', '', 37),
 (13, 'Paleozoico', 'Silúrico', 'a ver si me lo guarda al cambio', 38),
-(14, 'Paleozoico', 'Silúrico', NULL, 39),
 (15, 'Paleozoico', 'Devónico', 'asdasdasd', 40);
 
 -- --------------------------------------------------------
@@ -275,7 +274,6 @@ INSERT INTO `pieza` (`idPieza`, `num_inventario`, `especie`, `estado_conservacio
 (36, '1', '1', '1', '2024-11-05', '1', 'Paleontología', 'asdasd', '', 6),
 (37, 'root', '1', '1', '2024-10-26', '1', 'Paleontología', 'asdasdasd', '', 6),
 (38, 'root', '1', '1', '2024-10-26', '1', 'Paleontología', 'asdasdasd', '', 6),
-(39, 'root', '1', '1', '2024-10-26', '1', 'Paleontología', 'asdasdasd', '', 6),
 (40, 'asdasd', 'dasdasda', 'aadsadsdas', '2024-11-04', '1', 'Paleontología', 'asdasd', '', 6),
 (41, 'root osteo', '1', '1', '2024-10-26', '1', 'Osteología', 'asdasdasd', '', 6),
 (42, 'root osteo', '1', '1', '2024-10-26', '1', 'Osteología', 'asdasdasd', '', 6),
@@ -295,7 +293,54 @@ INSERT INTO `pieza` (`idPieza`, `num_inventario`, `especie`, `estado_conservacio
 (57, 'root octologia', '', 'asdasdkj', '2024-10-26', '1', 'Octología', '1', '', 6),
 (58, 'NVH999', '', 'root', '2024-10-26', '1', 'Osteología', 'root', 'Captura de pantalla 2024-10-02 161322.png', 8),
 (59, 'NVH999', '', 'root', '2024-10-26', '1', 'Osteología', 'root', 'Captura de pantalla 2024-10-02 161322.png', 8),
-(60, 'NVH999', '', 'root', '2024-10-26', '1', 'Osteología', 'root', 'Captura de pantalla 2024-10-02 161322.png', 8);
+(60, 'NVH999', '', 'root', '2024-10-26', '1', 'Osteología', 'root', 'Captura de pantalla 2024-10-02 161322.png', 8),
+(61, 'root', '1', '1', '2024-10-26', '1', 'Paleontología', 'asdasdasd', '', 6),
+(63, 'devolveme', 'el ', 'art', '2024-10-10', '1', 'borrado', 'desde', 'la bd', 5);
+
+--
+-- Disparadores `pieza`
+--
+DELIMITER $$
+CREATE TRIGGER `registrar_piezas_eliminadas` BEFORE DELETE ON `pieza` FOR EACH ROW BEGIN
+  INSERT INTO registros_eliminados (
+        idPieza, num_inventario, especie, estado_conservacion,
+        fecha_ingreso, cantidad_de_piezas, clasificacion,
+        observacion, imagen, Donante_idDonante
+    ) VALUES (
+        OLD.idPieza, OLD.num_inventario, OLD.especie, OLD.estado_conservacion,
+        OLD.fecha_ingreso, OLD.cantidad_de_piezas, OLD.clasificacion,
+        OLD.observacion, OLD.imagen, OLD.Donante_idDonante
+    );
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `registros_eliminados`
+--
+
+CREATE TABLE `registros_eliminados` (
+  `id` int(11) NOT NULL,
+  `idPieza` int(11) DEFAULT NULL,
+  `num_inventario` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `especie` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `estado_conservacion` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `fecha_ingreso` date DEFAULT NULL,
+  `cantidad_de_piezas` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `clasificacion` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `observacion` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `imagen` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `Donante_idDonante` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `registros_eliminados`
+--
+
+INSERT INTO `registros_eliminados` (`id`, `idPieza`, `num_inventario`, `especie`, `estado_conservacion`, `fecha_ingreso`, `cantidad_de_piezas`, `clasificacion`, `observacion`, `imagen`, `Donante_idDonante`) VALUES
+(1, 2, 'root', 'root', 'root', '2024-10-25', '1', 'root', 'root', 'root', 1);
 
 -- --------------------------------------------------------
 
@@ -362,7 +407,6 @@ INSERT INTO `usuario_has_pieza` (`Usuario_idUsuario`, `Pieza_idPieza`, `fecha_re
 (1, 36, '2024-10-26 21:53:23'),
 (1, 37, '2024-10-26 21:56:52'),
 (1, 38, '2024-10-26 21:58:22'),
-(1, 39, '2024-10-26 21:58:26'),
 (1, 40, '2024-10-26 21:58:46'),
 (1, 41, '2024-10-26 22:00:52'),
 (1, 42, '2024-10-26 22:01:25'),
@@ -483,6 +527,12 @@ ALTER TABLE `pieza`
   ADD KEY `fk_Pieza_Donante1_idx` (`Donante_idDonante`);
 
 --
+-- Indices de la tabla `registros_eliminados`
+--
+ALTER TABLE `registros_eliminados`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
@@ -559,7 +609,13 @@ ALTER TABLE `paleontologia`
 -- AUTO_INCREMENT de la tabla `pieza`
 --
 ALTER TABLE `pieza`
-  MODIFY `idPieza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `idPieza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+
+--
+-- AUTO_INCREMENT de la tabla `registros_eliminados`
+--
+ALTER TABLE `registros_eliminados`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`

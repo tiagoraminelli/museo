@@ -182,6 +182,15 @@ class Usuario {
            
         }
 
+        if (!isset($param['fecha_alta'])) {
+            $this->fecha_alta = date('Y-m-d');
+        }
+        if (!isset($param['tipo_de_usuario'])) {
+            $this->tipo_de_usuario = "gerente";
+        }
+
+//echo "INSERT INTO `usuario` (`dni`, `nombre`, `apellido`, `email`, `clave`,`fecha_alta`,`tipo_de_usuario``) VALUES ($this->dni,$this->nombre,$this->apellido,$this->email,$this->clave,$this->fecha_alta,$this->tipo_de_usuario)"."<br>";
+
         // Insert or update logic
         if ($exists) {
             $sql = "UPDATE `usuario` SET `dni` = ?, `nombre` = ?, `apellido` = ?, `email` = ?, `clave` = ? WHERE `idUsuario` = ?";
@@ -191,11 +200,11 @@ class Usuario {
                 $this->dni, $this->nombre, $this->apellido, $this->email, $this->clave, $this->idUsuario
             ]);
         } else {
-            $sql = "INSERT INTO `usuario` (`dni`, `nombre`, `apellido`, `email`, `clave`) VALUES (?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `usuario` (`dni`, `nombre`, `apellido`, `email`, `clave`, `fecha_alta`, `tipo_de_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conection->prepare($sql);
             //die($sql);
             $stmt->execute([
-                $this->dni, $this->nombre, $this->apellido, $this->email, $this->clave
+                $this->dni, $this->nombre, $this->apellido, $this->email, $this->clave,$this->fecha_alta,$this->tipo_de_usuario
             ]);
             $this->idUsuario = $this->conection->lastInsertId(); // Get the generated ID
         }

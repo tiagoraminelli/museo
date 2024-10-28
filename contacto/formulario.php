@@ -19,7 +19,7 @@
 <nav class="bg-white shadow-md">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center py-4">
-            <a class="text-lg font-bold text-gray-700" href="#">Logo</a>
+            <a class="text-lg font-bold text-gray-700" href="#">MUSEO</a>
             <div class="md:hidden">
                 <button class="navbar-toggler" type="button" onclick="toggleNavbar()">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
