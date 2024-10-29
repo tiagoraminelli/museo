@@ -270,4 +270,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 </div>
 
 </body>
+<?php include("../../includes/footer.php"); ?>
 </html>

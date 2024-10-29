@@ -37,7 +37,7 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="usuarioDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="../assets/img/user.png" alt="Usuario" class="rounded-circle">
+            <img src="../../assets/img/user.png" alt="Usuario" class="rounded-circle">
             <?php echo $_SESSION['usuario_activo']; ?>
           </a>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">
