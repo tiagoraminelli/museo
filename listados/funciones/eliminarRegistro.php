@@ -7,9 +7,8 @@ $IdRegistro = isset($_GET['id']) ? intval($_GET['id']) : 0;
 // Crear una instancia de la clase UsuarioHasPieza
 $registro = new registros_eliminados();
 
-if ($usuarioId > 0 && $piezaId > 0) {
+if ($IdRegistro) {
     $resultado = $registro->deleteRegistrosById($IdRegistro); // Asegúrate de tener esta función
-
     // Verificar el resultado de la eliminación
     if ($resultado) {
         $_SESSION['mensaje'] = "Elemento eliminado correctamente.";
@@ -23,4 +22,5 @@ if ($usuarioId > 0 && $piezaId > 0) {
 // Redirigir de vuelta al historial
 header("Location: ../eliminados.php");
 exit();
+
 ?>

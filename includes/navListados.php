@@ -84,6 +84,9 @@
         <li class="nav-item">
           <a class="nav-link text-gray-800" href="./historial.php">Historial</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-gray-800" href="./eliminados.php">Eliminados</a>
+        </li>
       </ul>
 
       <!-- Dropdown Usuario Activo -->

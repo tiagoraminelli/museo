@@ -17,7 +17,7 @@ class Db {
 
 		try { //se pone try se abre {}, luego se invoca el catch
 		//este try realiza la conexion;
-		//todo el cogido que este aca si aparece un error aca dentro lo captura el PHP con PDOexception
+		//todo el codigo que este aca si aparece un error aca dentro lo captura el PHP con PDOexception
 
            $this->conection = new PDO('mysql:host='.$this->host.'; dbname='.$this->db, $this->user, $this->pass);
             

@@ -171,7 +171,7 @@ class registros_eliminados extends Pieza {
     
     public function deleteRegistrosById($id){ //empieza la funtion
         $this->getConection(); //ejecuta un metodo de la clase que gestiona la conexion a la base de datos
-        $sql="DELETE FROM ".$this->table." WHERE `id ` = ? "; //armamos la cadena sql 
+        $sql="DELETE FROM ".$this->table." WHERE `id` = ? ";; //armamos la cadena sql 
         $stmt=$this->conection->prepare($sql); //metemos la cadena que armamos para armar la consulta
         return $stmt->execute([$id]); //ejecutamos la consulta
     }

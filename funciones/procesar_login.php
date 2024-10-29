@@ -17,13 +17,6 @@ if (isset($_POST)) {
         // Buscar el usuario en la base de datos usando el email
         $usuarioDesdeDB = $usuario->getUsuarioPorEmail($datos['email']);
         //imprimimos en pantalla
-        echo "<pre>";
-        var_dump($datos);
-        echo "</pre>";
-        echo "<pre>";
-        var_dump($usuarioDesdeDB);
-        echo "</pre>";
-        echo "Comprobamos ambas contraseñas"."<br>";
 
 
         // Verificar si el usuario existe
@@ -39,7 +32,7 @@ if (isset($_POST)) {
                 exit;
             } else {
                 echo "Contraseña incorrecta.";
-                //header("Location: ../contacto/formulario.php?error=1"); // Redirigir al índice
+                header("Location: ../contacto/formulario.php?error=1"); // Redirigir al índice
             }
         } else {
             echo "Usuario no encontrado.";
