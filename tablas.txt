@@ -18,6 +18,15 @@ zoología - funciona
 arqueología - funciona
 octología  funciona
 
+Paleontología
+Osteología
+Ictiología
+Geología
+Botánica
+Zoología
+Arqueología
+Octología
+
 COMO SE CARGAN EN LOS CAMPOS
 <option value="Paleontología">Paleontología</option>
 <option value="Osteología">Osteología</option>

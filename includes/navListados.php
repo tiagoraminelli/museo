@@ -87,6 +87,9 @@
         <li class="nav-item">
           <a class="nav-link text-gray-800" href="./eliminados.php">Eliminados</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-gray-800" href="./verPiezaEliminada.php">Datos</a>
+        </li>
       </ul>
 
       <!-- Dropdown Usuario Activo -->

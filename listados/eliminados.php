@@ -67,6 +67,7 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
                         <td><?php echo $registro['cantidad_de_piezas']; ?></td>
                         <td><?php echo $registro['clasificacion']; ?></td>
                         <td>
+                            <a href="./verPiezaEliminada.php?seccion" class="btn btn-info btn-sm">Ver</a>
                             <a href="funciones/restaurarRegistro.php?id=<?php echo $registro['idPieza']; ?>" class="btn btn-success btn-sm">Restaurar</a>
                             <a href="funciones/eliminarRegistro.php?id=<?php echo $registro['id']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
                         </td>
