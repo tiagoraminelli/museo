@@ -106,7 +106,7 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
 
 
                             <!-- Botón para eliminar -->
-                            <a href="funciones/eliminarPieza.php?id=<?php echo $p['idPieza']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="funciones/eliminarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo ($p['clasificacion']); ?>" class="btn btn-danger btn-sm">Eliminar</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

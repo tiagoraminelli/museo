@@ -8,6 +8,7 @@ $IdRegistro = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $registro = new registros_eliminados();
 
 if ($IdRegistro) {
+
     $resultado = $registro->deleteRegistrosById($IdRegistro); // Asegúrate de tener esta función
     // Verificar el resultado de la eliminación
     if ($resultado) {

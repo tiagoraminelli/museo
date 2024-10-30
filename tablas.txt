@@ -18,6 +18,16 @@ zoología - funciona
 arqueología - funciona
 octología  funciona
 
+//TRIGGERS HECHOS QUE FUNCIONAN
+Paleontología -funciona
+Osteología -funciona
+Ictiología -funciona
+Geología -funciona
+Botánica -funciona
+Zoología -funciona
+Arqueología -funciona
+Octología -funciona
+
 Paleontología
 Osteología
 Ictiología
