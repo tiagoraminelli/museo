@@ -11,6 +11,9 @@ $registro = new registros_eliminados();
 if ($IdPiezaRestaurada) {
     $resultado = $registro->restorePieza($IdPiezaRestaurada); // Asegúrate de tener esta función
     $restaurarTabla = new DatosEliminados();
+    $datosTraidos = $restaurarTabla->getDatosEliminadosByPiezaId($IdPiezaRestaurada);
+    var_dump($datosTraidos);
+    $restaurarTabla->restorePiezaByTable($IdPiezaRestaurada);
     // Verificar el resultado de la eliminación
     if ($resultado) {
         $_SESSION['mensaje'] = "restaurado con exito correctamente.";
