@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //var_dump($_POST);
     $parametro = [
         'num_inventario' => $_POST['num_inventario'],
-        'especie' => $_POST['especie'],
+        'especie' => $_POST['especieP'],
         'estado_conservacion' => $_POST['estado_conservacion'],
         'fecha_ingreso' => $_POST['fecha_ingreso'],
         'cantidad_de_piezas' => $_POST['cantidad_de_piezas'],
@@ -230,12 +230,12 @@ if ($_POST['clasificacion'] === 'Botánica') {
     $botanica = new Botanica(); // Asumiendo que tienes una clase Botanica definida
     $datosBotanica = [
         'idBotanica' => $_POST['idBotanica'] ?? null, // Incluir el ID si existe
-        'reino' => $_POST['reino'],
-        'familia' => $_POST['familia'],
-        'especie' => $_POST['especie'],
-        'orden' => $_POST['orden'],
-        'division' => $_POST['division'],
-        'clase' => $_POST['clase'],
+        'reino' => $_POST['reinoBot'],
+        'familia' => $_POST['familiaBot'],
+        'especie' => $_POST['especieBot'],
+        'orden' => $_POST['ordenBot'],
+        'division' => $_POST['divisionBot'],
+        'clase' => $_POST['claseBot'],
         'descripcion' => $_POST['descripcionBot'],
         'Pieza_idPieza' => $parametro['idPieza'] // Vincular con el ID de la pieza
     ];

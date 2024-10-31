@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             </div>
             <div class="mb-3">
                 <label for="especie" class="form-label">Especie</label>
-                <input type="text" class="form-control" id="especie" name="especie" required 
+                <input type="text" class="form-control" id="especie" name="especieP" required 
                        value="<?= isset($datos['especie']) ? htmlspecialchars($datos['especie']) : '' ?>">
             </div>
         </div>
@@ -191,25 +191,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <input type="text" class="form-control" name="idBotanica" value="<?= isset($datos['idBotanica']) ? htmlspecialchars($datos['idBotanica']) : '' ?>" readonly>
 
         <label for="reino" class="form-label">Reino</label>
-        <input type="text" class="form-control" id="reino" name="reino" value="<?= isset($datos['reino']) ? htmlspecialchars($datos['reino']) : '' ?>" required>
+        <input type="text" class="form-control" id="reino" name="reinoBot" value="<?= isset($datos['reino']) ? htmlspecialchars($datos['reino']) : '' ?>" required>
 
         <label for="familia" class="form-label">Familia</label>
-        <input type="text" class="form-control" id="familia" name="familia" value="<?= isset($datos['familia']) ? htmlspecialchars($datos['familia']) : '' ?>" required>
+        <input type="text" class="form-control" id="familia" name="familiaBot" value="<?= isset($datos['familia']) ? htmlspecialchars($datos['familia']) : '' ?>" required>
 
         <label for="especie" class="form-label">Especie</label>
-        <input type="text" class="form-control" id="especie" name="especie" value="<?= isset($datos['especie']) ? htmlspecialchars($datos['especie']) : '' ?>" required>
+        <input type="text" class="form-control" id="especie" name="especieBot" value="<?= isset($datos['especie']) ? htmlspecialchars($datos['especie']) : '' ?>" required>
 
         <label for="orden" class="form-label">Orden</label>
-        <input type="text" class="form-control" id="orden" name="orden" value="<?= isset($datos['orden']) ? htmlspecialchars($datos['orden']) : '' ?>" required>
+        <input type="text" class="form-control" id="orden" name="ordenBot" value="<?= isset($datos['orden']) ? htmlspecialchars($datos['orden']) : '' ?>" required>
 
         <label for="division" class="form-label">División</label>
-        <input type="text" class="form-control" id="division" name="division" value="<?= isset($datos['division']) ? htmlspecialchars($datos['division']) : '' ?>" required>
+        <input type="text" class="form-control" id="division" name="divisionBot" value="<?= isset($datos['division']) ? htmlspecialchars($datos['division']) : '' ?>" required>
 
         <label for="clase" class="form-label">Clase</label>
-        <input type="text" class="form-control" id="clase" name="clase" value="<?= isset($datos['clase']) ? htmlspecialchars($datos['clase']) : '' ?>" required>
+        <input type="text" class="form-control" id="clase" name="claseBot" value="<?= isset($datos['clase']) ? htmlspecialchars($datos['clase']) : '' ?>" required>
 
         <label for="descripcion" class="form-label">Descripción</label>
-        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required><?= isset($datos['descripcion']) ? htmlspecialchars($datos['descripcion']) : '' ?></textarea>
+        <textarea class="form-control" id="descripcion" name="descripcionBot" rows="3" required><?= isset($datos['descripcion']) ? htmlspecialchars($datos['descripcion']) : '' ?></textarea>
     </div>
 <?php } elseif ($clasificacion == 'Zoología') { ?>
     <!-- Zoología -->

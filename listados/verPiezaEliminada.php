@@ -13,8 +13,10 @@ $paginaActual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
 $offset = ($paginaActual - 1) * $porPagina;
 
 // Obtener los registros eliminados con límite de paginación
-$datos = $datosEliminados->getAllDatosEliminados($porPagina, $offset); // Asegúrate de implementar paginación en esta función
-$totalRegistros = count($datosEliminados->getAllDatosEliminados()); // Obtener el total de registros
+$datos = $datosEliminados->getDatosEliminadosPaginadas($porPagina, $offset); // Asegúrate de implementar paginación en esta función
+$totalRegistros = $datosEliminados->getTotalDatosEliminados();
+// Obtener el total de registros
+//echo $totalRegistros;
 $totalPaginas = ceil($totalRegistros / $porPagina);
 
 // Mensaje para el modal
@@ -81,7 +83,7 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
         </tbody>
     </table>
 
-    <nav aria-label="Paginación">
+    <nav aria-label="Paginación" class="mb-4">>
         <ul class="pagination justify-content-center">
             <li class="page-item <?php echo $paginaActual == 1 ? 'disabled' : ''; ?>">
                 <a class="page-link" href="?pagina=<?php echo $paginaActual - 1; ?>" tabindex="-1">Anterior</a>

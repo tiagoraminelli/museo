@@ -34,7 +34,7 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
             </div>
             <div class="col-md-6 mb-3">
                 <label for="especie" class="form-label">Especie</label>
-                <input type="text" class="form-control" id="especie" name="especie" required>
+                <input type="text" class="form-control" id="especieP" name="especieP" required>
             </div>
         </div>
         <div class="row">
@@ -193,30 +193,30 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="reino" class="form-label">Reino</label>
-                    <input type="text" class="form-control" id="reino" name="reino">
+                    <input type="text" class="form-control" id="reino" name="reinoBot">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="familia" class="form-label">Familia</label>
-                    <input type="text" class="form-control" id="familia" name="familia">
+                    <input type="text" class="form-control" id="familia" name="familiaBot">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="especieBotanica" class="form-label">Especie</label>
-                    <input type="text" class="form-control" id="especieBotanica" name="especieBotanica">
+                    <input type="text" class="form-control" id="especie" name="especieBot">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="orden" class="form-label">Orden</label>
-                    <input type="text" class="form-control" id="orden" name="orden">
+                    <input type="text" class="form-control" id="orden" name="ordenBot">
                 </div>
             </div>
             <div class="mb-3">
                 <label for="division" class="form-label">División</label>
-                <input type="text" class="form-control" id="division" name="division">
+                <input type="text" class="form-control" id="division" name="divisionBot">
             </div>
             <div class="mb-3">
                 <label for="clase" class="form-label">Clase</label>
-                <input type="text" class="form-control" id="clase" name="clase">
+                <input type="text" class="form-control" id="clase" name="claseBot">
             </div>
             <div class="mb-3">
                 <label for="descripcionBotanica" class="form-label">Descripción</label>

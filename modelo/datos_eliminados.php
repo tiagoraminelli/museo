@@ -168,6 +168,13 @@ class DatosEliminados extends Pieza {
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna todos los resultados de la consulta
     }
 
+    public function getTotalDatosEliminados() {
+        $sql = "SELECT COUNT(*) FROM datos_eliminados";
+        $stmt = $this->conection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
     // Método para obtener un registro de datos eliminados por idPieza
     public function getDatosEliminadosByPiezaId($Pieza_idPieza) {
         $sql = "SELECT * FROM " . $this->table . " WHERE Pieza_idPieza = ?";

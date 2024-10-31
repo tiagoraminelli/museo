@@ -28,6 +28,16 @@ Zoología -funciona
 Arqueología -funciona
 Octología -funciona
 
+//DELETE
+Paleontología -invocado -funciona
+Osteología -invocado -funciona
+Ictiología -invocado -funciona
+Geología-invocado -funciona
+Botánica -invocado-funciona
+Zoología -invocado -funciona
+Arqueología -invocado -funciona
+Octología -invocado -funciona
+
 Paleontología
 Osteología
 Ictiología
