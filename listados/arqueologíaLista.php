@@ -20,6 +20,27 @@ $arqueologias = $arqueologia->getAllArqueologias();
 </head>
 <body>
 <?php include('../includes/navListados.php')?>
+
+<!-- Contenedor de información sobre crear pieza y descargar PDF -->
+<div class="container mt-8 text-center">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <p class="mb-2 text-gray-600">
+            También puedes descargar el PDF con información de todas las piezas. Esto es útil para la documentación, auditorías o para compartir información con otros interesados.
+        </p>
+        <a target="_blank" href="./funciones/generarPDFall.php" class="text-blue-600 hover:underline">Descargar PDF de Todas las Piezas</a>
+    </div>
+</div>
+
+<!-- Buscador -->
+<div class="container mt-4">
+    <div class="search-box">
+        <form class="d-flex" id="searchForm" action="./funciones/buscarPieza.php" method="post">
+            <input class="form-control me-2" type="search" id="searchInput" placeholder="Buscar..." aria-label="Buscar">
+            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+        </form>
+    </div>
+</div>
+
 <div class="container mt-5">
     <h1 class="mb-4 text-center">Listado de Arqueología</h1>
     
@@ -31,7 +52,6 @@ $arqueologias = $arqueologia->getAllArqueologias();
                 <th>Estética</th>
                 <th>Material</th>
                 <th>ID de la Pieza</th>
-                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -43,14 +63,6 @@ $arqueologias = $arqueologia->getAllArqueologias();
                         <td><?php echo $a['estetica']; ?></td>
                         <td><?php echo $a['material']; ?></td>
                         <td><?php echo $a['Pieza_idPieza']; ?></td>
-                        <td>
-                          
-                            <!-- Botón para editar -->
-                            <a href="editarArqueologia.php?id=<?php echo $a['idArqueologia']; ?>" class="btn btn-warning btn-sm">Editar</a>
-
-                            <!-- Botón para eliminar -->
-                            <a href="eliminarArqueologia.php?id=<?php echo $a['idArqueologia']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
-                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>

@@ -113,7 +113,7 @@ if (isset($_SESSION['id']) && isset($parametro['idPieza'])){
     // Llamar a la función saveUsuarioPieza para insertar o actualizar
     if ($usuarioPieza->saveUsuarioPieza($parametro)) {
         echo "Relación usuario-pieza guardada con éxito.";
-        header("Location: ../../listados/piezasListado.php");
+        header("Location: ../../listados/piezasListado.php?historial=1");
     } else {
         echo "Error al guardar la relación usuario-pieza." . "<br>";
     }
