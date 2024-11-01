@@ -191,7 +191,7 @@ class DatosEliminados extends Pieza {
         return $stmt->fetch(PDO::FETCH_ASSOC); // Retorna un solo resultado
     }
 
-    public function restorePiezaByTable($idPiezaViejo)
+    public function restorePiezaByTable($idPiezaViejo,$idPiezaNuevo)
     {
         try {
             // Iniciar transacción
@@ -220,10 +220,11 @@ class DatosEliminados extends Pieza {
                 case 'Paleontología':
                     $sqlInsert = "INSERT INTO paleontologia (era, periodo, descripcion, Pieza_idPieza)
                                   VALUES (:campo1, :campo2, :campo3, :Pieza_idPieza)";
+
                     $dataToInsert = [
-                        ':campo1' => $deletedData['era'],
-                        ':campo2' => $deletedData['periodo'],
-                        ':campo3' => $deletedData['descripcion'],
+                        ':campo1' => $deletedData['campo1'],
+                        ':campo2' => $deletedData['campo2'],
+                        ':campo3' => $deletedData['campo3'],
                         ':Pieza_idPieza' => $idPiezaNuevo,
                     ];
                     break;
@@ -231,8 +232,8 @@ class DatosEliminados extends Pieza {
                     $sqlInsert = "INSERT INTO osteologia (especie, clasificacion, Pieza_idPieza)
                                   VALUES (:campo1, :campo2, :Pieza_idPieza)";
                     $dataToInsert = [
-                        ':campo1' => $deletedData['especie'],
-                        ':campo2' => $deletedData['clasificacion'],
+                        ':campo1' => $deletedData['campo1'],
+                        ':campo2' => $deletedData['campo2'],
                         ':Pieza_idPieza' => $idPiezaNuevo,
                     ];
                     break;
@@ -240,9 +241,9 @@ class DatosEliminados extends Pieza {
                     $sqlInsert = "INSERT INTO ictiologia (clasificacion, especies, descripcion, Pieza_idPieza)
                                   VALUES (:campo1, :campo2, :campo3, :Pieza_idPieza)";
                     $dataToInsert = [
-                        ':campo1' => $deletedData['clasificacion'],
-                        ':campo2' => $deletedData['especies'],
-                        ':campo3' => $deletedData['descripcion'],
+                        ':campo1' => $deletedData['campo1'],
+                        ':campo2' => $deletedData['campo2'],
+                        ':campo3' => $deletedData['campo3'],
                         ':Pieza_idPieza' => $idPiezaNuevo,
                     ];
                     break;
@@ -250,8 +251,8 @@ class DatosEliminados extends Pieza {
                     $sqlInsert = "INSERT INTO geologia (tipo_rocas, descripcion, Pieza_idPieza)
                                   VALUES (:campo1, :campo2, :Pieza_idPieza)";
                     $dataToInsert = [
-                        ':campo1' => $deletedData['tipo_rocas'],
-                        ':campo2' => $deletedData['descripcion'],
+                        ':campo1' => $deletedData['campo1'],
+                        ':campo2' => $deletedData['campo2'],
                         ':Pieza_idPieza' => $idPiezaNuevo,
                     ];
                     break;
@@ -259,13 +260,13 @@ class DatosEliminados extends Pieza {
                     $sqlInsert = "INSERT INTO botanica (reino, familia, especie, orden, division, clase, descripcion, Pieza_idPieza)
                                   VALUES (:campo1, :campo2, :campo3, :campo4, :campo5, :campo6, :campo7, :Pieza_idPieza)";
                     $dataToInsert = [
-                        ':campo1' => $deletedData['reino'],
-                        ':campo2' => $deletedData['familia'],
-                        ':campo3' => $deletedData['especie'],
-                        ':campo4' => $deletedData['orden'],
-                        ':campo5' => $deletedData['division'],
-                        ':campo6' => $deletedData['clase'],
-                        ':campo7' => $deletedData['descripcion'],
+                        ':campo1' => $deletedData['campo1'],
+                        ':campo2' => $deletedData['campo2'],
+                        ':campo3' => $deletedData['campo3'],
+                        ':campo4' => $deletedData['campo4'],
+                        ':campo5' => $deletedData['campo5'],
+                        ':campo6' => $deletedData['campo6'],
+                        ':campo7' => $deletedData['campo7'],
                         ':Pieza_idPieza' => $idPiezaNuevo,
                     ];
                     break;
@@ -273,14 +274,14 @@ class DatosEliminados extends Pieza {
                     $sqlInsert = "INSERT INTO zoologia (reino, familia, especie, orden, phylum, clase, genero, descripcion, Pieza_idPieza)
                                   VALUES (:campo1, :campo2, :campo3, :campo4, :campo5, :campo6, :campo7, :campo8, :Pieza_idPieza)";
                     $dataToInsert = [
-                        ':campo1' => $deletedData['reino'],
-                        ':campo2' => $deletedData['familia'],
-                        ':campo3' => $deletedData['especie'],
-                        ':campo4' => $deletedData['orden'],
-                        ':campo5' => $deletedData['phylum'],
-                        ':campo6' => $deletedData['clase'],
-                        ':campo7' => $deletedData['genero'],
-                        ':campo8' => $deletedData['descripcion'],
+                        ':campo1' => $deletedData['campo1'],
+                        ':campo2' => $deletedData['campo2'],
+                        ':campo3' => $deletedData['campo3'],
+                        ':campo4' => $deletedData['campo4'],
+                        ':campo5' => $deletedData['campo5'],
+                        ':campo6' => $deletedData['campo6'],
+                        ':campo7' => $deletedData['campo7'],
+                        ':campo8' => $deletedData['campo8'],
                         ':Pieza_idPieza' => $idPiezaNuevo,
                     ];
                     break;
@@ -288,22 +289,23 @@ class DatosEliminados extends Pieza {
                     $sqlInsert = "INSERT INTO arqueologia (integridad_historica, estetica, material, Pieza_idPieza)
                                   VALUES (:campo1, :campo2, :campo3, :Pieza_idPieza)";
                     $dataToInsert = [
-                        ':campo1' => $deletedData['integridad_historica'],
-                        ':campo2' => $deletedData['estetica'],
-                        ':campo3' => $deletedData['material'],
+                        ':campo1' => $deletedData['campo1'],
+                        ':campo2' => $deletedData['campo2'],
+                        ':campo3' => $deletedData['campo3'],
                         ':Pieza_idPieza' => $idPiezaNuevo,
                     ];
                     break;
-                case 'Octología':
+                case 'Octologia':
                     $sqlInsert = "INSERT INTO octologia (clasificacion, tipo, especie, descripcion, Pieza_idPieza)
-                                  VALUES (:campo1, :campo2, :campo3, :campo4, :Pieza_idPieza)";
+                                      VALUES (:clasificacion, :tipo, :especie, :descripcion, :Pieza_idPieza)";
                     $dataToInsert = [
-                        ':campo1' => $deletedData['clasificacion'],
-                        ':campo2' => $deletedData['tipo'],
-                        ':campo3' => $deletedData['especie'],
-                        ':campo4' => $deletedData['descripcion'],
+                        ':clasificacion' => $deletedData['campo1'],
+                        ':tipo' => $deletedData['campo2'],
+                        ':especie' => $deletedData['campo3'],
+                        ':descripcion' => $deletedData['campo4'],
                         ':Pieza_idPieza' => $idPiezaNuevo,
                     ];
+                    //var_dump($deletedData['Tabla']); // Verificar el valor de Tabla
                     break;
                 default:
                     throw new Exception("Clasificación no válida.");
@@ -313,6 +315,11 @@ class DatosEliminados extends Pieza {
             $stmtInsert = $this->conection->prepare($sqlInsert);
             $stmtInsert->execute($dataToInsert);
     
+            // Obtener los datos de la pieza eliminada desde la tabla datos_eliminados
+            $sqlDeteled = "DELETE FROM datos_eliminados WHERE Pieza_idPieza = :idPieza";
+            $stmtDeteled = $this->conection->prepare($sqlDeteled);
+            $stmtDeteled->bindParam(':idPieza', $idPiezaViejo, PDO::PARAM_INT);
+            $stmtDeteled->execute();
             // Confirmar transacción
             $this->conection->commit();
             return true;

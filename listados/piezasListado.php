@@ -33,7 +33,6 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
  
     <link rel="stylesheet" href="../public/css/index.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -74,49 +73,45 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
     <h1 class="mb-4 text-center text-2xl font-bold">Listado de Piezas</h1>
     
     <table class="table table-hover table-bordered">
-        <thead class="table-dark text-center">
-            <tr>
-                <th>ID</th>
-                <th>Número de Inventario</th>
-                <th>Especie</th>
-                <th>Estado de Conservación</th>
-                <th>Fecha de ingreso</th>
-                <th>Cantidad de Piezas</th>
-                <th>Clasificacion</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($piezas)) : ?>
-                <?php foreach ($piezas as $p) : ?>
-                    <tr id="pieza-<?php echo $p['idPieza']; ?>" class="text-center">
-                        <td><?php echo $p['idPieza']; ?></td>
-                        <td><?php echo $p['num_inventario']; ?></td>
-                        <td><?php echo $p['especie']; ?></td>
-                        <td><?php echo $p['estado_conservacion']; ?></td>
-                        <td><?php echo $p['fecha_ingreso']; ?></td>
-                        <td><?php echo $p['cantidad_de_piezas']; ?></td>
-                        <td><?php echo $p['clasificacion']; ?></td>
-                        <td>
-                            <!-- Botón para ver -->
-                            <a href="funciones/verPieza.php?id=<?php echo $p['idPieza']; ?>" class="btn btn-success btn-sm">Ver</a>
-
-                            <!-- Botón para editar -->
-                            <a href="funciones/editarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo ($p['clasificacion']); ?>" class="btn btn-warning btn-sm">Editar</a>
-
-
-                            <!-- Botón para eliminar -->
-                            <a href="funciones/eliminarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo ($p['clasificacion']); ?>" class="btn btn-danger btn-sm">Eliminar</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else : ?>
-                <tr>
-                    <td colspan="8" class="text-center">No hay piezas registradas.</td>
+    <thead class="table-dark text-center">
+        <tr>
+            <th>ID</th>
+            <th>Número de Inventario</th>
+            <th>Especie</th>
+            <th>Estado de Conservación</th>
+            <th>Fecha de ingreso</th>
+            <th>Cantidad de Piezas</th>
+            <th>Clasificación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($piezas)) : ?>
+            <?php foreach ($piezas as $p) : ?>
+                <tr id="pieza-<?php echo $p['idPieza']; ?>" class="text-center">
+                  
+                    <td><?php echo $p['idPieza']; ?></td>
+                    <td><?php echo $p['num_inventario']; ?></td>
+                    <td><?php echo $p['especie']; ?></td>
+                    <td><?php echo $p['estado_conservacion']; ?></td>
+                    <td><?php echo $p['fecha_ingreso']; ?></td>
+                    <td><?php echo $p['cantidad_de_piezas']; ?></td>
+                    <td><?php echo $p['clasificacion']; ?></td>
+                    <td>
+                        <a href="funciones/verPieza.php?id=<?php echo $p['idPieza']; ?>" class="btn btn-success btn-sm">Ver</a>
+                        <a href="funciones/editarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="funciones/eliminarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
                 </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <tr>
+                <td colspan="9" class="text-center">No hay piezas registradas.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+
 
       <!-- Paginación -->
       <nav aria-label="Paginación" class="mt-4">
@@ -185,6 +180,7 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // Mostrar el modal al cargar la página si hay un mensaje de eliminación
     document.addEventListener("DOMContentLoaded", function() {
@@ -238,27 +234,8 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
     });
 </script>
 <!-- Script para activar el modal -->
-<script>
-    function cerrarModal() {
-        // Oculta el modal cuando se cierra
-        document.getElementById('modalNoDatos').classList.remove('show');
-        document.getElementById('modalNoDatos').style.display = 'none';
-        document.body.classList.remove('modal-open');
-        document.body.style.overflow = '';  // Restaura el scroll
-    }
 
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('no_datos')) {
-            // Muestra el modal
-            const modal = document.getElementById('modalNoDatos');
-            modal.classList.add('show');
-            modal.style.display = 'block';
-            document.body.classList.add('modal-open');
-            document.body.style.overflow = 'hidden';  // Desactiva el scroll
-        }
-    };
-</script>
+
 </body>
 <?php include('../includes/footer.php') ?>
 </html>
