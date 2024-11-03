@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-10-2024 a las 17:22:31
+-- Tiempo de generación: 04-11-2024 a las 00:45:45
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,8 +40,33 @@ CREATE TABLE `arqueologia` (
 --
 
 INSERT INTO `arqueologia` (`idArqueologia`, `integridad_historica`, `estetica`, `material`, `Pieza_idPieza`) VALUES
-(3, 'tiago', 'estuvo', 'AQUI', 2),
-(4, 'buena', 'asdasda', 'taigo', 56);
+(8, 'buena', 'mala', 'bronce', 108);
+
+--
+-- Disparadores `arqueologia`
+--
+DELIMITER $$
+CREATE TRIGGER `after_delete_arqueologia` AFTER DELETE ON `arqueologia` FOR EACH ROW BEGIN
+
+
+    INSERT INTO datos_eliminados (
+        Pieza_idPieza,
+        IdClasificacion,
+        Tabla,
+        campo1,
+        campo2,
+        campo3
+    ) VALUES (
+        OLD.Pieza_idPieza,
+        OLD.idArqueologia,       -- ID primario de Arqueologia
+        'Arqueologia',           -- Nombre de la tabla de origen
+        OLD.integridad_historica, -- Primer campo específico de Arqueologia
+        OLD.estetica,            -- Segundo campo específico de Arqueologia
+        OLD.material             -- Tercer campo específico de Arqueologia
+    );
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -66,9 +91,60 @@ CREATE TABLE `botanica` (
 --
 
 INSERT INTO `botanica` (`idBotanica`, `reino`, `familia`, `especie`, `orden`, `division`, `clase`, `descripcion`, `Pieza_idPieza`) VALUES
-(2, 'tiago', 'estuvo', 'aqui', 'jugandoi', 'con', 'plantas', 'carnivoras Soja, leguminosa cultivada para la producción de aceite.', 2),
-(4, 'tiago', 'estuvo', 'asdjkakjsd', 'jugando', 'un', 'poco', '', 48),
-(5, 'tiago', 'estuvo', 'asdjkakjsd', 'jugando', 'un', 'poco', 'de todo', 49);
+(11, 'root', 'root', 'root', 'root', 'root', 'root', 'root', 117);
+
+--
+-- Disparadores `botanica`
+--
+DELIMITER $$
+CREATE TRIGGER `after_delete_botanica` AFTER DELETE ON `botanica` FOR EACH ROW BEGIN
+    INSERT INTO datos_eliminados (
+        Pieza_idPieza,
+        IdClasificacion,
+        Tabla,
+        campo1,
+        campo2,
+        campo3,
+        campo4,
+        campo5,
+        campo6,
+        campo7
+    ) VALUES (
+        OLD.Pieza_idPieza,
+        OLD.idBotanica,        -- El ID primario de Botánica
+        'Botánica',            -- El nombre de la tabla de origen
+        OLD.reino,             -- Primer campo específico de Botánica
+        OLD.familia,           -- Segundo campo específico de Botánica
+        OLD.especie,           -- Tercer campo específico de Botánica
+        OLD.orden,             -- Cuarto campo específico de Botánica
+        OLD.division,          -- Quinto campo específico de Botánica
+        OLD.clase,             -- Sexto campo específico de Botánica
+        OLD.descripcion        -- Séptimo campo específico de Botánica
+    );
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `datos_eliminados`
+--
+
+CREATE TABLE `datos_eliminados` (
+  `id` int(11) NOT NULL,
+  `Pieza_idPieza` int(11) NOT NULL,
+  `IdClasificacion` int(11) NOT NULL,
+  `Tabla` varchar(255) DEFAULT NULL,
+  `campo1` varchar(255) DEFAULT NULL,
+  `campo2` varchar(255) DEFAULT NULL,
+  `campo3` varchar(255) DEFAULT NULL,
+  `campo4` varchar(255) DEFAULT NULL,
+  `campo5` varchar(255) DEFAULT NULL,
+  `campo6` varchar(255) DEFAULT NULL,
+  `campo7` varchar(255) DEFAULT NULL,
+  `campo8` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -95,7 +171,10 @@ INSERT INTO `donante` (`idDonante`, `nombre`, `apellido`, `fecha`) VALUES
 (5, 'Luisa', 'Fernández', '2023-05-30'),
 (6, 'Tiago', 'Raminelli', '2024-10-25'),
 (7, 'Nacho', 'Daro', '2024-10-26'),
-(8, 'root', 'root', '2024-10-27');
+(8, 'root', 'root', '2024-10-27'),
+(9, 'Leo', 'Juarez', '2024-11-01'),
+(10, 'Yamil', 'Pelapis', '2024-11-01'),
+(11, 'javier', 'milei', '2024-11-01');
 
 -- --------------------------------------------------------
 
@@ -115,11 +194,31 @@ CREATE TABLE `geologia` (
 --
 
 INSERT INTO `geologia` (`idGeologia`, `tipo_rocas`, `descripcion`, `Pieza_idPieza`) VALUES
-(3, 'tiago', 'esutvo tirando rcoas', 2),
-(4, 'ígneas', 'adasdasdasd', 24),
-(5, 'ígneas', 'adasdasdasd', 25),
-(6, 'ígneas', '', 26),
-(8, 'ígneas', 'asdasdasad', 28);
+(37, 'sedimentarias', 'root', 100),
+(38, 'ígneas', 'root', 120),
+(39, 'ígneas', 'a', 121);
+
+--
+-- Disparadores `geologia`
+--
+DELIMITER $$
+CREATE TRIGGER `after_delete_geologia` BEFORE DELETE ON `geologia` FOR EACH ROW BEGIN
+    INSERT INTO datos_eliminados (
+        Pieza_idPieza,
+        IdClasificacion,
+        Tabla,
+        campo1,
+        campo2
+    ) VALUES (
+        OLD.Pieza_idPieza,
+        OLD.idGeologia,         -- El ID primario de Geología
+        'Geología',             -- El nombre de la tabla de origen
+        OLD.tipo_rocas,         -- Primer campo específico de Geología
+        OLD.descripcion         -- Segundo campo específico de Geología
+    );
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -140,8 +239,31 @@ CREATE TABLE `ictiologia` (
 --
 
 INSERT INTO `ictiologia` (`idIctiologia`, `clasificacion`, `especies`, `descripcion`, `Pieza_idPieza`) VALUES
-(3, 'tiago', 'estuvo', 'jugando con tiburones', 2),
-(5, 'tiago no ', 'estuvo jugando', 'aqui asdasd', 46);
+(8, 'root', 'root', 'root', 106);
+
+--
+-- Disparadores `ictiologia`
+--
+DELIMITER $$
+CREATE TRIGGER `after_delete_ictiologia` AFTER DELETE ON `ictiologia` FOR EACH ROW BEGIN
+    INSERT INTO datos_eliminados (
+        Pieza_idPieza,
+        IdClasificacion,
+        Tabla,
+        campo1,
+        campo2,
+        campo3
+    ) VALUES (
+        OLD.Pieza_idPieza,
+        OLD.idIctiologia,       -- El ID primario de Ictiología
+        'Ictiología',           -- El nombre de la tabla de origen
+        OLD.clasificacion,      -- Primer campo específico de Ictiología
+        OLD.especies,           -- Segundo campo específico de Ictiología
+        OLD.descripcion         -- Tercer campo específico de Ictiología
+    );
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -163,8 +285,33 @@ CREATE TABLE `octologia` (
 --
 
 INSERT INTO `octologia` (`idOctologia`, `clasificacion`, `tipo`, `especie`, `descripcion`, `Pieza_idPieza`) VALUES
-(2, 'tiago', 'estuvo', 'aqui', 'dujandop asdjkashjdasd Langosta europea, reconocida por su tamaño y sabor.', 2),
-(3, 'yo', 'estuve', 'aqui', 'JUGANDO', 57);
+(8, 'root', 'root', 'root', 'root', 115);
+
+--
+-- Disparadores `octologia`
+--
+DELIMITER $$
+CREATE TRIGGER `after_delete_octologia` AFTER DELETE ON `octologia` FOR EACH ROW BEGIN
+    INSERT INTO datos_eliminados (
+        Pieza_idPieza,
+        IdClasificacion,
+        Tabla,
+        campo1,
+        campo2,
+        campo3,
+        campo4
+    ) VALUES (
+        OLD.Pieza_idPieza,
+        OLD.idOctologia,        -- ID primario de Octologia
+        'Octologia',            -- Nombre de la tabla de origen
+        OLD.clasificacion,      -- Primer campo específico de Octologia
+        OLD.tipo,               -- Segundo campo específico de Octologia
+        OLD.especie,            -- Tercer campo específico de Octologia
+        OLD.descripcion         -- Cuarto campo específico de Octologia
+    );
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -184,16 +331,29 @@ CREATE TABLE `osteologia` (
 --
 
 INSERT INTO `osteologia` (`idOsteologia`, `especie`, `clasificacion`, `Pieza_idPieza`) VALUES
-(2, 'tiago', 'estuvo aqui', 2),
-(3, 'adasdasda', 'Osteología', 23),
-(4, NULL, NULL, 41),
-(5, NULL, NULL, 42),
-(6, NULL, NULL, 43),
-(7, NULL, NULL, 44),
-(8, 'estuvo', 'aqui', 45),
-(9, 'root', 'root', 58),
-(10, 'root', 'root', 59),
-(11, 'root', 'root', 60);
+(14, 'root', 'root', 104);
+
+--
+-- Disparadores `osteologia`
+--
+DELIMITER $$
+CREATE TRIGGER `after_delete_osteologia` AFTER DELETE ON `osteologia` FOR EACH ROW BEGIN
+    INSERT INTO datos_eliminados (
+        Pieza_idPieza,
+        IdClasificacion,
+        Tabla,
+        campo1,
+        campo2
+    ) VALUES (
+        OLD.Pieza_idPieza,
+        OLD.idOsteologia,     -- El ID primario de Osteología
+        'Osteología',         -- El nombre de la tabla de origen
+        OLD.especie,          -- Primer campo específico de Osteología
+        OLD.clasificacion     -- Segundo campo específico de Osteología
+    );
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -214,17 +374,32 @@ CREATE TABLE `paleontologia` (
 --
 
 INSERT INTO `paleontologia` (`idPaleontologia`, `era`, `periodo`, `descripcion`, `Pieza_idPieza`) VALUES
-(2, 'tiagoñi', 'el de tu señora', 'muy ensangrentada', 2),
-(5, 'Paleozoico', 'Cretácico', '', 30),
-(6, 'Paleozoico', 'Cuaternario', 'A VER SI ACA ME DEHJA', 31),
-(7, 'Paleozoico', 'Paleógeno', '', 32),
-(8, 'Paleozoico', 'Paleógeno', '', 33),
-(9, 'Paleozoico', 'Paleógeno', '', 34),
-(10, 'Paleozoico', 'Ordovícico', '', 35),
-(11, 'Paleozoico', 'Neógeno', '', 36),
-(12, 'Paleozoico', 'Silúrico', '', 37),
-(13, 'Paleozoico', 'Silúrico', 'a ver si me lo guarda al cambio', 38),
-(15, 'Paleozoico', 'Devónico', 'asdasdasd', 40);
+(21, 'Precámbrico', 'Cretácico', 'root', 102);
+
+--
+-- Disparadores `paleontologia`
+--
+DELIMITER $$
+CREATE TRIGGER `after_delete_paleontologia` AFTER DELETE ON `paleontologia` FOR EACH ROW BEGIN
+  INSERT INTO datos_eliminados (
+        Pieza_idPieza,
+        IdClasificacion,
+        Tabla,
+        campo1,
+        campo2,
+        campo3
+    ) VALUES (
+        OLD.Pieza_idPieza,
+        OLD.idPaleontologia, -- El ID primario de Paleontología
+        'Paleontología',     -- El nombre de la tabla de origen
+        OLD.era,             -- Primer campo específico de Paleontología
+        OLD.periodo,         -- Segundo campo específico de Paleontología
+        OLD.descripcion      -- Tercer campo específico de Paleontología
+    );
+
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -250,56 +425,106 @@ CREATE TABLE `pieza` (
 --
 
 INSERT INTO `pieza` (`idPieza`, `num_inventario`, `especie`, `estado_conservacion`, `fecha_ingreso`, `cantidad_de_piezas`, `clasificacion`, `observacion`, `imagen`, `Donante_idDonante`) VALUES
-(2, 'tiago', 'aqui 2', 'aqui', '2023-06-18', '1000', 'Zoología', 'Pequeñas fisuras', '', 2),
-(13, 'INV-001', 'Tyrannosaurus Rex', 'Excelente', '2023-05-01', '1', 'Paleontología', 'Fósil completo en excelente estado', 'trex.jpg', 1),
-(14, 'INV-002', 'Quercus Robur', 'Bueno', '2023-06-15', '3', 'Botánica', 'Hojas en estado de conservación moderado', 'roble.jpg', 2),
-(16, 'INV-004', 'Arenisca', 'Excelente', '2023-08-10', '5', 'Geología', 'Muestra de roca sedimentaria bien preservada', 'arenisca.jpg', 4),
-(17, 'INV-005', 'Triceratops Horridus', 'Bueno', '2023-09-01', '1', 'Paleontología', 'Fósil de cráneo casi completo', 'triceratops.jpg', 1),
-(18, 'INV-006', 'Sphenodon Punctatus', 'Regular', '2023-03-18', '2', 'Zoología', 'Esqueleto incompleto pero identificable', 'tuatara.jpg', 3),
-(19, 'INV-007', 'Pinus Sylvestris', 'Bueno', '2023-04-22', '10', 'Botánica', 'Muestras de corteza y hojas en buen estado', 'pino.jpg', 2),
-(20, 'INV-008', 'Roca Ígnea', 'Excelente', '2023-05-30', '4', 'Geología', 'Muestra intacta de roca volcánica', 'roca_ignea.jpg', 4),
-(21, 'INV-009', 'Dactylis Glomerata', 'Regular', '2023-06-05', '7', 'Botánica', 'Semillas y flores parcialmente deterioradas', 'dactylis.jpg', 2),
-(22, 'INV-010', 'Velociraptor Mongoliensis', 'Bueno', '2023-07-01', '1', 'Paleontología', 'Fósil con algunas partes faltantes', 'velociraptor.jpg', 1),
-(23, 'estuvo', 'adasdasda', 'dadasdasd', '2024-10-15', '12', 'Osteología', 'esjadhhjdasjdhsaas', '', 6),
-(24, 'prueba', 'de', 'campo', '2024-10-21', '1', 'Geología', 'a ver si se guardo el historiral', 'gestion de inventario.webp', 6),
-(25, 'prueba', 'de', 'campo', '2024-10-21', '1', 'Geología', 'a ver si se guardo el historiral', 'gestion de inventario.webp', 6),
-(26, 'NVH122', 'asdasd', 'asdasdadads', '2024-10-30', '1', 'Geología', 'adasd', '', 7),
-(28, 'root Geologia carga', '1', '1', '2024-10-09', '1', 'Geología', 'sdsad', '', 6),
-(30, 'root paleontologia ', '1', '1', '2024-10-26', '1', 'Paleontología', '1', '', 7),
-(31, 'root paleontologia ', 'asdasdasd', '1', '2024-10-26', '1', 'Paleontología', 'adasdsd', '', 6),
-(32, 'PALEONTOLOGO', 'adasdasda', 'asdasd', '2024-10-26', '1', 'Paleontología', 'asdasdasd', '', 6),
-(33, 'PALEONTOLOGO', 'adasdasda', 'asdasd', '2024-10-26', '1', 'Paleontología', 'asdasdasd', '', 6),
-(34, 'PALEONTOLOGO', 'adasdasda', 'asdasd', '2024-10-26', '1', 'Paleontología', 'asdasdasd', '', 6),
-(35, 'root paleontologia ', '1', '1', '2024-11-04', '1', 'Paleontología', 'a1', '', 6),
-(36, '1', '1', '1', '2024-11-05', '1', 'Paleontología', 'asdasd', '', 6),
-(37, 'root', '1', '1', '2024-10-26', '1', 'Paleontología', 'asdasdasd', '', 6),
-(38, 'root', '1', '1', '2024-10-26', '1', 'Paleontología', 'asdasdasd', '', 6),
-(40, 'asdasd', 'dasdasda', 'aadsadsdas', '2024-11-04', '1', 'Paleontología', 'asdasd', '', 6),
-(41, 'root osteo', '1', '1', '2024-10-26', '1', 'Osteología', 'asdasdasd', '', 6),
-(42, 'root osteo', '1', '1', '2024-10-26', '1', 'Osteología', 'asdasdasd', '', 6),
-(43, 'root osteo', '1', '1', '2024-10-26', '1', 'Osteología', 'asdasdasd', '', 6),
-(44, 'root osteo', '1', '1', '2024-10-26', '1', 'Osteología', 'asdasdasd', '', 6),
-(45, 'root osteo carga', 'ewstuvo', '1', '2024-10-22', '1', 'Osteología', 'asdasdasd', '', 6),
-(46, 'root ictiologia', 'asdhjajhsd', '1', '2024-10-26', '1', 'Ictiología', 'adasdasdaads', '', 6),
-(48, 'root botanica', 'asdjkakjsd', 'buena', '2024-10-28', '1', 'Botánica', 'asdasd', '', 6),
-(49, 'root botanica', 'asdjkakjsd', 'buena', '2024-10-28', '1', 'Botánica', 'asdasd', '', 6),
-(50, 'root zoologia carga', 'adasdasda', 'dadasdasd', '2024-11-04', '1', 'Zoología', 'asdasd', '', 6),
-(51, 'root zoologia carga', 'adasdasda', 'dadasdasd', '2024-11-04', '1', 'Zoología', 'asdasd', '', 6),
-(52, 'root zoologia carga', 'adasdasda', 'dadasdasd', '2024-11-04', '1', 'Zoología', 'asdasd', '', 6),
-(53, 'root zoologia carga', 'adasdasda', 'dadasdasd', '2024-11-04', '1', 'Zoología', 'asdasd', '', 6),
-(54, 'root zoologia carga', 'adasdasda', 'dadasdasd', '2024-11-04', '1', 'Zoología', 'asdasd', '', 6),
-(55, 'root zoologia ', 'aqui', '1', '2024-10-26', '1', 'Zoología', 'sadasdasd', '', 6),
-(56, 'root arqueologia', '', 'asdaskdj', '2024-10-26', '1', 'Arqueología', 'asdasdasd', '', 6),
-(57, 'root octologia', '', 'asdasdkj', '2024-10-26', '1', 'Octología', '1', '', 6),
-(58, 'NVH999', '', 'root', '2024-10-26', '1', 'Osteología', 'root', 'Captura de pantalla 2024-10-02 161322.png', 8),
-(59, 'NVH999', '', 'root', '2024-10-26', '1', 'Osteología', 'root', 'Captura de pantalla 2024-10-02 161322.png', 8),
-(60, 'NVH999', '', 'root', '2024-10-26', '1', 'Osteología', 'root', 'Captura de pantalla 2024-10-02 161322.png', 8),
-(61, 'root', '1', '1', '2024-10-26', '1', 'Paleontología', 'asdasdasd', '', 6),
-(63, 'devolveme', 'el ', 'art', '2024-10-10', '1', 'borrado', 'desde', 'la bd', 5);
+(100, 'NVH1', 'root', 'root', '2024-11-12', '1', 'Geología', 'root', '', 6),
+(102, 'NVH2', 'root', 'root', '2024-11-01', '1', 'Paleontología', 'root', '', 6),
+(104, 'NVH3', 'root', 'root', '2024-11-01', '1', 'Osteología', 'root', '', 6),
+(106, 'NVH4', 'root', 'root', '2024-11-01', '1', 'Ictiología', 'root', '', 9),
+(108, 'NVH5', 'root', 'root', '2024-11-01', '1', 'Arqueología', 'root', '', 6),
+(115, 'NVH6', 'root', 'root', '2024-11-01', '1', 'Octología', 'root', '', 6),
+(117, 'NVH7', 'root', 'root', '2024-11-01', '1', 'Botánica', 'root', '', 6),
+(119, 'NVH7', 'root', 'root', '2024-11-01', '1', 'Zoología', 'root', '', 11),
+(120, 'HISTORIAL ROOT', '123123', '1', '2024-11-03', '1', 'Geología', 'root', '', 6),
+(121, 'HISTORIAL ROOT', '123123', '1', '2024-11-03', '1', 'Geología', 'a', '', 6);
 
 --
 -- Disparadores `pieza`
 --
+DELIMITER $$
+CREATE TRIGGER `eliminar_piezas_heredadas` AFTER DELETE ON `pieza` FOR EACH ROW BEGIN
+    -- Intentar eliminar registros de osteologia
+    BEGIN
+        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+        BEGIN
+            -- Manejo de errores, se puede registrar o hacer algo específico
+            -- Pero el trigger continuará a la siguiente eliminación
+        END;
+
+        DELETE FROM osteologia WHERE Pieza_idPieza = OLD.idPieza;
+    END;
+
+    -- Intentar eliminar registros de ictiologia
+    BEGIN
+        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+        BEGIN
+            -- Manejo de errores
+        END;
+
+        DELETE FROM ictiologia WHERE Pieza_idPieza = OLD.idPieza;
+    END;
+
+    -- Intentar eliminar registros de geologia
+    BEGIN
+        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+        BEGIN
+            -- Manejo de errores
+        END;
+
+        DELETE FROM geologia WHERE Pieza_idPieza = OLD.idPieza;
+    END;
+
+    -- Intentar eliminar registros de botanica
+    BEGIN
+        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+        BEGIN
+            -- Manejo de errores
+        END;
+
+        DELETE FROM botanica WHERE Pieza_idPieza = OLD.idPieza;
+    END;
+
+    -- Intentar eliminar registros de zoologia
+    BEGIN
+        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+        BEGIN
+            -- Manejo de errores
+        END;
+
+        DELETE FROM zoologia WHERE Pieza_idPieza = OLD.idPieza;
+    END;
+
+    -- Intentar eliminar registros de arqueologia
+    BEGIN
+        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+        BEGIN
+            -- Manejo de errores
+        END;
+
+        DELETE FROM arqueologia WHERE Pieza_idPieza = OLD.idPieza;
+    END;
+
+    -- Intentar eliminar registros de octologia
+    BEGIN
+        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+        BEGIN
+            -- Manejo de errores
+        END;
+
+        DELETE FROM octologia WHERE Pieza_idPieza = OLD.idPieza;
+    END;
+
+    -- Intentar eliminar registros de paleontologia
+    BEGIN
+        DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+        BEGIN
+            -- Manejo de errores
+        END;
+
+        DELETE FROM paleontologia WHERE Pieza_idPieza = OLD.idPieza;
+    END;
+
+END
+$$
+DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `registrar_piezas_eliminadas` BEFORE DELETE ON `pieza` FOR EACH ROW BEGIN
   INSERT INTO registros_eliminados (
@@ -336,11 +561,14 @@ CREATE TABLE `registros_eliminados` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `registros_eliminados`
+-- Disparadores `registros_eliminados`
 --
-
-INSERT INTO `registros_eliminados` (`id`, `idPieza`, `num_inventario`, `especie`, `estado_conservacion`, `fecha_ingreso`, `cantidad_de_piezas`, `clasificacion`, `observacion`, `imagen`, `Donante_idDonante`) VALUES
-(1, 2, 'root', 'root', 'root', '2024-10-25', '1', 'root', 'root', 'root', 1);
+DELIMITER $$
+CREATE TRIGGER `trigger_after_delete` AFTER DELETE ON `registros_eliminados` FOR EACH ROW BEGIN
+   
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -373,7 +601,8 @@ INSERT INTO `usuario` (`idUsuario`, `dni`, `nombre`, `apellido`, `email`, `clave
 (7, '43766375', 'Jonathan', 'Doe', 'jon.doe@example.us', 'nuevacontraseña', '2024-09-19', 'user'),
 (8, '43766375', 'Taigo', 'Doestar', 'thiago.doe@example.us', 'nuevacontraseña', '2024-09-19', 'usuario'),
 (9, '43766375', 'Avastore', 'Doestar', 'thiago.doe@example.us', '$2y$10$L0Dg9w2SdP8UL2RcUUu0m.l3fIbnNhCMbKwe.xG9/RUvj4yZCEewG', NULL, NULL),
-(10, '43766375', 'Jon', 'Doe', 'test@example.us', '$2y$10$mBvHnAsQUqBlD4tTHRcTB.LZn/8HrSJy9.ow5SLOeE1ra2/3Sa.lW', NULL, NULL);
+(10, '43766375', 'Jon', 'Doe', 'test@example.us', '$2y$10$mBvHnAsQUqBlD4tTHRcTB.LZn/8HrSJy9.ow5SLOeE1ra2/3Sa.lW', NULL, NULL),
+(11, '43766375', 'tiago', 'Ramienlli', 'tiagoraminelli@gmail.com', '$2y$10$/XCvRHVF2PjctewWtcd.keKIoPwtRcx3JWg8NeydjoaeP63xGgHeq', '2024-10-29', 'administrador');
 
 -- --------------------------------------------------------
 
@@ -392,41 +621,10 @@ CREATE TABLE `usuario_has_pieza` (
 --
 
 INSERT INTO `usuario_has_pieza` (`Usuario_idUsuario`, `Pieza_idPieza`, `fecha_registro`) VALUES
-(1, 2, '2024-10-25 03:15:15'),
-(1, 23, '2024-10-25 03:15:15'),
-(1, 24, '2024-10-25 03:16:06'),
-(1, 25, '2024-10-25 03:16:46'),
-(1, 26, '2024-10-26 21:34:26'),
-(1, 28, '2024-10-26 21:40:19'),
-(1, 30, '2024-10-26 21:42:41'),
-(1, 31, '2024-10-26 21:44:56'),
-(1, 32, '2024-10-26 21:46:57'),
-(1, 33, '2024-10-26 21:47:09'),
-(1, 34, '2024-10-26 21:49:35'),
-(1, 35, '2024-10-26 21:52:30'),
-(1, 36, '2024-10-26 21:53:23'),
-(1, 37, '2024-10-26 21:56:52'),
-(1, 38, '2024-10-26 21:58:22'),
-(1, 40, '2024-10-26 21:58:46'),
-(1, 41, '2024-10-26 22:00:52'),
-(1, 42, '2024-10-26 22:01:25'),
-(1, 43, '2024-10-26 22:01:28'),
-(1, 44, '2024-10-26 22:01:30'),
-(1, 45, '2024-10-26 22:02:25'),
-(1, 46, '2024-10-26 22:04:53'),
-(1, 48, '2024-10-26 22:10:03'),
-(1, 49, '2024-10-26 22:11:10'),
-(1, 50, '2024-10-26 22:13:35'),
-(1, 51, '2024-10-26 22:15:37'),
-(1, 52, '2024-10-26 22:15:40'),
-(1, 53, '2024-10-26 22:16:27'),
-(1, 54, '2024-10-26 22:16:56'),
-(1, 55, '2024-10-26 22:17:42'),
-(1, 56, '2024-10-26 22:19:39'),
-(1, 57, '2024-10-26 22:22:18'),
-(1, 58, '2024-10-26 22:25:34'),
-(1, 59, '2024-10-26 22:26:04'),
-(1, 60, '2024-10-26 22:26:31');
+(1, 115, '2024-11-03 20:58:58'),
+(5, 104, '2024-11-03 21:07:24'),
+(11, 120, '2024-11-03 21:08:18'),
+(11, 121, '2024-11-03 21:08:44');
 
 -- --------------------------------------------------------
 
@@ -452,13 +650,41 @@ CREATE TABLE `zoologia` (
 --
 
 INSERT INTO `zoologia` (`idZoologia`, `reino`, `familia`, `especie`, `orden`, `phylum`, `clase`, `genero`, `descripcion`, `Pieza_idPieza`) VALUES
-(2, 'tiago 2', 'estuvo 2', 'aqui 2', 'de  2', 'forma 2', 'remota 2', 'uwu 2', 'El perro es un mamífero doméstico que pertenece a la familia de los cánidos. 2', 2),
-(3, 'cualqueir', 'aqudaklsd', 'adasdasda', 'asdkkjads', 'con', 'asdasdasd', 'animales', 'asdasdasdas', 50),
-(4, '', '', 'adasdasda', '', 'con', '', 'animales', '', 51),
-(5, '', '', 'adasdasda', '', 'con', '', 'animales', '', 52),
-(6, '', '', 'adasdasda', '', 'con', '', 'animales', '', 53),
-(7, '', '', 'adasdasda', '', 'con', '', 'animales', '', 54),
-(8, 'tiago', 'estuvo', 'aqui', 'jugandoi', 'forma', 'dasdasdas', 'Canisad', 'asdasdasdasda', 55);
+(12, 'rooteado', 'root', 'root', 'root', 'root', 'root', 'root', 'root', 119);
+
+--
+-- Disparadores `zoologia`
+--
+DELIMITER $$
+CREATE TRIGGER `after_delete_zoologia` AFTER DELETE ON `zoologia` FOR EACH ROW BEGIN
+    INSERT INTO datos_eliminados (
+        Pieza_idPieza,
+        IdClasificacion,
+        Tabla,
+        campo1,
+        campo2,
+        campo3,
+        campo4,
+        campo5,
+        campo6,
+        campo7,
+        campo8
+    ) VALUES (
+        OLD.Pieza_idPieza,
+        OLD.idZoologia,      -- El ID primario de Zoologia
+        'Zoologia',          -- El nombre de la tabla de origen
+        OLD.reino,           -- Primer campo específico de Zoologia
+        OLD.familia,         -- Segundo campo específico de Zoologia
+        OLD.especie,         -- Tercer campo específico de Zoologia
+        OLD.orden,           -- Cuarto campo específico de Zoologia
+        OLD.phylum,          -- Quinto campo específico de Zoologia
+        OLD.clase,           -- Sexto campo específico de Zoologia
+        OLD.genero,          -- Séptimo campo específico de Zoologia
+        OLD.descripcion      -- Octavo campo específico de Zoologia
+    );
+END
+$$
+DELIMITER ;
 
 --
 -- Índices para tablas volcadas
@@ -477,6 +703,12 @@ ALTER TABLE `arqueologia`
 ALTER TABLE `botanica`
   ADD PRIMARY KEY (`idBotanica`),
   ADD KEY `fk_Botanica_Pieza1_idx` (`Pieza_idPieza`);
+
+--
+-- Indices de la tabla `datos_eliminados`
+--
+ALTER TABLE `datos_eliminados`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `donante`
@@ -561,73 +793,79 @@ ALTER TABLE `zoologia`
 -- AUTO_INCREMENT de la tabla `arqueologia`
 --
 ALTER TABLE `arqueologia`
-  MODIFY `idArqueologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idArqueologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `botanica`
 --
 ALTER TABLE `botanica`
-  MODIFY `idBotanica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idBotanica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT de la tabla `datos_eliminados`
+--
+ALTER TABLE `datos_eliminados`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT de la tabla `donante`
 --
 ALTER TABLE `donante`
-  MODIFY `idDonante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idDonante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `geologia`
 --
 ALTER TABLE `geologia`
-  MODIFY `idGeologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idGeologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `ictiologia`
 --
 ALTER TABLE `ictiologia`
-  MODIFY `idIctiologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idIctiologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `octologia`
 --
 ALTER TABLE `octologia`
-  MODIFY `idOctologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idOctologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `osteologia`
 --
 ALTER TABLE `osteologia`
-  MODIFY `idOsteologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idOsteologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `paleontologia`
 --
 ALTER TABLE `paleontologia`
-  MODIFY `idPaleontologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `idPaleontologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `pieza`
 --
 ALTER TABLE `pieza`
-  MODIFY `idPieza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `idPieza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 
 --
 -- AUTO_INCREMENT de la tabla `registros_eliminados`
 --
 ALTER TABLE `registros_eliminados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `zoologia`
 --
 ALTER TABLE `zoologia`
-  MODIFY `idZoologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idZoologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Restricciones para tablas volcadas
