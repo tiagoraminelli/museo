@@ -1,12 +1,24 @@
 <?php
 session_start();
-// Verificar si el usuario está logueado (puedes usar una variable de sesión específica, como $_SESSION['usuario_id'])
+// Verificar si el usuario está logueado
 require_once("../modelo/bd.php");
 require_once("../modelo/geologia.php");
 
+$getClasificacion = "Geología";
 // Crear una instancia de la clase 
 $geologia = new Geologia();
-$geologias = $geologia->getAllGeologias();
+
+// Parámetros de paginación
+$porPagina = 10; // Número de geologías por página
+$paginaActual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
+$offset = ($paginaActual - 1) * $porPagina;
+
+// Obtener todas las geologías con límite de paginación
+$geologias = $geologia->getGeologiasPaginadas($porPagina, $offset);
+
+// Obtener el número total de geologías para calcular la paginación
+$totalGeologias = $geologia->getCantidadGeologia();
+$totalPaginas = ceil($totalGeologias / $porPagina);
 ?>
 
 <!DOCTYPE html>
@@ -19,11 +31,16 @@ $geologias = $geologia->getAllGeologias();
     <link rel="stylesheet" href="../public/css/pieza.css">
 </head>
 <body>
-<?php include('../includes/navListados.php')?>
+<?php include('../includes/navListados.php') ?>
+
 <div class="container mt-5">
     <h1 class="mb-4 text-center">Listado de Geologías</h1>
     
-    <table class="table table-hover table-bordered">
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Buscar geologías...">
+    </div>
+
+    <table class="table table-hover table-bordered" id="geologiaTable">
         <thead class="table-dark text-center">
             <tr>
                 <th>ID</th>
@@ -42,12 +59,7 @@ $geologias = $geologia->getAllGeologias();
                         <td><?php echo $g['descripcion']; ?></td>
                         <td><?php echo $g['Pieza_idPieza']; ?></td>
                         <td>
-                          
-                            <!-- Botón para editar -->
-                            <a href="editarGeologia.php?id=<?php echo $g['idGeologia']; ?>" class="btn btn-warning btn-sm">Editar</a>
-
-                            <!-- Botón para eliminar -->
-                            <a href="eliminarGeologia.php?id=<?php echo $g['idGeologia']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="funciones/editarPieza.php?id=<?php echo $g['Pieza_idPieza']; ?>&clasificacion=<?php echo $getClasificacion; ?>" class="btn btn-warning btn-sm">Editar</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -58,10 +70,69 @@ $geologias = $geologia->getAllGeologias();
             <?php endif; ?>
         </tbody>
     </table>
+
+    <!-- Paginación -->
+    <nav aria-label="Paginación" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item <?php echo $paginaActual == 1 ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?pagina=<?php echo $paginaActual - 1; ?>" tabindex="-1">Anterior</a>
+            </li>
+
+            <?php for ($i = 1; $i <= $totalPaginas; $i++) : ?>
+                <li class="page-item <?php echo $i == $paginaActual ? 'active' : ''; ?>">
+                    <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endfor; ?>
+
+            <li class="page-item <?php echo $paginaActual == $totalPaginas ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?pagina=<?php echo $paginaActual + 1; ?>">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="eliminarGeologia.js"></script> <!-- Archivo JS para manejar la eliminación -->
-</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#searchInput').on('keyup', function() {
+            const searchTerm = $(this).val();
+            const clasificacion = "<?php echo $getClasificacion; ?>"; // Obtener la clasificación actual
+
+            $.ajax({
+                url: './funciones/buscarPiezaByClasificacion.php',
+                method: 'GET',
+                data: { search: searchTerm, clasificacion: clasificacion },
+                success: function(data) {
+                    const tbody = $('#geologiaTable tbody');
+                    tbody.empty();
+
+                    if (data.length === 0) {
+                        tbody.append('<tr><td colspan="5" class="text-center">No hay resultados.</td></tr>');
+                    } else {
+                        data.forEach(g => {
+                            tbody.append(`
+                                <tr id="geologia-${g.idGeologia}" class="text-center">
+                                    <td>${g.idGeologia}</td>
+                                    <td>${g.tipo_rocas}</td>
+                                    <td>${g.descripcion}</td>
+                                    <td>${g.Pieza_idPieza}</td>
+                                    <td>
+                                        <a href="funciones/editarPieza.php?id=${g.Pieza_idPieza}&clasificacion=${clasificacion}" class="btn btn-warning btn-sm">Editar</a>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+</script>
+
 <?php include('../includes/footer.php') ?>
+</body>
 </html>

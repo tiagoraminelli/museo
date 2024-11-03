@@ -48,15 +48,37 @@ Botánica -funciona
 Zoología -funciona
 Arqueología -funciona
 Octología -funciona
+//editar desde la clasificacion
+Paleontología - wp
+Osteología - wp
+Ictiología .wp
+Geología -wp
+Botánica
+Zoología -wp
+Arqueología - wp
+Octología  -wp
+
+
+//BUSCADOR QUE ANDA
+Paleontología -funciona
+Osteología -funciona
+Ictiología -funciona
+Geología -funciona
+Botánica -funciona
+Zoología -funciona
+Arqueología -funciona
+Octología -funciona
+
 
 Paleontología
 Osteología
 Ictiología
 Geología
 Botánica
-Zoología
+Zoología 
 Arqueología
-Octología
+Octología 
+
 
 COMO SE CARGAN EN LOS CAMPOS
 <option value="Paleontología">Paleontología</option>

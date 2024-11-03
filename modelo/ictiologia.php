@@ -115,6 +115,15 @@ class Ictiologia extends Pieza {
         return $stmt->fetch(PDO::FETCH_ASSOC)['cantidad']; // Retorna la cantidad de registros
     }
 
+    public function getIctiologiasPaginadas($limite, $offset) {
+        $sql = "SELECT * FROM ".$this->table." LIMIT :limite OFFSET :offset";
+        $stmt = $this->conection->prepare($sql);
+        $stmt->bindParam(':limite', $limite, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Método para guardar un registro (INSERT o UPDATE)
     public function saveIctiologia($param) {
         $this->getConection();
@@ -170,6 +179,31 @@ class Ictiologia extends Pieza {
 
         return $this->idIctiologia;
     }
+
+
+    public function buscarIctiologias($search) {
+        // Definir la consulta SQL con búsqueda en varios campos
+        $sql = "SELECT * FROM " . $this->table . " 
+                WHERE idIctiologia LIKE :search 
+                OR clasificacion LIKE :search 
+                OR especies LIKE :search 
+                OR descripcion LIKE :search 
+                OR Pieza_idPieza LIKE :search";
+        
+        // Preparar la consulta
+        $stmt = $this->conection->prepare($sql);
+        
+        // Vincular el parámetro de búsqueda con comodines '%' para búsqueda parcial
+        $searchTerm = '%' . $search . '%';
+        $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
+        
+        // Ejecutar la consulta
+        $stmt->execute();
+        
+        // Retornar los resultados como un array asociativo
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
 
 ?>

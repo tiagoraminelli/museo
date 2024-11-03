@@ -95,7 +95,7 @@ if (isset($_POST['donante_nombre']) && !empty($_POST['donante_nombre']) && isset
         $pieza = new Pieza(); // Asegúrate de que la clase Pieza esté bien definida
         $pieza->save($parametro);
         echo "Pieza actualizada con éxito.";
-        //header("Location: ../../listados/piezasListado.php");
+        header("Location: ../../listados/piezasListado.php");
     } else {
         // Llamar a la función save para insertar
         $pieza = new Pieza(); // Asegúrate de que la clase Pieza esté bien definida

@@ -226,10 +226,47 @@ class Botanica extends Pieza {
     }
 
     // Método para contar registros
-    public function countBotanicas() {
+    public function getCantidadBotanica() {
         $sql = "SELECT COUNT(*) FROM " . $this->table;
         $stmt = $this->conection->prepare($sql);
         $stmt->execute();
         return $stmt->fetchColumn(); // Retorna la cantidad de registros
     }
+
+    public function getBotanicasPaginadas($limite, $offset) {
+        $sql = "SELECT * FROM ".$this->table." LIMIT :limite OFFSET :offset";
+        $stmt = $this->conection->prepare($sql);
+        $stmt->bindParam(':limite', $limite, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function buscarBotanicas($search) {
+        // Definir la consulta SQL con búsqueda en varios campos
+        $sql = "SELECT * FROM " . $this->table . " 
+                WHERE idBotanica LIKE :search 
+                OR reino LIKE :search 
+                OR familia LIKE :search 
+                OR especie LIKE :search 
+                OR orden LIKE :search 
+                OR division LIKE :search 
+                OR clase LIKE :search 
+                OR descripcion LIKE :search 
+                OR Pieza_idPieza LIKE :search";
+        
+        // Preparar la consulta
+        $stmt = $this->conection->prepare($sql);
+        
+        // Vincular el parámetro de búsqueda con comodines '%' para búsqueda parcial
+        $searchTerm = '%' . $search . '%';
+        $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
+        
+        // Ejecutar la consulta
+        $stmt->execute();
+        
+        // Retornar los resultados como un array asociativo
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
