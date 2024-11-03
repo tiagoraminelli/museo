@@ -95,7 +95,7 @@ if (isset($_POST['donante_nombre']) && !empty($_POST['donante_nombre']) && isset
         $pieza = new Pieza(); // Asegúrate de que la clase Pieza esté bien definida
         $pieza->save($parametro);
         echo "Pieza actualizada con éxito.";
-        header("Location: ../../listados/piezasListado.php");
+        //header("Location: ../../listados/piezasListado.php");
     } else {
         // Llamar a la función save para insertar
         $pieza = new Pieza(); // Asegúrate de que la clase Pieza esté bien definida
@@ -106,14 +106,15 @@ if (isset($_POST['donante_nombre']) && !empty($_POST['donante_nombre']) && isset
 if (isset($_SESSION['id']) && isset($parametro['idPieza'])){
     $parametro['Usuario_idUsuario'] = $_SESSION['id']; // Obtener el ID del usuario de la sesión
     $parametro['Pieza_idPieza'] = $parametro['idPieza']; // Agregar idPieza al array
-
+var_dump($parametro);
     // Crear una instancia de la clase UsuarioPieza
     $usuarioPieza = new UsuarioHasPieza();
 
     // Llamar a la función saveUsuarioPieza para insertar o actualizar
     if ($usuarioPieza->saveUsuarioPieza($parametro)) {
         echo "Relación usuario-pieza guardada con éxito.";
-        header("Location: ../../listados/piezasListado.php?historial=1");
+
+       header("Location: ../../listados/piezasListado.php?historial=1");
     } else {
         echo "Error al guardar la relación usuario-pieza." . "<br>";
     }

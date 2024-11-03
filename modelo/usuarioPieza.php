@@ -125,7 +125,7 @@ class UsuarioHasPieza {
             $stmt->execute([$this->piezaIdPieza, $this->usuarioIdUsuario]);
         } else {
             // Si no existe, se inserta uno nuevo
-            $sql = "INSERT INTO " . $this->table . " (Usuario_idUsuario, Pieza_idPieza) VALUES (?, ?)";
+            $sql = "INSERT INTO " . $this->table . " (Usuario_idUsuario, Pieza_idPieza,fecha_registro) VALUES (?, ?, current_timestamp())";
             $stmt = $this->conection->prepare($sql);
             $stmt->execute([$this->usuarioIdUsuario, $this->piezaIdPieza]);
         }
