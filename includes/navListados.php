@@ -84,11 +84,16 @@
         <li class="nav-item">
           <a class="nav-link text-gray-800" href="./historial.php">Historial</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-gray-800" href="./eliminados.php">Eliminados</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-gray-800" href="./verPiezaEliminada.php">Datos</a>
+        <!-- Dropdown Eliminados -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-gray-800" href="#" id="eliminadosDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Eliminados
+          </a>
+          <div class="dropdown-menu" aria-labelledby="eliminadosDropdown">
+            <a class="dropdown-item" href="./eliminados.php">Piezas</a>
+            <a class="dropdown-item" href="./verPiezaEliminada.php">Datos</a>
+            <a class="dropdown-item" href="./donadoresEliminadosList.php">Donadores</a>
+          </div>
         </li>
       </ul>
 

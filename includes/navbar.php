@@ -35,14 +35,11 @@ if (isset($_SESSION['usuario_activo']) && ($_SESSION['nivel']=='administrador' |
                     <li class="nav-item">
                         <a class="nav-link" href="listados/donadoresLista.php">Donadores</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listados/historial.php">Historial</a>
-                    </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="usuarioDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="https://via.placeholder.com/30" alt="Usuario" class="rounded-circle"> <?php echo $_SESSION['usuario_activo']; ?>
+                            <img src="./assets/img/user.png" alt="Usuario" class="rounded-circle"> <?php echo $_SESSION['usuario_activo']; ?>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="usuarioDropdown">
                             <a class="dropdown-item disabled" href="#"><?php echo "ID: " . $_SESSION['id']; ?></a>

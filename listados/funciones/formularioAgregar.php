@@ -1,4 +1,5 @@
 <?php
+session_start();
 $breadcrumb = "Formulario para agregar nuevas pieza"
 ?>
 <!DOCTYPE html>
@@ -13,6 +14,7 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
     <link rel="stylesheet" href="../../public/css/nuevaPieza.css">
 </head>
 <body>
+<?php include("../../includes/navFunciones.php");?>
 <div class="container my-5">
     <!-- Breadcrumb -->
 <nav aria-label="breadcrumb">

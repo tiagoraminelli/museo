@@ -73,6 +73,13 @@ class Donante extends Pieza {
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna todos los resultados de la consulta
     }
 
+    public function deleteDonanteById($id){
+        $sql = "DELETE FROM ".$this->table." WHERE `donante`.`idDonante` = ?";
+        $stmt = $this->conection->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna todos los resultados de la consulta
+    }
+
      // Método para obtener todos los registros de la tabla donante
      public function getDonanteById($id) {
         $sql = "SELECT * FROM " . $this->table." WHERE idDonante = ?";
