@@ -12,7 +12,7 @@
       <!-- Suscripción al Boletín -->
       <div class="col-lg-4 mb-4">
         <h5 class="text-uppercase">Suscríbete a nuestro boletín</h5>
-        <form id="subscriptionForm" action="../contacto/correo.php" method="POST" class="mt-3">
+        <form id="subscriptionForm" action="#" method="POST" class="mt-3">
           <div class="input-group">
             <input type="email" class="form-control" placeholder="Tu correo electrónico" aria-label="Email" required>
             <button class="btn btn-primary" type="submit">Suscribirse</button>
