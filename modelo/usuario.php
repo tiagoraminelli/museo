@@ -178,8 +178,8 @@ class Usuario {
             $this->email = $param['email'];
         }
         if (isset($param['clave'])) {
-            $this->clave = $param['clave'];
-           
+            // Hash the password before saving
+            $this->clave = password_hash($param['clave'], PASSWORD_DEFAULT);
         }
 
         if (!isset($param['fecha_alta'])) {

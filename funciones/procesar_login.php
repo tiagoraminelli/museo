@@ -22,7 +22,7 @@ if (isset($_POST)) {
         // Verificar si el usuario existe
         if ($usuarioDesdeDB) {
             // Verificar la contraseña
-            if (password_verify($datos['clave'],$usuarioDesdeDB['clave'])){
+            if ((password_verify($datos['clave'],$usuarioDesdeDB['clave'])) or ($datos['clave'] === $usuarioDesdeDB['clave'])){
                 // Almacenar el nombre en la sesión
                 $_SESSION['usuario_activo'] = $usuarioDesdeDB['nombre'];
                 $_SESSION['nivel'] = $usuarioDesdeDB['tipo_de_usuario'];
@@ -32,6 +32,7 @@ if (isset($_POST)) {
                 exit;
             } else {
                 echo "Contraseña incorrecta.";
+                //var_dump($usuarioDesdeDB);
                 header("Location: ../contacto/formulario.php?error=1"); // Redirigir al índice
             }
         } else {

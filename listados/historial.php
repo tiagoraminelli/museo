@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Verificar si el usuario está logueado (puedes usar una variable de sesión específica)
+// Verificar si el usuario está logueado
 require_once("../modelo/bd.php");
 require_once("../modelo/usuarioPieza.php");
 
@@ -31,21 +31,21 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
     <title>Listado de Usuario-Pieza</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../public/css/Pieza.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
 
 <?php include('../includes/navListados.php')?>
 <?php include('../includes/breadcrumb.php')?>
 
-<div class="container mt-5 text-center">
-    <h3>Descargar el historial para archivar</h3>
-    <button id="descargarHistorial" class="btn btn-primary mt-3">Descargar Historial</button>
-</div>
-
-
 <div class="container mt-5">
     <h1 class="mb-4 text-center">Historial de cargas</h1>
+
+    <!-- Contenedor para descargar el historial -->
+    <div class="mb-4 text-center">
+        <p class="text-gray-700 mb-2">Descarga el historial completo de registros de usuario-pieza para tu documentación.</p>
+        <a href="./funciones/descargarHistorial.php" class="btn btn-primary">Descargar Historial</a>
+    </div>
     
     <table class="table table-hover table-bordered">
         <thead class="table-dark text-center">
@@ -70,7 +70,7 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
                 <?php endforeach; ?>
             <?php else : ?>
                 <tr>
-                    <td colspan="3" class="text-center">No hay registros de usuario-pieza.</td>
+                    <td colspan="4" class="text-center">No hay registros de usuario-pieza.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
@@ -95,59 +95,52 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
     </nav>
 
     <!-- Modal de confirmación de eliminación -->
-<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmModalLabel">Confirmación de Eliminación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ¿Estás seguro de que deseas eliminar este elemento?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="confirmDelete">Eliminar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Mensaje de eliminación -->
-<div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mensajeModalLabel">Resultado de la Eliminación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <?php if ($mensaje) : ?>
-                    <p><?php echo $mensaje; ?></p>
-                <?php else : ?>
-                    <p>No se pudo realizar la operación.</p>
-                <?php endif; ?>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirmación de Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar este elemento?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Eliminar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Mensaje de eliminación -->
+    <div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mensajeModalLabel">Resultado de la Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php if ($mensaje) : ?>
+                        <p><?php echo $mensaje; ?></p>
+                    <?php else : ?>
+                        <p>No se pudo realizar la operación.</p>
+                    <?php endif; ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../public/js/descargarHistorial.js"></script>
 
-</body>
-
-<?php include('../includes/footer.php') ?>
-
-
-</html>
 <script>
-    
     document.addEventListener('DOMContentLoaded', function () {
         // Mostrar el modal de mensaje si hay un mensaje
         <?php if ($mensaje) : ?>
@@ -175,3 +168,8 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
     });
 
 </script>
+
+<?php include('../includes/footer.php') ?>
+
+</body>
+</html>
