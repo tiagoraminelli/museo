@@ -48,7 +48,9 @@ $totalPaginas = ceil($totalIctiologias / $porPagina);
                 <th>Especies</th>
                 <th>Descripción</th>
                 <th>ID de la Pieza</th>
+                <?php if (isset($_SESSION['usuario_activo'])): ?>
                 <th>Acciones</th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
@@ -60,9 +62,11 @@ $totalPaginas = ceil($totalIctiologias / $porPagina);
                         <td><?php echo $i['especies']; ?></td>
                         <td><?php echo $i['descripcion']; ?></td>
                         <td><?php echo $i['Pieza_idPieza']; ?></td>
+                        <?php if (isset($_SESSION['usuario_activo'])): ?>
                         <td>
                             <a href="funciones/editarPieza.php?id=<?php echo $i['Pieza_idPieza']; ?>&clasificacion=<?php echo $getClasificacion; ?>" class="btn btn-warning btn-sm">Editar</a>
                         </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>

@@ -1,5 +1,14 @@
 <?php
 session_start();
+if (!isset($_SESSION['usuario_activo'])) {
+    // Redireccionar al index.php si no hay usuario activo
+    header("Location: ../index.php");
+    exit;
+}
+if($_SESSION['nivel'] != 'administrador'){
+    header("Location: ../index.php");
+}  
+
 // Verificar si el usuario está logueado (puedes usar una variable de sesión específica)
 require_once("../modelo/bd.php");
 require_once("../modelo/donadores_eliminados.php"); // Asegúrate de que este archivo esté presente

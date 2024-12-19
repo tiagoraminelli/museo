@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (!isset($_SESSION['usuario_activo'])) {
+    // Redireccionar al index.php si no hay usuario activo
+    header("Location: ../../index.php");
+    exit;
+}
 //echo "id activo: ".$_SESSION['id']."<br>";
 require_once "../../modelo/bd.php";
 require_once "../../modelo/pieza.php";

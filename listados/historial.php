@@ -1,5 +1,10 @@
 <?php
 session_start();
+if(!isset($_SESSION['usuario_activo']) && $_SESSION['nivel'] != 'administrador'){
+    // Redireccionar al index.php si no hay usuario activo
+    header("Location: ../index.php");
+    exit;
+}
 // Verificar si el usuario está logueado
 require_once("../modelo/bd.php");
 require_once("../modelo/usuarioPieza.php");

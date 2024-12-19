@@ -84,6 +84,9 @@
         <li class="nav-item">
           <a class="nav-link text-gray-800" href="./historial.php">Historial</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-gray-800" href="./crearGerente.php">Nuevo Gerente</a>
+        </li>
         <!-- Dropdown Eliminados -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-gray-800" href="#" id="eliminadosDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

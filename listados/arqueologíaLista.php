@@ -4,6 +4,7 @@ session_start();
 require_once("../modelo/bd.php");
 require_once("../modelo/arqueologia.php");
 
+
 $getClasificacion = "Arqueología";
 // Crear una instancia de la clase 
 $arqueologia = new Arqueologia();

@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['usuario_activo'])) {
+    // Redireccionar al index.php si no hay usuario activo
+    header("Location: ../../index.php");
+    exit;
+}
 require_once "../../modelo/bd.php";  // Asegúrate de que la conexión esté correcta
 require_once "../../modelo/pieza.php";  // Asegúrate de que esta clase esté bien definida
 require_once '../../fpdf/fpdf.php'; // Asegúrate de que FPDF esté en la ubicación correcta

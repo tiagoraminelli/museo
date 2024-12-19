@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
           <a class="nav-link text-gray-800" href="../historial.php">Historial</a>
         </li>
       </ul>
-
+      <?php if (isset($_SESSION['usuario_activo'])): ?>
       <!-- Dropdown Usuario Activo -->
       <ul class="navbar-nav ms-auto">
         <li class="nav-item dropdown">
@@ -136,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
           </div>
         </li>
       </ul>
+      <?php endif; ?>
     </div>
   </div>
 </nav>

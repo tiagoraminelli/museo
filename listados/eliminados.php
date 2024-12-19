@@ -1,5 +1,12 @@
 <?php
 session_start();
+if(!isset($_SESSION['usuario_activo'])){
+    header("Location: ../index.php");
+    exit;
+}
+if($_SESSION['nivel'] != 'administrador'){
+    header("Location: ../index.php");
+}   
 // Verificar si el usuario está logueado (puedes usar una variable de sesión específica)
 require_once("../modelo/bd.php");
 require_once("../modelo/registros_eliminados.php");

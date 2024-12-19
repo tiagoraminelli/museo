@@ -44,6 +44,7 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
 <?php include('../includes/breadcrumb.php')?>
 
 <!-- Contenedor de información sobre crear pieza y descargar PDF -->
+<?php if (isset($_SESSION['usuario_activo'])): ?>
 <div class="container mt-8 text-center">
     <div class="bg-white shadow-md rounded-lg p-6">
         <h4 class="text-2xl font-bold text-gray-800 mb-4">Crear una Nueva Pieza</h4>
@@ -58,7 +59,7 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
         <a target="_blank" href="./funciones/generarPDFall.php" class="text-blue-600 hover:underline">Descargar PDF de Todas las Piezas</a>
     </div>
 </div>
-
+<?php endif; ?>
 <!-- Buscador -->
 <div class="container mt-4">
     <div class="search-box">
@@ -99,8 +100,10 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
                     <td><?php echo $p['clasificacion']; ?></td>
                     <td>
                         <a href="funciones/verPieza.php?id=<?php echo $p['idPieza']; ?>" class="btn btn-success btn-sm">Ver</a>
+                        <?php if (isset($_SESSION['usuario_activo'])): ?>
                         <a href="funciones/editarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-warning btn-sm">Editar</a>
                         <a href="funciones/eliminarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

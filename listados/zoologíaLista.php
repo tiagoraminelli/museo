@@ -52,7 +52,9 @@ $totalPaginas = ceil($totalZoologias / $porPagina);
                 <th>Género</th>
                 <th>Descripción</th>
                 <th>ID de la Pieza</th>
+                <?php if (isset($_SESSION['usuario_activo'])): ?>
                 <th>Acciones</th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
@@ -69,9 +71,11 @@ $totalPaginas = ceil($totalZoologias / $porPagina);
                         <td><?php echo $z['genero']; ?></td>
                         <td><?php echo $z['descripcion']; ?></td>
                         <td><?php echo $z['Pieza_idPieza']; ?></td>
+                        <?php if (isset($_SESSION['usuario_activo'])): ?>
                         <td>
                             <a href="funciones/editarPieza.php?id=<?php echo $z['Pieza_idPieza']; ?>&clasificacion=<?php echo $getClasificacion; ?>" class="btn btn-warning btn-sm">Editar</a>
                         </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>

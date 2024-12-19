@@ -53,7 +53,7 @@ if (isset($_SESSION['usuario_activo']) && ($_SESSION['nivel']=='administrador' |
     </nav>
     
     <?php
-} else {
+} elseif(!isset($_SESSION['usuario_activo'])) {
     // Navbar para usuarios sin sesión activa
     ?>
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow">
@@ -68,6 +68,22 @@ if (isset($_SESSION['usuario_activo']) && ($_SESSION['nivel']=='administrador' |
                 <ul class="navbar-nav">
                     <li class="nav-item active">
                         <a class="nav-link" href="../../proyectoMuseo/index.php">Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="piezasDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Piezas
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="piezasDropdown">
+                            <a class="dropdown-item" href="listados/piezasListado.php">Todas</a>
+                            <a class="dropdown-item" href="listados/paleontologíaLista.php">Paleontología</a>
+                            <a class="dropdown-item" href="listados/osteologíaLista.php">Osteología</a>
+                            <a class="dropdown-item" href="listados/ictiologíaLista.php">Ictiología</a>
+                            <a class="dropdown-item" href="listados/geologíaLista.php">Geología</a>
+                            <a class="dropdown-item" href="listados/botánicaLista.php">Botánica</a>
+                            <a class="dropdown-item" href="listados/zoologíaLista.php">Zoología</a>
+                            <a class="dropdown-item" href="listados/arqueologíaLista.php">Arqueología</a>
+                            <a class="dropdown-item" href="listados/octologíaLista.php">Octología</a>
+                        </div>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">

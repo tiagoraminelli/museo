@@ -59,48 +59,13 @@
                         </div>
                     </div>
 
-                    <div class="form-check mb-4">
-                        <input type="checkbox" id="remember" class="form-check-input">
-                        <label for="remember" class="form-check-label text-sm text-gray-600">Recuérdame</label>
-                    </div>
+                  
                     <button type="submit" class="btn btn-primary w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Iniciar Sesión</button>
                 </form>
-                <span class="text-blue-500 cursor-pointer mt-4" onclick="toggleForms()">¿No tienes una cuenta? Regístrate</span>
+               
             </div>
 
-            <!-- Formulario de Registro -->
-            <div id="register-form" class="hidden">
-                <h3 class="text-center text-2xl font-bold mb-4">Registro</h3>
-                <form action="../funciones/cargarUsuario.php" method="post">
-                    <div class="form-group">
-                        <label for="dni" class="block text-sm font-medium text-gray-700">DNI</label>
-                        <input type="text" id="dni" name="dni" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ingresa tu DNI" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-                        <input type="text" id="nombre" name="nombre" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ingresa tu nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="apellido" class="block text-sm font-medium text-gray-700">Apellido</label>
-                        <input type="text" id="apellido" name="apellido" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ingresa tu apellido" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
-                        <input type="email" id="email" name="email" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ingresa tu correo" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="clave" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                        <div class="input-group">
-                            <input id="clave" name="clave" type="password" class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-l-md" placeholder="Ingresa tu contraseña" required>
-                            <div class="input-group-append">
-                                <button type="button" onclick="togglePassword('clave')" class="btn btn-outline-secondary">Ver</button>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Registrarse</button>
-                </form>
-                <span class="text-blue-500 cursor-pointer mt-4" onclick="toggleForms()">¿Ya tienes una cuenta? Inicia sesión</span>
-            </div>
+            
         </div>
 
         <!-- Imagen lateral -->

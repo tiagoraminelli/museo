@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 // Verificar si el usuario está logueado
 require_once "../modelo/donante.php";
 
@@ -38,6 +39,7 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
 <?php include('../includes/breadcrumb.php')?>
 
 <!-- Contenedor de información sobre crear donante -->
+<?php if (isset($_SESSION['usuario_activo'])): ?>
 <div class="container mt-4 text-center">
     <div class="alert alert-success" role="alert">
         <h4 class="alert-heading">Crear un nuevo donante</h4>
@@ -45,6 +47,7 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
         <a href="./funciones/formularioAgregarDonante.php" class="btn btn-primary">Cargar nuevo donante</a>
     </div>
 </div>
+<?php endif; ?>
 
 <!-- Buscador -->
 <div class="container mt-4">
@@ -66,7 +69,9 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Fecha de Donación</th>
+                <?php if (isset($_SESSION['usuario_activo'])): ?>
                 <th>Acciones</th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
@@ -77,11 +82,13 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
                         <td><?php echo $d['nombre']; ?></td>
                         <td><?php echo $d['apellido']; ?></td>
                         <td><?php echo $d['fecha']; ?></td>
+                        <?php if (isset($_SESSION['usuario_activo'])): ?>
                         <td>
                             <a href="funciones/verDonante.php?id=<?php echo $d['idDonante']; ?>" class="btn btn-success btn-sm">Ver</a>
                             <a href="funciones/formularioAgregarDonante.php?idDonante=<?php echo $d['idDonante']; ?>" class="btn btn-warning btn-sm">Editar</a>
                             <a href="funciones/eliminarDonante.php?id=<?php echo $d['idDonante']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
                         </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>

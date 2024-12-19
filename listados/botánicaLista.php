@@ -52,7 +52,9 @@ $totalPaginas = ceil($totalBotanicas / $porPagina);
                 <th>Clase</th>
                 <th>Descripción</th>
                 <th>ID de la Pieza</th>
+                <?php if (isset($_SESSION['usuario_activo'])): ?>
                 <th>Acciones</th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
@@ -68,11 +70,13 @@ $totalPaginas = ceil($totalBotanicas / $porPagina);
                         <td><?php echo $b['clase']; ?></td>
                         <td><?php echo $b['descripcion']; ?></td>
                         <td><?php echo $b['Pieza_idPieza']; ?></td>
+                        <?php if (isset($_SESSION['usuario_activo'])): ?>
                         <td>
                             <div class="d-flex justify-content-center">
                             <a href="funciones/editarPieza.php?id=<?php echo $b['Pieza_idPieza']; ?>&clasificacion=<?php echo $getClasificacion; ?>" class="btn btn-warning btn-sm">Editar</a>
                             </div>
                         </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>

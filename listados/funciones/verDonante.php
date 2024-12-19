@@ -1,6 +1,10 @@
 <?php
 session_start(); // Asegúrate de iniciar la sesión
-
+if (!isset($_SESSION['usuario_activo'])) {
+    // Redireccionar al index.php si no hay usuario activo
+    header("Location: ../../index.php");
+    exit;
+}
 // Verificar si el usuario activo está establecido
 if (!isset($_SESSION['usuario_activo'])) {
     // Redireccionar al index.php si no hay usuario activo

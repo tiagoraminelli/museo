@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['usuario_activo'])) {
+    // Redireccionar al index.php si no hay usuario activo
+    header("Location: ../../index.php");
+    exit;
+}
 require_once "../../modelo/bd.php"; // Asegúrate de tener tu archivo de conexión a la base de datos
 require_once "../../modelo/donante.php"; // Asegúrate de que esta clase exista y esté correctamente configurada
 
