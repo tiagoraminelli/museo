@@ -4,6 +4,14 @@ session_start();
 require_once("../modelo/bd.php");
 require_once("../modelo/datos_eliminados.php");
 
+if(!isset($_SESSION['usuario_activo'])){
+    header("Location: ../index.php");
+    exit;
+}
+if($_SESSION['nivel'] != 'administrador'){
+    header("Location: ./piezaslistado.php");
+}   
+
 // Crear una instancia de la clase DatosEliminados
 $datosEliminados = new DatosEliminados();
 $breadcrumb = "Datos Eliminados";

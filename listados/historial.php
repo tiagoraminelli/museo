@@ -9,6 +9,15 @@ if(!isset($_SESSION['usuario_activo']) && $_SESSION['nivel'] != 'administrador')
 require_once("../modelo/bd.php");
 require_once("../modelo/usuarioPieza.php");
 
+
+
+// Verificar el tipo de usuario
+if ($_SESSION['tipo_de_usuario'] !== 'administrador') {
+    // Si el usuario no es de tipo "admin", redirigir a piezaslistado.php
+    header("Location: ./piezaslistado.php");
+    exit();
+}
+
 // Crear una instancia de la clase UsuarioHasPieza
 $usuarioHasPieza = new UsuarioHasPieza();
 $breadcrumb = "Historial";

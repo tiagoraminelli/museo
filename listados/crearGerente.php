@@ -6,7 +6,7 @@ if (!isset($_SESSION['usuario_activo'])) {
     exit;
 }
 if($_SESSION['nivel'] != 'administrador'){
-    header("Location: ../index.php");
+    header("Location: ./piezaslistado.php");
     exit;
 }
 ?>
@@ -59,6 +59,7 @@ if($_SESSION['nivel'] != 'administrador'){
                         <button type="button" onclick="togglePassword('clave')" class="absolute inset-y-0 right-0 px-3 text-sm text-gray-500 hover:text-blue-500">Ver</button>
                     </div>
                 </div>
+                <button type="submit" class="btn btn-primary w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">Crear</button>
                 
             </form>
            

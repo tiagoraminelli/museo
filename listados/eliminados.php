@@ -5,7 +5,7 @@ if(!isset($_SESSION['usuario_activo'])){
     exit;
 }
 if($_SESSION['nivel'] != 'administrador'){
-    header("Location: ../index.php");
+    header("Location: ./piezaslistado.php");
 }   
 // Verificar si el usuario está logueado (puedes usar una variable de sesión específica)
 require_once("../modelo/bd.php");

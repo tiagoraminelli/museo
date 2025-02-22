@@ -36,11 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Llamar al método save para guardar los datos
     if ($usuario->save($parametros)) {
         $_SESSION['mensaje'] = 'Usuario cargado exitosamente.';
-        header("Location: ../contacto/index.php?success=1"); // Redirigir al índice
+        header("Location: ../index.php?success=1"); // Redirigir al índice
         exit();
     } else {
         $_SESSION['error'] = 'Error al cargar el usuario.';
-        header("Location: ../contacto/index.php?success=0"); // Redirigir al índice
+        header("Location: ../index.php?success=0"); // Redirigir al índice
         exit();
     }
 } else {

@@ -5,12 +5,6 @@ if (!isset($_SESSION['usuario_activo'])) {
     header("Location: ../../index.php");
     exit;
 }
-// Verificar si el usuario activo está establecido
-if (!isset($_SESSION['usuario_activo'])) {
-    // Redireccionar al index.php si no hay usuario activo
-    header("Location: ../../index.php");
-    exit; // Asegura que no se ejecute más código después de la redirección
-}
 
 require_once "../../modelo/bd.php";
 require_once "../../modelo/donante.php";

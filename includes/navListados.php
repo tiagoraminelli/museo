@@ -81,6 +81,10 @@
         <li class="nav-item">
           <a class="nav-link text-gray-800" href="./donadoresLista.php">Donadores</a>
         </li>
+         <!-- gerentes-->
+         <li class="nav-item">
+          <a class="nav-link text-gray-800" href="./gerentesListados.php">Gerentes</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link text-gray-800" href="./historial.php">Historial</a>
         </li>

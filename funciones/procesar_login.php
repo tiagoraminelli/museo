@@ -17,7 +17,9 @@ if (isset($_POST)) {
         // Buscar el usuario en la base de datos usando el email
         $usuarioDesdeDB = $usuario->getUsuarioPorEmail($datos['email']);
         //imprimimos en pantalla
-
+//var_dump($usuarioDesdeDB);
+//$resultado = password_verify($datos['clave'], $usuarioDesdeDB['clave']);
+//var_dump($resultado);
 
         // Verificar si el usuario existe
         if ($usuarioDesdeDB) {
@@ -28,7 +30,7 @@ if (isset($_POST)) {
                 $_SESSION['nivel'] = $usuarioDesdeDB['tipo_de_usuario'];
                 $_SESSION['id'] = $usuarioDesdeDB['idUsuario'];
                 echo "Contraseña correcta.";
-                header("Location: ../index.php"); // Redirigir al índice
+                header("Location: ./../listados/piezasListado.php"); // Redirigir al índice
                 exit;
             } else {
                 echo "Contraseña incorrecta.";

@@ -139,7 +139,7 @@ class Usuario {
 
     public function deleteUsuariosById($id){ //empieza la funtion
         $this->getConection(); //ejecuta un metodo de la clase que gestiona la conexion a la base de datos
-        $sql="DELETE FROM ".$this->table." WHERE `idUsuario ` = ? "; //armamos la cadena sql 
+        $sql="DELETE FROM ".$this->table." WHERE `idUsuario` = ? "; //armamos la cadena sql 
         $stmt=$this->conection->prepare($sql); //metemos la cadena que armamos para armar la consulta
         return $stmt->execute([$id]); //ejecutamos la consulta
     }
@@ -212,6 +212,30 @@ class Usuario {
         return $this->idUsuario;
     }
 
+    /**
+ * Recupera una lista paginada de usuarios de la base de datos.
+*
+* @param int $limite La cantidad máxima de usuarios que se devolverán.
+* @param int $offset La cantidad de usuarios que se omitirán antes de comenzar a recopilar el conjunto de resultados.
+* @return array Una matriz asociativa que contiene los usuarios paginados.
+     */
+
+    public function getUsuariosPaginados($limite, $offset) {
+        $sql = "SELECT * FROM usuario WHERE `tipo_de_usuario` = 'gerente' LIMIT :limite OFFSET :offset";
+        $stmt = $this->conection->prepare($sql);
+        $stmt->bindParam(':limite', $limite, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getCantidadUsuarios() {
+        $sql = "SELECT COUNT(*) as total FROM usuario";
+        $stmt = $this->conection->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
     
 } //fin de la clase
 

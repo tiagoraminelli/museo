@@ -93,7 +93,7 @@ if (isset($_SESSION['usuario_activo']) && ($_SESSION['nivel']=='administrador' |
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="usuarioDropdown">
                             <a class="dropdown-item" href="./contacto/formulario.php">Iniciar sesión</a>
-                            <a class="dropdown-item" href="./contacto/formulario.php">Crear cuenta</a>
+                           
                         </div>
                     </li>
                 </ul>
