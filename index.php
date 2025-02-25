@@ -17,6 +17,7 @@ session_start(); // Inicia la sesión
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
@@ -25,6 +26,13 @@ session_start(); // Inicia la sesión
     <!-- Navbar -->
     <?php include('./includes/navbar.php') ?>
 
+        <!-- Presentación Section -->
+        <section class="bg-white py-5">
+        <div class="container">
+            <?php include('./includes/presentacion.php') ?>
+        </div>
+    </section>
+
     <!-- Carrusel Section -->
     <section class="my-5">
         <div class="container">
@@ -32,17 +40,17 @@ session_start(); // Inicia la sesión
         </div>
     </section>
 
-    <!-- Presentación Section -->
-    <section class="bg-white py-5">
-        <div class="container">
-            <?php include('./includes/presentacion.php') ?>
-        </div>
-    </section>
-
     <!-- Galería Section -->
     <section class="py-5">
         <div class="container">
             <?php include('./includes/galeria.php') ?>
+        </div>
+    </section>
+
+    <!-- cursos Section -->
+    <section class="bg-gray-100 py-5">
+        <div class="container">
+            <?php include('./includes/cursos.php') ?>
         </div>
     </section>
 

@@ -1,10 +1,13 @@
-<?php //include('./assets/presentacion.php') ?>
-<div class="container mt-4 d-flex align-items-center">
-    <div class="col-md-6">
-        <h1>Bienvenido al Museo</h1>
-        <p>El Museo de Historia Natural es un espacio dedicado a la conservación y exhibición de especies y hallazgos arqueológicos. Nuestro objetivo es promover la educación y el respeto por el patrimonio natural y cultural a través de exposiciones interactivas y actividades para todas las edades. Ven y descubre la historia de nuestro planeta y sus maravillosas criaturas.</p>
-    </div>
-    <div class="col-md-6">
-        <img src="./assets/img/presentacion.png" alt="Museo" class="museum-img">
+<!-- Presentación Section -->
+<div class="text-center py-12">
+    <h2 class="text-4xl font-bold text-gray-800 mb-4">Bienvenido a Nuestro Museo</h2>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        En nuestro museo, te invitamos a explorar colecciones únicas que combinan arte, historia y cultura. 
+        Descubre exposiciones fascinantes, eventos especiales y actividades educativas para todas las edades.
+    </p>
+    <div class="mt-8">
+        <a href="./listados/piezasListado.php" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300">
+            Conoce Más
+        </a>
     </div>
 </div>

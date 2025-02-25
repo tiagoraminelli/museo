@@ -1,4 +1,4 @@
-<div class="bg-green-50 py-24 sm:py-32">
+<div class="bg-white-50 py-32 sm:py-32">
   <div class="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
     <div class="max-w-2xl">
       <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Conoce a nuestro equipo de trabajo</h2>
@@ -10,7 +10,7 @@
         <div class="flex items-center gap-x-6">
         <img class="h-16 w-16 rounded-full" src="./assets/img/user.webp" alt="Placeholder">
           <div>
-            <h3 class="text-base font-semibold leading-7 tracking-tight text-gray-900">placerholder name</h3>
+            <h3 class="text-base font-semibold leading-7 tracking-tight text-gray-900">Anabel Roldan</h3>
             <p class="text-sm font-semibold leading-6 text-indigo-600">Directora de Conservación</p>
           </div>
         </div>
@@ -21,7 +21,7 @@
         <img class="h-16 w-16 rounded-full" src="./assets/img/user.webp" alt="Placeholder">
 
           <div>
-            <h3 class="text-base font-semibold leading-7 tracking-tight text-gray-900">placerholder name</h3>
+            <h3 class="text-base font-semibold leading-7 tracking-tight text-gray-900">Juan Pérez</h3>
             <p class="text-sm font-semibold leading-6 text-indigo-600">Curador Jefe</p>
           </div>
         </div>
@@ -32,7 +32,7 @@
         <img class="h-16 w-16 rounded-full" src="./assets/img/user.webp" alt="Placeholder">
 
           <div>
-            <h3 class="text-base font-semibold leading-7 tracking-tight text-gray-900">placerholder name</h3>
+            <h3 class="text-base font-semibold leading-7 tracking-tight text-gray-900">Laura Sánchez</h3>
             <p class="text-sm font-semibold leading-6 text-indigo-600">Coordinadora de Exposiciones</p>
           </div>
         </div>

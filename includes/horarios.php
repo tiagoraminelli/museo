@@ -1,58 +1,30 @@
-
-    <h2 class="text-center text-3xl font-bold mb-8">Horarios del Museo</h2>
-    <div class="row">
-        <div class="col-md-8">
-            <table class="table table-bordered bg-white shadow-sm rounded-lg">
-                <thead class="thead-dark bg-gray-800 text-white">
-                    <tr>
-                        <th class="px-4 py-2">Día</th>
-                        <th class="px-4 py-2">Horario</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="px-4 py-2">Lunes</td>
-                        <td class="px-4 py-2">8:00 AM - 12:00 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-2">Martes</td>
-                        <td class="px-4 py-2">8:00 AM - 12:00 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-2">Miércoles</td>
-                        <td class="px-4 py-2">8:00 AM - 12:00 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-2">Jueves</td>
-                        <td class="px-4 py-2">8:00 AM - 12:00 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-2">Viernes</td>
-                        <td class="px-4 py-2">8:00 AM - 12:00 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-2">Sábado</td>
-                        <td class="px-4 py-2">Cerrado</td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-2">Domingo</td>
-                        <td class="px-4 py-2">Cerrado</td>
-                    </tr>
-                </tbody>
-            </table>
+<!-- Horarios Section -->
+<section class="py-12 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800">Horarios de Apertura</h2>
+            <p class="text-lg text-gray-600 mt-2">Planifica tu visita con nuestros horarios.</p>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    Visitas Guiadas
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <!-- Contenedor de Horarios -->
+            <div class="grid grid-cols-1 gap-8">
+                <!-- Horario 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Lunes a Viernes</h3>
+                    <p class="text-lg text-gray-600">8:00 AM - 12:00 PM</p>
+                    <p class="text-lg text-gray-600">Nuestro horarios normal donde puedes ser asesorado por nuestros coordinadores</p>
                 </div>
-                <div class="card-body">
-                    <p>¡Únete a nuestras visitas guiadas y descubre la historia detrás de cada exhibición!</p>
-                    <p>Para más información, contáctanos:</p>
-                    <a href="https://wa.me/340815577548" target="_blank" class="btn btn-success">WhatsApp</a>
-                    <p>Email: <a href="mailto:info@museo.com" target="_blank"  class="card-link">info@museo.com</a></p>
+                <!-- Horario 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Sábados y Domingos</h3>
+                    <p class="text-lg text-gray-600">CERRADO NORMALMENTE</p>
+                    <P class="text-lg text-gray-600">En caso de estar abrir haremos un comuinicate con nuestros coordinadores</P>
                 </div>
+            </div>
+            <!-- Imagen a la derecha -->
+            <div class="hidden md:block">
+                <img src="./assets/img/v1.jpg" alt="Horarios" class="w-full h-auto rounded-lg shadow-lg object-cover">
             </div>
         </div>
     </div>
-
+</section>

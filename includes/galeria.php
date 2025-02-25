@@ -1,72 +1,50 @@
-<?php
-require_once "./modelo/bd.php"; // Asegúrate de que este archivo contenga la clase Db
-require_once "./modelo/pieza.php"; // Asegúrate de que este archivo contenga la clase Db
+<!-- Galería Section -->
 
-// Conexión a la base de datos
-$pieza = new Pieza();
-$piezas = $pieza->getAllPiezas();
-?>
-
-<div class="container mt-5">
-    <h2 class="text-3xl font-bold text-center mb-5">Galería de Imágenes</h2>
-    <div class="overflow-hidden relative">
-        <div id="gallery" class="flex transition-transform duration-500 ease-in-out">
-            <?php if (!empty($piezas)): ?>
-                <?php foreach ($piezas as $pieza): ?>
-                    <div class="min-w-full flex flex-col items-center">
-                        <img src="./assets/uploads/<?php echo $pieza['imagen']; ?>" 
-                             alt="<?php echo $pieza['especie']; ?>" 
-                             class="gallery-image"> <!-- Clase para estilos -->
-                        <div class="image-description mt-2">
-                            <p><?php echo $pieza['observacion']; ?></p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="min-w-full flex flex-col items-center">
-                    <img src="https://via.placeholder.com/300" 
-                         alt="No hay imágenes" 
-                         class="gallery-image"> <!-- Clase para estilos -->
-                    <div class="image-description mt-2">
-                        <p>No hay imágenes disponibles en este momento.</p>
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-4 fw-bold text-dark">Galería de Piezas</h2>
+            <p class="lead text-muted">Explora algunas de nuestras piezas más destacadas.</p>
+        </div>
+        <div class="row g-4">
+            <!-- Pieza 1: Rocas -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <img src="./assets/img/g1.jpg" class="card-img-top" alt="Rocas">
+                    <div class="card-body text-center">
+                        <h3 class="card-title fw-bold">Rocas</h3>
+                        <p class="card-text text-muted">Descubre nuestra colección de rocas únicas y minerales raros.</p>
                     </div>
                 </div>
-            <?php endif; ?>
+            </div>
+            <!-- Pieza 2: Plantas -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <img src="./assets/img/g2.jpg" class="card-img-top" alt="Plantas">
+                    <div class="card-body text-center">
+                        <h3 class="card-title fw-bold">Plantas</h3>
+                        <p class="card-text text-muted">Explora la diversidad de nuestra flora en esta colección botánica.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Pieza 3: Fósiles -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <img src="./assets/img/g3.jpg" class="card-img-top" alt="Fósiles">
+                    <div class="card-body text-center">
+                        <h3 class="card-title fw-bold">Fósiles</h3>
+                        <p class="card-text text-muted">Adéntrate en el pasado con nuestros fósiles más impresionantes.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Pieza 4: Aves -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <img src="./assets/img/g4.jpg" class="card-img-top" alt="Aves">
+                    <div class="card-body text-center">
+                        <h3 class="card-title fw-bold">Aves</h3>
+                        <p class="card-text text-muted">Conoce la belleza de las aves en esta colección ornitológica.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-<style>
-    .gallery-image {
-        width: 300px; /* Ancho fijo */
-        height: 300px; /* Alto fijo */
-        object-fit: cover; /* Ajusta la imagen para llenar el contenedor */
-        border-radius: 8px; /* Bordes redondeados opcionales */
-        transition: transform 0.3s ease; /* Animación suave al hacer hover */
-    }
-
-    .gallery-image:hover {
-        transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el cursor */
-    }
-</style>
-
-<script>
-    const gallery = document.getElementById('gallery');
-    let currentIndex = 0;
-
-    function updateGallery() {
-        const totalImages = gallery.children.length;
-        const offset = -currentIndex * 100;
-        gallery.style.transform = `translateX(${offset}%)`;
-    }
-
-    function autoSlide() {
-        const totalImages = gallery.children.length;
-        currentIndex = (currentIndex + 1) % totalImages;
-        updateGallery();
-    }
-
-    if (gallery.children.length > 0) {
-        setInterval(autoSlide, 3000); // Cambia cada 3 segundos
-    }
-</script>
