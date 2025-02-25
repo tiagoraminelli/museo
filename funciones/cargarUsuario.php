@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $apellido = $_POST['apellido'];
     $email = $_POST['email'];
     $clave = $_POST['clave'];
-   
 
     // Hash de la contraseña
     $hashedClave = password_hash($clave, PASSWORD_DEFAULT);
@@ -26,12 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'clave' => $hashedClave,
     ];
 
-    echo "<pre>";
-    var_dump($parametros);
-    echo "</pre>";
-
     // Crear una instancia de la clase Usuario
     $usuario = new Usuario();
+
+    // Verificar si el correo ya existe
+    if ($usuario->getUsuarioPorEmail($email)) {
+        $_SESSION['error'] = 'El correo electrónico ya está registrado.';
+        header("Location: ../listados/crearGerente.php?errorCargarUsuario=1"); // Redirigir con mensaje de error
+        exit();
+    }
 
     // Llamar al método save para guardar los datos
     if ($usuario->save($parametros)) {

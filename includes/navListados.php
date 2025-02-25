@@ -115,6 +115,9 @@
             <a class="dropdown-item disabled" href="#">
               <?php echo "ID: " . $_SESSION['id']; ?>
             </a>
+            <a class="dropdown-item disabled" href="#">
+              <?php echo "ID: " . $_SESSION['nivel']; ?>
+            </a>
             <a class="dropdown-item" href="../contacto/perfil.php?id=<?php echo $_SESSION['id']; ?>">Perfil y Preferencias</a>
             <a class="dropdown-item" href="../contacto/cerrar.php">Cerrar sesión</a>
           </div>

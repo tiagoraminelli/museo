@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener datos del formulario y almacenarlos en un array
     //var_dump($_POST);
     $parametro = [
-        'num_inventario' => $_POST['num_inventario'],
+        'num_inventario' => '',
         'especie' => $_POST['especieP'],
         'estado_conservacion' => $_POST['estado_conservacion'],
         'fecha_ingreso' => $_POST['fecha_ingreso'],
@@ -104,36 +104,45 @@ if (isset($_POST['donante_nombre']) && !empty($_POST['donante_nombre']) && isset
     } else {
         // Llamar a la función save para insertar
         $pieza = new Pieza(); // Asegúrate de que la clase Pieza esté bien definida
-        //var_dump($parametro)."<br>";
-        if($parametro['idPieza'] = $pieza->save($parametro)){
-            echo "Pieza insertada con éxito."."<br>";
-                // Comprobar si existe idPieza y usuario está logueado
-if (isset($_SESSION['id']) && isset($parametro['idPieza'])){
-    $parametro['Usuario_idUsuario'] = $_SESSION['id']; // Obtener el ID del usuario de la sesión
-    $parametro['Pieza_idPieza'] = $parametro['idPieza']; // Agregar idPieza al array
-var_dump($parametro);
-    // Crear una instancia de la clase UsuarioPieza
-    $usuarioPieza = new UsuarioHasPieza();
+        $idPieza = $pieza->save($parametro); // Guardar la pieza y obtener el ID generado
 
-    // Llamar a la función saveUsuarioPieza para insertar o actualizar
-    if ($usuarioPieza->saveUsuarioPieza($parametro)) {
-        echo "Relación usuario-pieza guardada con éxito.";
+        if ($idPieza) {
+            echo "Pieza insertada con éxito.<br>";
 
-       header("Location: ../../listados/piezasListado.php?historial=1");
-    } else {
-        echo "Error al guardar la relación usuario-pieza." . "<br>";
-    }
-} else {
-    // Manejar el caso en que falta idPieza o el usuario no está logueado
-    echo "Falta el ID de la pieza o el usuario no está logueado." . "<br>";
-}
-        }else{
-            echo "Error en la Pieza insertada."."<br>";
+            // Generar el número de inventario
+            $numInventario = "NDH-" . $idPieza; // Concatenar el prefijo con el ID
+            $parametro['num_inventario'] = $numInventario;
+            $parametro['idPieza'] = $idPieza; // Agregar el ID de la pieza al array
+
+            // Actualizar la pieza con el número de inventario generado
+            $pieza->save($parametro);
+            echo "Número de inventario generado: " . $numInventario . "<br>";
+
+            // Comprobar si existe idPieza y usuario está logueado
+            if (isset($_SESSION['id']) && isset($parametro['idPieza'])) {
+                $parametro['Usuario_idUsuario'] = $_SESSION['id']; // Obtener el ID del usuario de la sesión
+                $parametro['Pieza_idPieza'] = $parametro['idPieza']; // Agregar idPieza al array
+
+                // Crear una instancia de la clase UsuarioPieza
+                $usuarioPieza = new UsuarioHasPieza();
+
+                // Llamar a la función saveUsuarioPieza para insertar o actualizar
+                if ($usuarioPieza->saveUsuarioPieza($parametro)) {
+                    echo "Relación usuario-pieza guardada con éxito.";
+                    header("Location: ../../listados/piezasListado.php?historial=1");
+                } else {
+                    echo "Error al guardar la relación usuario-pieza.<br>";
+                }
+            } else {
+                // Manejar el caso en que falta idPieza o el usuario no está logueado
+                echo "Falta el ID de la pieza o el usuario no está logueado.<br>";
+            }
+        } else {
+            echo "Error en la inserción de la pieza.<br>";
         }
-        
     }
 
-
+die();
 
 
     // Si la clasificación es Arqueología, realizar la inserción o actualización en la tabla específica

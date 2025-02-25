@@ -104,6 +104,25 @@ if($_SESSION['nivel'] != 'administrador'){
     </div>
 </div>
 
+<!-- Modal de Error: Correo ya registrado -->
+<div class="modal fade" id="errorCorreoModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Error</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">El correo electrónico ya está registrado. Por favor, utiliza otro correo.</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -119,7 +138,19 @@ if($_SESSION['nivel'] != 'administrador'){
         var input = document.getElementById(inputId);
         input.type = input.type === "password" ? "text" : "password";
     }
+
+
 </script>
+<?php
+if (isset($_GET['errorCargarUsuario']) && $_GET['errorCargarUsuario'] == 1) {
+    echo "<script>
+            $(document).ready(function() {
+                $('#errorCorreoModal').modal('show');
+            });
+          </script>";
+}
+?>
+
 <?php include('../includes/footer.php'); ?>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['usuario_activo']) && $_SESSION['nivel'] != 'administrador'){
+if(!isset($_SESSION['usuario_activo'])){
     // Redireccionar al index.php si no hay usuario activo
     header("Location: ../index.php");
     exit;
@@ -12,7 +12,7 @@ require_once("../modelo/usuarioPieza.php");
 
 
 // Verificar el tipo de usuario
-if ($_SESSION['tipo_de_usuario'] !== 'administrador') {
+if ($_SESSION['nivel'] != 'administrador') {
     // Si el usuario no es de tipo "admin", redirigir a piezaslistado.php
     header("Location: ./piezaslistado.php");
     exit();
