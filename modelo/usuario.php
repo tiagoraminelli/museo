@@ -121,21 +121,75 @@ class Usuario {
     }
     
 
-    public function getUsuariosById($id) {
-        $sql = "SELECT * FROM " . $this->table . " WHERE idUsuario = ?"; // Asegúrate de que sea el nombre correcto de la columna
+    public function existeDni($dni, $excluirId = null) {
+        $sql = "SELECT COUNT(*) as total FROM " . $this->table . " WHERE dni = ?";
+        $params = [$dni];
+        
+        if ($excluirId !== null) {
+            $sql .= " AND idUsuario != ?";
+            $params[] = $excluirId;
+        }
+        
+        $stmt = $this->conection->prepare($sql);
+        $stmt->execute($params);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $resultado['total'] > 0;
+    }
+    
+    /**
+     * Verifica si un email ya existe (excluyendo al usuario actual)
+     * @param string $email Email a verificar
+     * @param int|null $excluirId ID de usuario a excluir (para edición)
+     * @return bool True si el email ya existe
+     */
+    public function existeEmail($email, $excluirId = null) {
+        $sql = "SELECT COUNT(*) as total FROM " . $this->table . " WHERE email = ?";
+        $params = [$email];
+        
+        if ($excluirId !== null) {
+            $sql .= " AND idUsuario != ?";
+            $params[] = $excluirId;
+        }
+        
+        $stmt = $this->conection->prepare($sql);
+        $stmt->execute($params);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $resultado['total'] > 0;
+    }
+    
+    /**
+     * Obtiene un usuario por su DNI
+     * @param string $dni DNI del usuario
+     * @return array|null Datos del usuario o null si no existe
+     */
+    public function getUsuarioPorDNI($dni) {
+        $sql = "SELECT * FROM " . $this->table . " WHERE dni = ?";
+        $stmt = $this->conection->prepare($sql);
+        $stmt->execute([$dni]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getUsuariosById($id){
+        $sql = "SELECT * FROM " . $this->table . " WHERE idUsuario = ?";
         $stmt = $this->conection->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+
     }
     
-
-    public function getUsuarioPorEmail($email){
-        $sql = "SELECT * FROM " . $this->table . " WHERE email = ?"; // Asegúrate de que sea el nombre correcto de la columna
+    /**
+     * Obtiene un usuario por su email
+     * @param string $email Email del usuario
+     * @return array|null Datos del usuario o null si no existe
+     */
+    public function getUsuarioPorEmail($email) {
+        $sql = "SELECT * FROM " . $this->table . " WHERE email = ?";
         $stmt = $this->conection->prepare($sql);
         $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
 
     public function deleteUsuariosById($id){ //empieza la funtion
         $this->getConection(); //ejecuta un metodo de la clase que gestiona la conexion a la base de datos
@@ -221,7 +275,7 @@ class Usuario {
      */
 
     public function getUsuariosPaginados($limite, $offset) {
-        $sql = "SELECT * FROM usuario WHERE `tipo_de_usuario` = 'gerente' LIMIT :limite OFFSET :offset";
+        $sql = "SELECT * FROM usuario LIMIT :limite OFFSET :offset";
         $stmt = $this->conection->prepare($sql);
         $stmt->bindParam(':limite', $limite, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);

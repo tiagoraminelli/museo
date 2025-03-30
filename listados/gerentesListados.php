@@ -7,12 +7,10 @@ if(!isset($_SESSION['usuario_activo'])){
     exit;
 }
 // Verificar el tipo de usuario
-if ($_SESSION['tipo_de_usuario'] !== 'administrador') {
-    // Si el usuario no es de tipo "admin", redirigir a piezaslistado.php
-    header("Location: ./piezaslistado.php");
-    exit();
-}
 
+if($_SESSION['nivel'] != 'administrador'){
+    header("Location: ../index.php");
+}  
 // Verificar si el usuario está logueado
 require_once("../modelo/bd.php");
 require_once("../modelo/usuario.php");
