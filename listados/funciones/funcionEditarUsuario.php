@@ -14,6 +14,7 @@ if($_SESSION['nivel'] != 'administrador') {
     exit;
 }
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recoger y limpiar datos
     $idUsuario = isset($_POST['idUsuario']) ? intval($_POST['idUsuario']) : 0;
@@ -25,51 +26,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipo_de_usuario = isset($_POST['tipo_de_usuario']) ? trim($_POST['tipo_de_usuario']) : '';
 
     // Validaciones
-    $errores = [];
-    $errores_campos = [];
 
-    // Validar DNI
-    if (empty($dni)) {
-        $errores_campos['dni'] = "El DNI es obligatorio";
-        $errores[] = "El campo DNI es obligatorio";
-    } elseif (!preg_match('/^[0-9]{8,10}$/', $dni)) {
-        $errores_campos['dni'] = "DNI debe tener 8-10 dígitos";
-        $errores[] = "El DNI debe contener entre 8 y 10 dígitos";
+    var_dump($_POST);
+$errores = [];
+$errores_campos = [];
+
+/**
+ * Función para agregar errores de validación
+ * @param string $campo Nombre del campo
+ * @param string $mensaje Mensaje de error
+ * @param bool $agregarAErroresGenerales Si se agrega también al array de errores generales
+ */
+function agregarError(&$errores_campos, &$errores, $campo, $mensaje, $agregarAErroresGenerales = true) {
+    if (!isset($errores_campos[$campo])) {
+        $errores_campos[$campo] = [];
+    }
+    $errores_campos[$campo][] = $mensaje;
+    if ($agregarAErroresGenerales) {
+        $errores[] = $mensaje;
+    }
+}
+
+// Validar DNI
+if (empty($dni)) {
+    agregarError($errores_campos, $errores, 'dni', "El DNI es obligatorio");
+} elseif (!preg_match('/^[0-9]{8,10}$/', $dni)) {
+    agregarError($errores_campos, $errores, 'dni', "DNI debe tener entre 8 y 10 dígitos");
+}
+
+// Validar nombre
+if (strlen($nombre) < 3 || !preg_match('/^[a-zA-Z\s]+$/', $nombre) || substr_count($nombre, ' ') > 2) {
+    agregarError($errores_campos, $errores, 'nombre', "El nombre debe tener al menos 3 caracteres, solo puede contener letras y espacios, y no más de 2 espacios en blanco");
+}
+
+if (strlen($apellido) < 3 || !preg_match('/^[a-zA-Z\s]+$/', $apellido) || substr_count($apellido, ' ') > 2) {
+    agregarError($errores_campos, $errores, 'apellido', "El apellido debe tener al menos 3 caracteres, solo puede contener letras y espacios, y no más de 2 espacios en blanco");
+}
+
+
+
+
+// Validar email
+if (empty($email)) {
+    agregarError($errores_campos, $errores, 'email', "El email es obligatorio");
+} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    agregarError($errores_campos, $errores, 'email', "Formato de email inválido");
+}else{
+    $emailTrim = trim($email);
+    if (strlen($emailTrim) > 40) {
+        agregarError($errores_campos, $errores, 'email', "El email no puede exceder los 40 caracteres", false);
+    }
+}
+
+// Validar tipo de usuario
+if (empty($tipo_de_usuario)) {
+    agregarError($errores_campos, $errores, 'tipo_de_usuario', "Seleccione un tipo de usuario");
+}
+if (isset($tipo_de_usuario)) {
+    $tiposPermitidos = ['administrador', 'gerente', 'usuario']; // Ajusta según tus necesidades
+    if (!in_array($tipo_de_usuario, $tiposPermitidos)){
+        agregarError($errores_campos, $errores, 'tipo_de_usuario', "No existe ese tipo de usuario en el sistema");
     }
 
-    // Validar nombre
-    if (empty($nombre)) {
-        $errores_campos['nombre'] = "El nombre es obligatorio";
-        $errores[] = "El campo Nombre es obligatorio";
-    }
+}
 
-    // Validar apellido
-    if (empty($apellido)) {
-        $errores_campos['apellido'] = "El apellido es obligatorio";
-        $errores[] = "El campo Apellido es obligatorio";
-    }
+// Validar contraseña si se proporcionó
+if (!empty($clave) && strlen($clave) < 8) {
+    agregarError($errores_campos, $errores, 'clave', "La contraseña debe tener al menos 8 caracteres");
+}
 
-    // Validar email
-    if (empty($email)) {
-        $errores_campos['email'] = "El email es obligatorio";
-        $errores[] = "El campo Email es obligatorio";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errores_campos['email'] = "Formato de email inválido";
-        $errores[] = "El formato del email no es válido";
-    }
-
-    // Validar tipo de usuario
-    if (empty($tipo_de_usuario)) {
-        $errores_campos['tipo_de_usuario'] = "Seleccione un tipo de usuario";
-        $errores[] = "Debe seleccionar un tipo de usuario";
-    }
-
-    // Validar contraseña si se proporcionó
-    if (!empty($clave) && strlen($clave) < 8) {
-        $errores_campos['clave'] = "Mínimo 8 caracteres";
-        $errores[] = "La contraseña debe tener al menos 8 caracteres";
-    }
-
+// Si hay errores, guardar en sesión y redirigir
     // Verificar duplicados
     $usuario = new Usuario();
     $usuarioActual = $usuario->getUsuariosById($idUsuario);
@@ -115,10 +141,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $param['clave'] = $clave;
     }
 
+
     // Intentar guardar
     try {
         $resultado = $usuario->save($param);
-        
+        echo "resultado: " . $resultado;
         if ($resultado) {
             $_SESSION['mensaje_exito'] = "Usuario actualizado correctamente";
             header("Location: ../gerentesListados.php");

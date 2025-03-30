@@ -21,7 +21,7 @@ require_once "../../modelo/usuarioPieza.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener datos del formulario y almacenarlos en un array
-    //var_dump($_POST);
+    var_dump($_POST);
     $parametro = [
         'num_inventario' => '',
         'especie' => $_POST['especieP'],
@@ -96,6 +96,7 @@ if (isset($_POST['donante_nombre']) && !empty($_POST['donante_nombre']) && isset
     // Verificar si existe idPieza
     if (isset($_POST['idPieza']) && !empty($_POST['idPieza'])) {
         $parametro['idPieza'] = $_POST['idPieza']; // Agregar idPieza al array
+        $parametro['num_inventario'] = "NDH-".$_POST['idPieza']; // Agregar idPieza al array
         // Llamar a la función save para actualizar
         $pieza = new Pieza(); // Asegúrate de que la clase Pieza esté bien definida
         $pieza->save($parametro);
@@ -142,7 +143,7 @@ if (isset($_POST['donante_nombre']) && !empty($_POST['donante_nombre']) && isset
         }
     }
 
-die();
+//die();
 
 
     // Si la clasificación es Arqueología, realizar la inserción o actualización en la tabla específica

@@ -1,44 +1,53 @@
 <?php
 session_start();
 if (!isset($_SESSION['usuario_activo'])) {
-    // Redireccionar al index.php si no hay usuario activo
     header("Location: ../../index.php");
     exit;
 }
+if($_SESSION['nivel'] != 'administrador'){
+    header("Location: ./piezaslistado.php");
+}   
 require_once("../../modelo/bd.php");
 require_once("../../modelo/registros_eliminados.php");
 require_once("../../modelo/datos_eliminados.php");
+require_once("../../modelo/UsuarioPieza.php"); // Asegúrate de tener esta clase
 
-// Verificar si el ID es válido
 $IdPiezaViejo = isset($_GET['id']) ? intval($_GET['id']) : 0;
-echo "<pre>";
-var_dump($IdPiezaViejo);
-echo "</pre>";
+
 if ($IdPiezaViejo > 0) {
-    // Crear una instancia de la clase registros_eliminados
     $registro = new registros_eliminados();
-    $nuevoIdPieza = $registro->restorePieza($IdPiezaViejo); // Captura el ID restaurado
-    // Verificar el resultado de la restauración
-    if ($nuevoIdPieza) {  // Verifica que `$nuevoIdPieza` no sea falso
-        $_SESSION['mensaje'] = "Restaurado con éxito correctamente";
-        echo "Restaurado con éxito correctamente con el nuevo id:".$nuevoIdPieza."<br>";
+    $nuevoIdPieza = $registro->restorePieza($IdPiezaViejo);
+    
+    if ($nuevoIdPieza) {
+        // 1. Restaurar datos adicionales de la pieza
         $restaurarTabla = new DatosEliminados();
-        $datosTraidos = $restaurarTabla->getDatosEliminadosByPiezaId($IdPiezaViejo);
-        var_dump($datosTraidos);
+        $datosTraidos = $restaurarTabla->getAllDatosEliminadosByPiezaId($IdPiezaViejo);
+        $restaurarTabla->restorePiezaByTable($IdPiezaViejo, $nuevoIdPieza);
         
-        // Llamar a restorePiezaByTable con el nuevo ID restaurado
-        $restaurarTabla->restorePiezaByTable($IdPiezaViejo,$nuevoIdPieza);
+        // 2. Crear registro en usuario_has_pieza
+        $usuarioPieza = new UsuarioHasPieza();
+        $param = array(
+            'Usuario_idUsuario' => $_SESSION['id'],
+            'Pieza_idPieza' => $nuevoIdPieza
+        );
+        $result = $usuarioPieza->saveUsuarioPieza($param);
         
-        header("Location: ../eliminados.php?restaurado=1");
+        if($result) {
+            $_SESSION['mensaje'] = "Restaurado con éxito correctamente";
+            header("Location: ../eliminados.php?restaurado=1");
+        } else {
+            $_SESSION['mensaje'] = "Pieza restaurada pero error al asociar con usuario";
+            header("Location: ../eliminados.php?restaurado=2");
+        }
         exit();
     } else {
         $_SESSION['mensaje'] = "Error al restaurar el elemento.";
-        //header("Location: ../eliminados.php?restaurado=0");
+        header("Location: ../eliminados.php?restaurado=0");
         exit();
     }
 } else {
     $_SESSION['mensaje'] = "ID inválido.";
-    //header("Location: ../eliminados.php?restaurado=0");
+    header("Location: ../eliminados.php?restaurado=0");
     exit();
 }
 ?>

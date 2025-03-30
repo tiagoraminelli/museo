@@ -8,6 +8,8 @@ class UsuarioHasPieza {
     // Propiedades de la clase que coinciden con las columnas de la base de datos
     private $usuarioIdUsuario; // Clave foránea de usuario
     private $piezaIdPieza; // Clave foránea de pieza
+    private $fecha_resgistro; //
+    private $ultima_actualizacion; //
 
     // Constructor
     public function __construct($usuarioIdUsuario = null, $piezaIdPieza = null) {
@@ -31,6 +33,14 @@ class UsuarioHasPieza {
         return $this->piezaIdPieza;
     }
 
+    public function getFecha_resgistro() {
+        return $this->fecha_resgistro;
+    }
+
+    public function getUltima_actualizacion() {
+        return $this->ultima_actualizacion;
+    }
+
     // Setters
     public function setUsuarioIdUsuario($usuarioIdUsuario) {
         $this->usuarioIdUsuario = $usuarioIdUsuario;
@@ -40,6 +50,13 @@ class UsuarioHasPieza {
         $this->piezaIdPieza = $piezaIdPieza;
     }
 
+    public function setFecha_resgistro($fecha_resgistro) {
+        $this->fecha_resgistro = $fecha_resgistro;
+    }
+
+    public function setUltima_actualizacion($ultima_actualizacion) {
+        $this->ultima_actualizacion = $ultima_actualizacion;
+    }
     // Método para obtener todos los registros de la tabla usuario_has_pieza
     public function getAll() {
         $sql = "SELECT * FROM " . $this->table;
@@ -53,10 +70,14 @@ class UsuarioHasPieza {
     $sql = "SELECT 
     up.Usuario_idUsuario, 
     up.Pieza_idPieza, 
+    up.fecha_registro,
+    up.ultima_actualizacion,
     u.dni, 
     u.nombre, 
     u.apellido, 
-    p.fecha_ingreso 
+    p.fecha_ingreso,
+    p.num_inventario 
+
     FROM 
     usuario_has_pieza AS up
     INNER JOIN 

@@ -1,39 +1,24 @@
 <?php
 session_start();
 if(!isset($_SESSION['usuario_activo'])){
-    // Redireccionar al index.php si no hay usuario activo
     header("Location: ../index.php");
     exit;
 }
-// Verificar si el usuario está logueado
-require_once("../modelo/bd.php");
-require_once("../modelo/usuarioPieza.php");
-
-
-
-// Verificar el tipo de usuario
-if ($_SESSION['nivel'] != 'administrador') {
-    // Si el usuario no es de tipo "admin", redirigir a piezaslistado.php
+if($_SESSION['nivel'] != 'administrador'){
     header("Location: ./piezaslistado.php");
-    exit();
-}
-
+}   
+require_once("../modelo/bd.php");
+include('../modelo/usuarioPieza.php');
 // Crear una instancia de la clase UsuarioHasPieza
 $usuarioHasPieza = new UsuarioHasPieza();
 $breadcrumb = "Historial";
 // Parámetros de paginación
-$porPagina = 10; // Número de registros por página
-$paginaActual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
-$offset = ($paginaActual - 1) * $porPagina;
 
-// Obtener los registros con límite de paginación
-$registros = $usuarioHasPieza->getPaginados($porPagina, $offset);
 
-// Obtener el número total de registros para calcular la paginación
-$totalRegistros = $usuarioHasPieza->getCantidadRegistros();
-$totalPaginas = ceil($totalRegistros / $porPagina);
-
+// Obtener todos los registros eliminados
+$registros = $usuarioHasPieza->getAllDetalles();
 // Mensaje para el modal
+//var_dump($registros);
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
 unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
 ?>
@@ -42,10 +27,21 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Usuario-Pieza</title>
+    <title>Listado de Registros Eliminados</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../public/css/Pieza.css">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
+    <style>
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #dee2e6;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.25rem;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
 </head>
 <body>
 
@@ -53,30 +49,32 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
 <?php include('../includes/breadcrumb.php')?>
 
 <div class="container mt-5">
-    <h1 class="mb-4 text-center">Historial de cargas</h1>
-
-    <!-- Contenedor para descargar el historial -->
-    <div class="mb-4 text-center">
-        <p class="text-gray-700 mb-2">Descarga el historial completo de registros de usuario-pieza para tu documentación.</p>
-        <a href="./funciones/descargarHistorial.php" class="btn btn-primary">Descargar Historial</a>
-    </div>
+    <h1 class="mb-4 text-center">Registros de Usuario-Pieza</h1>
     
-    <table class="table table-hover table-bordered">
+    <div class="table-responsive">
+        <table id="tablaRegistros" class="table table-hover table-bordered table-striped" style="width:100%">
         <thead class="table-dark text-center">
             <tr>
                 <th>ID Usuario</th>
+                <th>Nombre</th>
                 <th>ID Pieza</th>
+                <th>CDH</th>
                 <th>Fecha de registro</th>
+                <th>Ultima actualizacion</th>
                 <th>Acciones</th>
             </tr>
         </thead>
+
         <tbody>
             <?php if (!empty($registros)) : ?>
                 <?php foreach ($registros as $registro) : ?>
                     <tr id="usuario-pieza-<?php echo $registro['Usuario_idUsuario']; ?>-<?php echo $registro['Pieza_idPieza']; ?>" class="text-center">
                         <td><?php echo $registro['Usuario_idUsuario']; ?></td>
+                        <td><?php echo $registro['nombre']; ?></td>
                         <td><?php echo $registro['Pieza_idPieza']; ?></td>
+                        <td><?php echo $registro['num_inventario']; ?></td>
                         <td><?php echo $registro['fecha_registro']; ?></td>
+                        <td><?php echo $registro['ultima_actualizacion']; ?></td>
                         <td>
                             <a href="funciones/eliminarHistorial.php?usuario=<?php echo $registro['Usuario_idUsuario']; ?>&pieza=<?php echo $registro['Pieza_idPieza']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
                         </td>
@@ -88,102 +86,112 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
                 </tr>
             <?php endif; ?>
         </tbody>
-    </table>
-
-    <nav aria-label="Paginación">
-        <ul class="pagination justify-content-center">
-            <li class="page-item <?php echo $paginaActual == 1 ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?pagina=<?php echo $paginaActual - 1; ?>" tabindex="-1">Anterior</a>
-            </li>
-
-            <?php for ($i = 1; $i <= $totalPaginas; $i++) : ?>
-                <li class="page-item <?php echo $i == $paginaActual ? 'active' : ''; ?>">
-                    <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php endfor; ?>
-
-            <li class="page-item <?php echo $paginaActual == $totalPaginas ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?pagina=<?php echo $paginaActual + 1; ?>">Siguiente</a>
-            </li>
-        </ul>
-    </nav>
-
-    <!-- Modal de confirmación de eliminación -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">Confirmación de Eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que deseas eliminar este elemento?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmDelete">Eliminar</button>
-                </div>
-            </div>
-        </div>
+        </table>
     </div>
 
     <!-- Mensaje de eliminación -->
-    <div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="mensajeModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="mensajeModalLabel">Resultado de la Eliminación</h5>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Resultado de la Operación</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <?php if ($mensaje) : ?>
-                        <p><?php echo $mensaje; ?></p>
+                        <p><?php echo htmlspecialchars($mensaje); ?></p>
                     <?php else : ?>
                         <p>No se pudo realizar la operación.</p>
                     <?php endif; ?>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<!-- Agrega estas librerías en el head o antes del script de DataTables -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Mostrar el modal de mensaje si hay un mensaje
-        <?php if ($mensaje) : ?>
-            var mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
-            mensajeModal.show();
-        <?php endif; ?>
-
-        // Eliminar el elemento al confirmar
-        document.getElementById('confirmDelete').addEventListener('click', function () {
-            var usuarioId = this.getAttribute('data-usuario');
-            var piezaId = this.getAttribute('data-pieza');
-            window.location.href = 'funciones/eliminarHistorial.php?usuario=' + usuarioId + '&pieza=' + piezaId;
-        });
+$(document).ready(function() {
+    // Inicializar DataTable
+    $('#tablaRegistros').DataTable({
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
+        },
+        dom: '<"row"<"col-md-6"B><"col-md-6"f>>rtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                text: '<i class="bi bi-file-pdf "></i> PDF',
+                className: 'btn btn-danger',
+                orientation: 'portrait', // o 'landscape'
+                pageSize: 'A4',
+                exportOptions: {
+                    columns: ':visible', // exportar solo columnas visibles
+                    modifier: {
+                        page: 'current' // exportar solo página actual
+                    }
+                },
+                customize: function(doc) {
+                    // Personalización del documento PDF
+                    doc.defaultStyle.fontSize = 10;
+                    doc.styles.tableHeader.fontSize = 11;
+                    doc.styles.title.fontSize = 14;
+                    
+                    // Agregar título
+                    doc.content.splice(0, 0, {
+                        text: 'Reporte de Registros Eliminados',
+                        style: 'title',
+                        alignment: 'center',
+                        margin: [0, 0, 0, 20]
+                    });
+                    
+                    // Agregar fecha
+                    doc.content.splice(1, 0, {
+                        text: 'Generado el: ' + new Date().toLocaleDateString(),
+                        alignment: 'right',
+                        margin: [0, 0, 0, 10]
+                    });
+                }
+            },
+            {
+                extend: 'excel',
+                text: '<i class="bi bi-file-excel"></i> Excel',
+                className: 'btn btn-success'
+            },
+            {
+                extend: 'print',
+                text: '<i class="bi bi-printer"></i> Imprimir',
+                className: 'btn btn-info'
+            }
+        ],
+        responsive: true,
+        pageLength: 10,
+        order: [[0, 'desc']] // Ordenar por ID descendente por defecto
     });
 
-    // Mostrar modal de confirmación de eliminación
-    var deleteButtons = document.querySelectorAll('.btn-danger');
-    deleteButtons.forEach(function (button) {
-        button.addEventListener('click', function (e) {
-            var usuarioId = this.closest('tr').querySelector('td:nth-child(1)').textContent;
-            var piezaId = this.closest('tr').querySelector('td:nth-child(2)').textContent;
-            document.getElementById('confirmDelete').setAttribute('data-usuario', usuarioId);
-            document.getElementById('confirmDelete').setAttribute('data-pieza', piezaId);
-        });
-    });
-
+    // Mostrar el modal de mensaje si hay un mensaje
+    <?php if ($mensaje) : ?>
+        var mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+        mensajeModal.show();
+    <?php endif; ?>
+});
 </script>
 
 <?php include('../includes/footer.php') ?>
-
 </body>
 </html>

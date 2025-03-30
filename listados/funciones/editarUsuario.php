@@ -47,6 +47,13 @@ if (isset($_SESSION['datos_formulario'])) {
         .is-invalid {
             border-color: #dc3545;
         }
+        .error-message p {
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
+}
+.error-message p:not(:last-child) {
+    margin-bottom: 0.3rem;
+}
     </style>
 </head>
 <body>
@@ -55,27 +62,6 @@ if (isset($_SESSION['datos_formulario'])) {
 <div class="container mt-5">
     <h1 class="mb-4 text-center">Editar Usuario</h1>
 
-    <?php if (isset($_SESSION['error_edicion'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?php echo htmlspecialchars($_SESSION['error_edicion']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <?php unset($_SESSION['error_edicion']); ?>
-    <?php endif; ?>
-
-    <?php if (isset($_SESSION['errores_validacion'])): ?>
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <h5 class="alert-heading">Por favor corrige los siguientes errores:</h5>
-            <ul class="mb-0">
-                <?php foreach ($_SESSION['errores_validacion'] as $error): ?>
-                    <li><?php echo htmlspecialchars($error); ?></li>
-                <?php endforeach; ?>
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <?php unset($_SESSION['errores_validacion']); ?>
-    <?php endif; ?>
-
     <form method="POST" action="../funciones/funcionEditarUsuario.php">
         <input type="hidden" name="idUsuario" value="<?php echo htmlspecialchars($datosFormulario['idUsuario']); ?>">
         
@@ -83,40 +69,57 @@ if (isset($_SESSION['datos_formulario'])) {
             <label for="dni" class="form-label">DNI</label>
             <input type="text" class="form-control <?php echo (isset($_SESSION['errores_campos']['dni']) ? 'is-invalid' : ''); ?>" 
                    id="dni" name="dni" value="<?php echo htmlspecialchars($datosFormulario['dni']); ?>" required>
-            <?php if (isset($_SESSION['errores_campos']['dni'])): ?>
-                <div class="error-message"><?php echo htmlspecialchars($_SESSION['errores_campos']['dni']); ?></div>
-                <?php unset($_SESSION['errores_campos']['dni']); ?>
-            <?php endif; ?>
+                   <?php if (isset($_SESSION['errores_campos']['dni'])): ?>
+    <div class="error-message">
+        <?php foreach ((array)$_SESSION['errores_campos']['dni'] as $error): ?>
+            <p><?php echo htmlspecialchars($error); ?></p>
+        <?php endforeach; ?>
+    </div>
+    <?php unset($_SESSION['errores_campos']['dni']); ?>
+<?php endif; ?>
         </div>
         
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
             <input type="text" class="form-control <?php echo (isset($_SESSION['errores_campos']['nombre']) ? 'is-invalid' : ''); ?>" 
                    id="nombre" name="nombre" value="<?php echo htmlspecialchars($datosFormulario['nombre']); ?>" required>
-            <?php if (isset($_SESSION['errores_campos']['nombre'])): ?>
-                <div class="error-message"><?php echo htmlspecialchars($_SESSION['errores_campos']['nombre']); ?></div>
-                <?php unset($_SESSION['errores_campos']['nombre']); ?>
-            <?php endif; ?>
+                   <?php if (isset($_SESSION['errores_campos']['nombre'])): ?>
+    <div class="error-message">
+        <?php foreach ((array)$_SESSION['errores_campos']['nombre'] as $error): ?>
+            <p><?php echo htmlspecialchars($error); ?></p>
+        <?php endforeach; ?>
+    </div>
+    <?php unset($_SESSION['errores_campos']['nombre']); ?>
+<?php endif; ?>
         </div>
         
         <div class="mb-3">
             <label for="apellido" class="form-label">Apellido</label>
             <input type="text" class="form-control <?php echo (isset($_SESSION['errores_campos']['apellido']) ? 'is-invalid' : ''); ?>" 
                    id="apellido" name="apellido" value="<?php echo htmlspecialchars($datosFormulario['apellido']); ?>" required>
-            <?php if (isset($_SESSION['errores_campos']['apellido'])): ?>
-                <div class="error-message"><?php echo htmlspecialchars($_SESSION['errores_campos']['apellido']); ?></div>
-                <?php unset($_SESSION['errores_campos']['apellido']); ?>
-            <?php endif; ?>
+                   <?php if (isset($_SESSION['errores_campos']['apellido'])): ?>
+    <div class="error-message">
+        <?php foreach ((array)$_SESSION['errores_campos']['apellido'] as $error): ?>
+            <p><?php echo htmlspecialchars($error); ?></p>
+        <?php endforeach; ?>
+    </div>
+    <?php unset($_SESSION['errores_campos']['apellido']); ?>
+<?php endif; ?>
         </div>
         
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control <?php echo (isset($_SESSION['errores_campos']['email']) ? 'is-invalid' : ''); ?>" 
                    id="email" name="email" value="<?php echo htmlspecialchars($datosFormulario['email']); ?>" required>
-            <?php if (isset($_SESSION['errores_campos']['email'])): ?>
-                <div class="error-message"><?php echo htmlspecialchars($_SESSION['errores_campos']['email']); ?></div>
-                <?php unset($_SESSION['errores_campos']['email']); ?>
-            <?php endif; ?>
+                   <?php if (isset($_SESSION['errores_campos']['email'])): ?>
+    <div class="error-message">
+        <?php foreach ((array)$_SESSION['errores_campos']['email'] as $error): ?>
+            <p><?php echo htmlspecialchars($error); ?></p>
+        <?php endforeach; ?>
+    </div>
+    <?php unset($_SESSION['errores_campos']['email']); ?>
+<?php endif; ?>
+                   
         </div>
         
         <div class="mb-3">
@@ -137,10 +140,7 @@ if (isset($_SESSION['datos_formulario'])) {
                 <option value="gerente" <?php echo ($datosFormulario['tipo_de_usuario'] == 'gerente') ? 'selected' : ''; ?>>Gerente</option>
                 <option value="administrador" <?php echo ($datosFormulario['tipo_de_usuario'] == 'administrador') ? 'selected' : ''; ?>>Admin</option>
             </select>
-            <?php if (isset($_SESSION['errores_campos']['tipo_de_usuario'])): ?>
-                <div class="error-message"><?php echo htmlspecialchars($_SESSION['errores_campos']['tipo_de_usuario']); ?></div>
-                <?php unset($_SESSION['errores_campos']['tipo_de_usuario']); ?>
-            <?php endif; ?>
+
         </div>
         
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">

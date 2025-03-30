@@ -161,12 +161,20 @@ class DatosEliminados extends Pieza {
     }
 
     // Método para obtener todos los registros de la tabla datos_eliminados
-    public function getAllDatosEliminados() {
-        $sql = "SELECT * FROM " . $this->table;
-        $stmt = $this->conection->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna todos los resultados de la consulta
-    }
+// En tu clase DatosEliminados
+public function getAllDatosEliminadosByPiezaId($Pieza_idPieza) {
+    $sql = "SELECT * FROM " . $this->table . " WHERE Pieza_idPieza = ?";
+    $stmt = $this->conection->prepare($sql);
+    $stmt->execute([$Pieza_idPieza]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna todos los resultados
+}
+
+public function getAllDatosEliminados() {
+    $sql = "SELECT * FROM " . $this->table;
+    $stmt = $this->conection->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna todos los resultados
+}
 
     public function getTotalDatosEliminados() {
         $sql = "SELECT COUNT(*) FROM datos_eliminados";
@@ -176,12 +184,7 @@ class DatosEliminados extends Pieza {
     }
 
     // Método para obtener un registro de datos eliminados por idPieza
-    public function getDatosEliminadosByPiezaId($Pieza_idPieza) {
-        $sql = "SELECT * FROM " . $this->table . " WHERE Pieza_idPieza = ?";
-        $stmt = $this->conection->prepare($sql);
-        $stmt->execute([$Pieza_idPieza]);
-        return $stmt->fetch(PDO::FETCH_ASSOC); // Retorna un solo resultado
-    }
+
 
     // Método para obtener un registro de datos eliminados por idClasificacion
     public function getDatosEliminadosByClasificacionId($IdClasificacion) {
@@ -214,7 +217,6 @@ class DatosEliminados extends Pieza {
             if (!$deletedData) {
                 throw new Exception("Registro no encontrado en datos_eliminados.");
             }
-    
             // Preparar la consulta de inserción según la tabla de clasificación
             switch ($deletedData['Tabla']) {
                 case 'Paleontología':

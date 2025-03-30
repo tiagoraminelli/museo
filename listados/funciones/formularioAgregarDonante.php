@@ -46,7 +46,7 @@ if (isset($_GET['idDonante'])) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body class="bg-gray-100">
-<?php include('../../includes/navFunciones.php') ?>
+<?php include('../../includes/navbar.php') ?>
 
 
 <div class="container mt-5">

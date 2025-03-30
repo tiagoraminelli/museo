@@ -196,8 +196,27 @@ class Usuario {
         $sql="DELETE FROM ".$this->table." WHERE `idUsuario` = ? "; //armamos la cadena sql 
         $stmt=$this->conection->prepare($sql); //metemos la cadena que armamos para armar la consulta
         return $stmt->execute([$id]); //ejecutamos la consulta
+    }public function buscarUsuario($search, $exactMatch = false) {
+        // Definir la consulta SQL base
+        $sql = "SELECT * FROM " . $this->table . " 
+                WHERE dni LIKE :search 
+                OR nombre LIKE :search 
+                OR apellido LIKE :search 
+                OR email LIKE :search 
+                OR fecha_alta LIKE :search
+                OR tipo_de_usuario LIKE :search";
+        
+        // Preparar el término de búsqueda
+        $searchTerm = $exactMatch ? $search : '%' . $search . '%';
+        
+        // Preparar la consulta
+        $stmt = $this->conection->prepare($sql);
+        $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
+        
+        // Ejecutar y retornar resultados
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
     public function save($param) {
         $this->getConection();
@@ -214,6 +233,7 @@ class Usuario {
                 $this->nombre = $ActualInstancia['nombre'];
                 $this->apellido = $ActualInstancia['apellido'];
                 $this->email = $ActualInstancia['email'];
+                $this->tipo_de_usuario = $ActualInstancia['tipo_de_usuario'];
                 $this->clave = $ActualInstancia['clave'];
             }
         }
@@ -239,19 +259,32 @@ class Usuario {
         if (!isset($param['fecha_alta'])) {
             $this->fecha_alta = date('Y-m-d');
         }
-        if (!isset($param['tipo_de_usuario'])) {
-            $this->tipo_de_usuario = "gerente";
+        if (isset($param['tipo_de_usuario'])) {
+            $this->tipo_de_usuario = $param['tipo_de_usuario'];
         }
 
 //echo "INSERT INTO `usuario` (`dni`, `nombre`, `apellido`, `email`, `clave`,`fecha_alta`,`tipo_de_usuario``) VALUES ($this->dni,$this->nombre,$this->apellido,$this->email,$this->clave,$this->fecha_alta,$this->tipo_de_usuario)"."<br>";
 
+
         // Insert or update logic
         if ($exists) {
-            $sql = "UPDATE `usuario` SET `dni` = ?, `nombre` = ?, `apellido` = ?, `email` = ?, `clave` = ? WHERE `idUsuario` = ?";
+            $sql = "UPDATE `usuario` SET `dni` = ?, `nombre` = ?, `apellido` = ?, `email` = ?,`tipo_de_usuario`= ?, `clave` = ? WHERE `idUsuario` = ?";
             $stmt = $this->conection->prepare($sql);
+            
+            ///
+            // echo "SQL a ejecutar: " . $sql . "<br>";
+            // echo "Valores: <br>";
+            // echo "dni: " . htmlspecialchars($this->dni) . "<br>";
+            // echo "nombre: " . htmlspecialchars($this->nombre) . "<br>";
+            // echo "apellido: " . htmlspecialchars($this->apellido) . "<br>";
+            // echo "email: " . htmlspecialchars($this->email) . "<br>";
+            // echo "tipo_de_usuario: " . htmlspecialchars($this->tipo_de_usuario) . "<br>";
+            // echo "clave: " . (!empty($this->clave) ? "[contraseña no mostrada]" : "vacía") . "<br>";
+            // echo "idUsuario: " . htmlspecialchars($this->idUsuario) . "<br>";
+            // //
             //die($sql);
             $stmt->execute([
-                $this->dni, $this->nombre, $this->apellido, $this->email, $this->clave, $this->idUsuario
+                $this->dni, $this->nombre, $this->apellido, $this->email, $this->tipo_de_usuario, $this->clave, $this->idUsuario
             ]);
         } else {
             $sql = "INSERT INTO `usuario` (`dni`, `nombre`, `apellido`, `email`, `clave`, `fecha_alta`, `tipo_de_usuario`) VALUES (?, ?, ?, ?, ?, ?, ?)";

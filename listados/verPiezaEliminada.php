@@ -1,6 +1,5 @@
 <?php
 session_start();
-// Verificar si el usuario está logueado (puedes usar una variable de sesión específica)
 require_once("../modelo/bd.php");
 require_once("../modelo/datos_eliminados.php");
 
@@ -12,33 +11,45 @@ if($_SESSION['nivel'] != 'administrador'){
     header("Location: ./piezaslistado.php");
 }   
 
-// Crear una instancia de la clase DatosEliminados
 $datosEliminados = new DatosEliminados();
 $breadcrumb = "Datos Eliminados";
-// Parámetros de paginación
-$porPagina = 10; // Número de registros por página
-$paginaActual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
-$offset = ($paginaActual - 1) * $porPagina;
 
-// Obtener los registros eliminados con límite de paginación
-$datos = $datosEliminados->getDatosEliminadosPaginadas($porPagina, $offset); // Asegúrate de implementar paginación en esta función
-$totalRegistros = $datosEliminados->getTotalDatosEliminados();
-// Obtener el total de registros
-//echo $totalRegistros;
-$totalPaginas = ceil($totalRegistros / $porPagina);
+// Obtener el ID de la pieza desde GET
+$idPieza = isset($_GET['id']) ? intval($_GET['id']) : null;
 
-// Mensaje para el modal
+// Obtener todos los registros o solo los de una pieza específica si hay ID
+if($idPieza) {
+    // Usar método que devuelve múltiples resultados (fetchAll)
+    $datos = $datosEliminados->getAllDatosEliminadosByPiezaId($idPieza);
+} else {
+    // Obtener todos los registros eliminados
+    $datos = $datosEliminados->getAllDatosEliminados();
+}
+
 $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : '';
-unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
+unset($_SESSION['mensaje']);
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Datos Eliminados</title>
+    <title>Listado de Registros Eliminados</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
+    <style>
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #dee2e6;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.25rem;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
 </head>
 <body>
 
@@ -46,76 +57,159 @@ unset($_SESSION['mensaje']); // Limpiar mensaje después de mostrarlo
 <?php include('../includes/breadcrumb.php')?>
 
 <div class="container mt-5">
-    <h1 class="mb-4 text-center">Datos Eliminados</h1>
+    <h1 class="mb-4 text-center">Datos de Registros Eliminados</h1>
     
-    <table class="table table-hover table-bordered">
-        <thead class="bg-white text-center">
-            <tr>
-                <th>ID Eliminado</th>
-                <th>ID Pieza</th>
-                <th>ID Clasificación</th>
-                <th>Tabla</th>
-                <th>Campo 1</th>
-                <th>Campo 2</th>
-                <th>Campo 3</th>
-                <th>Campo 4</th>
-                <th>Campo 5</th>
-                <th>Campo 6</th>
-                <th>Campo 7</th>
-                <th>Campo 8</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($datos)) : ?>
-                <?php foreach ($datos as $dato) : ?>
-                    <tr class="text-center">
-                        <td><?php echo $dato['id']; ?></td>
-                        <td><?php echo $dato['Pieza_idPieza']; ?></td>
-                        <td><?php echo $dato['IdClasificacion']; ?></td>
-                        <td><?php echo $dato['Tabla']; ?></td>
-                        <td><?php echo $dato['campo1']; ?></td>
-                        <td><?php echo $dato['campo2']; ?></td>
-                        <td><?php echo $dato['campo3']; ?></td>
-                        <td><?php echo $dato['campo4']; ?></td>
-                        <td><?php echo $dato['campo5']; ?></td>
-                        <td><?php echo $dato['campo6']; ?></td>
-                        <td><?php echo $dato['campo7']; ?></td>
-                        <td><?php echo $dato['campo8']; ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else : ?>
+    <div class="table-responsive">
+        <table id="tablaRegistros" class="table table-hover table-bordered table-striped" style="width:100%">
+        <thead class="bg-light">
                 <tr>
-                    <td colspan="12" class="text-center">No hay datos eliminados.</td>
+                    <th>ID Eliminado</th>
+                    <th>ID Pieza</th>
+                    <th>ID Clasificación</th>
+                    <th>Tabla</th>
+                    <th>Campo 1</th>
+                    <th>Campo 2</th>
+                    <th>Campo 3</th>
+                    <th>Campo 4</th>
+                    <th>Acciones</th>
                 </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+            </thead>
 
-    <nav aria-label="Paginación" class="mb-4">>
-        <ul class="pagination justify-content-center">
-            <li class="page-item <?php echo $paginaActual == 1 ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?pagina=<?php echo $paginaActual - 1; ?>" tabindex="-1">Anterior</a>
-            </li>
+            <tbody>
+                <?php if (!empty($datos)) : ?>
+                    <?php foreach ($datos as $dato) : ?>
+                        <tr class="<?php echo ($idPieza && $dato['Pieza_idPieza'] == $idPieza) ? 'highlight' : ''; ?>">
+                            <td><?php echo htmlspecialchars($dato['id']); ?></td>
+                            <td><?php echo htmlspecialchars($dato['Pieza_idPieza']); ?></td>
+                            <td><?php echo htmlspecialchars($dato['IdClasificacion']); ?></td>
+                            <td><?php echo htmlspecialchars($dato['Tabla']); ?></td>
+                            <td><?php echo htmlspecialchars($dato['campo1']); ?></td>
+                            <td><?php echo htmlspecialchars($dato['campo2']); ?></td>
+                            <td><?php echo htmlspecialchars($dato['campo3']); ?></td>
+                            <td><?php echo htmlspecialchars($dato['campo4']); ?></td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="./funciones/restaurarRegistro.php?id=<?php echo $dato['Pieza_idPieza']; ?>" 
+                                       class="btn btn-success btn-sm"
+                                       onclick="return confirm('¿Restaurar este registro?')">Restaurar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <tr>
+                        <td colspan="13" class="text-center">
+                            No hay datos eliminados<?php echo $idPieza ? " para la pieza $idPieza" : ""; ?>.
+                        </td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 
-            <?php for ($i = 1; $i <= $totalPaginas; $i++) : ?>
-                <li class="page-item <?php echo $i == $paginaActual ? 'active' : ''; ?>">
-                    <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php endfor; ?>
-
-            <li class="page-item <?php echo $paginaActual == $totalPaginas ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?pagina=<?php echo $paginaActual + 1; ?>">Siguiente</a>
-            </li>
-        </ul>
-    </nav>
+    <!-- Mensaje de eliminación -->
+    <div class="modal fade" id="mensajeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Resultado de la Operación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php if ($mensaje) : ?>
+                        <p><?php echo htmlspecialchars($mensaje); ?></p>
+                    <?php else : ?>
+                        <p>No se pudo realizar la operación.</p>
+                    <?php endif; ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-
-
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<!-- Agrega estas librerías en el head o antes del script de DataTables -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script>
+$(document).ready(function() {
+    // Inicializar DataTable
+    $('#tablaRegistros').DataTable({
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
+        },
+        dom: '<"row"<"col-md-6"B><"col-md-6"f>>rtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                text: '<i class="bi bi-file-pdf "></i> PDF',
+                className: 'btn btn-danger',
+                orientation: 'portrait', // o 'landscape'
+                pageSize: 'A4',
+                exportOptions: {
+                    columns: ':visible', // exportar solo columnas visibles
+                    modifier: {
+                        page: 'current' // exportar solo página actual
+                    }
+                },
+                customize: function(doc) {
+                    // Personalización del documento PDF
+                    doc.defaultStyle.fontSize = 10;
+                    doc.styles.tableHeader.fontSize = 11;
+                    doc.styles.title.fontSize = 14;
+                    
+                    // Agregar título
+                    doc.content.splice(0, 0, {
+                        text: 'Reporte de Registros Eliminados',
+                        style: 'title',
+                        alignment: 'center',
+                        margin: [0, 0, 0, 20]
+                    });
+                    
+                    // Agregar fecha
+                    doc.content.splice(1, 0, {
+                        text: 'Generado el: ' + new Date().toLocaleDateString(),
+                        alignment: 'right',
+                        margin: [0, 0, 0, 10]
+                    });
+                }
+            },
+            {
+                extend: 'excel',
+                text: '<i class="bi bi-file-excel"></i> Excel',
+                className: 'btn btn-success'
+            },
+            {
+                extend: 'print',
+                text: '<i class="bi bi-printer"></i> Imprimir',
+                className: 'btn btn-info'
+            }
+        ],
+        responsive: true,
+        pageLength: 10,
+        order: [[0, 'desc']] // Ordenar por ID descendente por defecto
+    });
 
+    // Mostrar el modal de mensaje si hay un mensaje
+    <?php if ($mensaje) : ?>
+        var mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+        mensajeModal.show();
+    <?php endif; ?>
+});
+</script>
+
+<?php include('../includes/footer.php') ?>
 </body>
-<footer class="bg-dark text-white text-center py-3">
-    <p>&copy; 2024 Museo de Ciencias. Todos los derechos reservados.</p>
-</footer>
 </html>

@@ -271,7 +271,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-        <a href="listarPiezas.php" class="btn btn-secondary">Cancelar</a>
+        <a href="../piezasListado.php" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 
