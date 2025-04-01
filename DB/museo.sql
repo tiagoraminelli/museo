@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-12-2024 a las 20:48:31
+-- Tiempo de generación: 01-04-2025 a las 03:32:14
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -139,23 +139,6 @@ CREATE TABLE `datos_eliminados` (
   `campo8` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `datos_eliminados`
---
-
-INSERT INTO `datos_eliminados` (`id`, `Pieza_idPieza`, `IdClasificacion`, `Tabla`, `campo1`, `campo2`, `campo3`, `campo4`, `campo5`, `campo6`, `campo7`, `campo8`) VALUES
-(74, 100, 37, 'Geología', 'sedimentarias', 'root', NULL, NULL, NULL, NULL, NULL, NULL),
-(75, 102, 21, 'Paleontología', 'Precámbrico', 'Cretácico', 'root', NULL, NULL, NULL, NULL, NULL),
-(76, 104, 14, 'Osteología', 'root', 'root', NULL, NULL, NULL, NULL, NULL, NULL),
-(77, 106, 8, 'Ictiología', 'root', 'root', 'root', NULL, NULL, NULL, NULL, NULL),
-(78, 108, 8, 'Arqueologia', 'buena', 'mala', 'bronce', NULL, NULL, NULL, NULL, NULL),
-(79, 115, 8, 'Octologia', 'root', 'root', 'root', 'root', NULL, NULL, NULL, NULL),
-(80, 117, 11, 'Botánica', 'root', 'root', 'root', 'root', 'root', 'root', 'root', NULL),
-(81, 123, 13, 'Zoologia', 'rooteado', 'root', 'root', 'root', 'root', 'root', 'root', 'root'),
-(82, 124, 41, 'Geología', 'ígneas', 'a', NULL, NULL, NULL, NULL, NULL, NULL),
-(83, 125, 42, 'Geología', 'ígneas', 'root', NULL, NULL, NULL, NULL, NULL, NULL),
-(84, 129, 12, 'Botánica', 'root', 'root', 'root', 'root', 'root', 'root', 'root', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -170,13 +153,6 @@ CREATE TABLE `donadores_eliminados` (
   `fecha` date DEFAULT NULL,
   `fecha_eliminacion` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `donadores_eliminados`
---
-
-INSERT INTO `donadores_eliminados` (`id`, `idDonante`, `nombre`, `apellido`, `fecha`, `fecha_eliminacion`) VALUES
-(1, 12, 'root', 'root', '2024-11-11', '2024-11-04 00:36:29');
 
 -- --------------------------------------------------------
 
@@ -207,7 +183,8 @@ INSERT INTO `donante` (`idDonante`, `nombre`, `apellido`, `fecha`) VALUES
 (9, 'Leo', 'Juarez', '2024-11-01'),
 (10, 'Yamil', 'Pelapis', '2024-11-01'),
 (11, 'javier', 'milei', '2024-11-01'),
-(13, 'rosalba', 'itati', '2024-12-19');
+(13, 'rosalba', 'itati', '2024-12-19'),
+(14, 'rott', 'r', '2025-02-25');
 
 --
 -- Disparadores `donante`
@@ -232,6 +209,13 @@ CREATE TABLE `geologia` (
   `descripcion` longtext DEFAULT NULL,
   `Pieza_idPieza` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `geologia`
+--
+
+INSERT INTO `geologia` (`idGeologia`, `tipo_rocas`, `descripcion`, `Pieza_idPieza`) VALUES
+(45, 'sedimentarias', 'root', 147);
 
 --
 -- Disparadores `geologia`
@@ -274,7 +258,7 @@ CREATE TABLE `ictiologia` (
 --
 
 INSERT INTO `ictiologia` (`idIctiologia`, `clasificacion`, `especies`, `descripcion`, `Pieza_idPieza`) VALUES
-(9, 'root', 'root', 'root', 127);
+(10, 'root', 'root', 'root', 142);
 
 --
 -- Disparadores `ictiologia`
@@ -395,7 +379,7 @@ CREATE TABLE `paleontologia` (
 --
 
 INSERT INTO `paleontologia` (`idPaleontologia`, `era`, `periodo`, `descripcion`, `Pieza_idPieza`) VALUES
-(22, 'Precámbrico', 'Paleógeno', 'root', 126);
+(27, 'Paleozoico', 'Ordovícico', 'aaaaaaaaaa', 144);
 
 --
 -- Disparadores `paleontologia`
@@ -446,14 +430,23 @@ CREATE TABLE `pieza` (
 --
 
 INSERT INTO `pieza` (`idPieza`, `num_inventario`, `especie`, `estado_conservacion`, `fecha_ingreso`, `cantidad_de_piezas`, `clasificacion`, `observacion`, `imagen`, `Donante_idDonante`) VALUES
-(126, 'MCN1', 'root', 'root', '2024-12-16', '1', 'Paleontología', 'root', 'paleontologia.webp', 13),
-(127, 'MCN2', 'root', '1', '2024-12-19', '1', 'Ictiología', 'root', 'ictiologia.webp', 4),
-(128, 'MCN3', 'root', 'root', '2024-12-19', '1', 'Zoología', 'root', 'zologia.webp', 6),
-(130, 'MCN5', 'root', 'root', '2024-12-19', '1', 'Arqueología', 'root', 'arqueologia.webp', 6);
+(130, 'MCN5', 'root', 'root', '2024-12-19', '1', 'Arqueología', 'root', 'arqueologia.webp', 6),
+(142, 'NDH-127', 'root', 'bueno', '2024-12-19', '6', 'Ictiología', 'root', '', 4),
+(144, 'NDH-144', 'root', 'root', '2025-03-30', '1 Kilo', 'Paleontología', 'aaaaaaaaaaa', '', 6),
+(147, 'NVH1', 'root', 'root', '2024-11-12', '1', 'Geología', 'root', 'adios definitivo.jpeg', 6),
+(148, 'NDH-148', 'root', 'root', '2024-12-19', '2', 'Zoología', 'root', '', 6);
 
 --
 -- Disparadores `pieza`
 --
+DELIMITER $$
+CREATE TRIGGER `after_pieza_update` AFTER UPDATE ON `pieza` FOR EACH ROW BEGIN
+    UPDATE usuario_has_pieza
+    SET  ultima_actualizacion = CURRENT_TIMESTAMP()
+    WHERE Pieza_idPieza = NEW.idPieza;
+END
+$$
+DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `eliminar_piezas_heredadas` AFTER DELETE ON `pieza` FOR EACH ROW BEGIN
     -- Intentar eliminar registros de osteologia
@@ -576,23 +569,6 @@ CREATE TABLE `registros_eliminados` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `registros_eliminados`
---
-
-INSERT INTO `registros_eliminados` (`id`, `idPieza`, `num_inventario`, `especie`, `estado_conservacion`, `fecha_ingreso`, `cantidad_de_piezas`, `clasificacion`, `observacion`, `imagen`, `Donante_idDonante`) VALUES
-(109, 100, 'NVH1', 'root', 'root', '2024-11-12', '1', 'Geología', 'root', 'adios definitivo.jpeg', 6),
-(110, 102, 'NVH2', 'root', 'root', '2024-11-01', '1', 'Paleontología', 'root', 'fondo encabezado.webp', 6),
-(111, 104, 'NVH3', 'root', 'root', '2024-11-01', '1', 'Osteología', 'root', '', 6),
-(112, 106, 'NVH4', 'root', 'root', '2024-11-01', '1', 'Ictiología', 'root', 'adios.webp', 9),
-(113, 108, 'NVH5', 'root', 'root', '2024-11-01', '1', 'Arqueología', 'root', 'mercado pago.webp', 6),
-(114, 115, 'NVH6', 'root', 'root', '2024-11-01', '1', 'Octología', 'root', '', 6),
-(115, 117, 'NVH7', 'root', 'root', '2024-11-01', '1', 'Botánica', 'root', 'fondo encabezado.webp', 6),
-(116, 123, 'NVH8', 'root', 'root', '2024-11-01', '1', 'Zoología', 'root', 'fondo.webp', 11),
-(117, 124, 'HISTORIAL ROOT', '123123', '1', '2024-11-03', '1', 'Geología', 'a', '', 6),
-(118, 125, 'HISTORIAL ROOT', '123123', '1', '2024-11-03', '1', 'Geología', 'root', '', 6),
-(119, 129, 'MCN4', 'root', 'root', '2024-12-19', '1', 'Botánica', 'root', '', 8);
-
---
 -- Disparadores `registros_eliminados`
 --
 DELIMITER $$
@@ -624,10 +600,13 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`idUsuario`, `dni`, `nombre`, `apellido`, `email`, `clave`, `fecha_alta`, `tipo_de_usuario`) VALUES
-(11, '43766375', 'tiago', 'Raminelli', 'tiagoraminelli@gmail.com', '1234', '2024-10-29', 'administrador'),
-(14, '10000000', 'admin', 'profes', 'admin@gmail.com', '12345678', '2024-12-19', 'administrador'),
-(15, '20000000', 'gerente', 'profes', 'ger@gmail.com', '12345678', '2024-12-19', 'gerente'),
-(16, '11323121', 'root', 'aaaa', 'oasjda@gmail.com', '$2y$10$bRRbfheVmaYB9aXLWHopIOrJDepqriaWg10gNf6008.Xk3tTAqQlC', '2024-12-19', 'gerente');
+(11, '43766375', 'tiago', 'Raminelli', 'tiagoraminelli@gmail.com', 'abcd1234', '2024-10-29', 'administrador'),
+(15, '10103030', 'gerentes', 'professss', 'correcciondeErrores@gmail.com', '$2y$10$sZ.bl1hI37FiLLpTDKROiuzMz5/wUm5t/fK1qGRN5WBSuUYv3NVY2', '2024-12-19', 'gerente'),
+(16, '10101012', 'anabel', 'roldan', 'Anaroldan@gmail.com', '$2y$10$PQg8oJVTP.bo87Vqev6LUeuNtBIhzpL4R.rzaE49l0xeYJCfZhSwe', '2024-12-19', 'administrador'),
+(26, '11111111', 'admin', 'admin', 'admin@gmail.com', 'admin', '2025-02-28', 'administrador'),
+(27, '22222222', 'gerentea', 'gerente', 'gerente@gmail.com', '$2y$10$4lHpKJsWGMfRInTs5d00sORfE/2/0aDl/LolfLxC2t7Jx/OU0SFUe', '2025-02-03', 'gerente'),
+(28, '10000000', 'root', 'root', 'root@gmail.com', '$2y$10$iGfIVm1aFvmhllCp/RF0Ee2jrDH.AhwqIlqyQwblcVwglaItABhY2', '2025-03-30', 'gerente'),
+(29, '10000001', 'root', '1', 'test@example.us', '$2y$10$ktNn4rKyGNSLuX9DYNuB3./tAX7Xu5tqvYnHiCc49JeYOid3IaIW6', '2025-03-30', 'gerente');
 
 -- --------------------------------------------------------
 
@@ -638,18 +617,19 @@ INSERT INTO `usuario` (`idUsuario`, `dni`, `nombre`, `apellido`, `email`, `clave
 CREATE TABLE `usuario_has_pieza` (
   `Usuario_idUsuario` int(11) NOT NULL,
   `Pieza_idPieza` int(11) NOT NULL,
-  `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp()
+  `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp(),
+  `ultima_actualizacion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuario_has_pieza`
 --
 
-INSERT INTO `usuario_has_pieza` (`Usuario_idUsuario`, `Pieza_idPieza`, `fecha_registro`) VALUES
-(15, 126, '2024-12-19 19:42:11'),
-(15, 127, '2024-12-19 19:42:59'),
-(15, 128, '2024-12-19 19:43:40'),
-(15, 130, '2024-12-19 19:45:10');
+INSERT INTO `usuario_has_pieza` (`Usuario_idUsuario`, `Pieza_idPieza`, `fecha_registro`, `ultima_actualizacion`) VALUES
+(15, 130, '2024-12-19 19:45:10', '2025-03-30 00:00:00'),
+(26, 144, '2025-03-30 21:34:59', '2025-03-30 18:35:22'),
+(26, 147, '2025-03-30 21:38:56', '0000-00-00 00:00:00'),
+(26, 148, '2025-03-30 21:39:19', '2025-03-30 18:39:52');
 
 -- --------------------------------------------------------
 
@@ -675,7 +655,7 @@ CREATE TABLE `zoologia` (
 --
 
 INSERT INTO `zoologia` (`idZoologia`, `reino`, `familia`, `especie`, `orden`, `phylum`, `clase`, `genero`, `descripcion`, `Pieza_idPieza`) VALUES
-(14, 'root', 'root', 'root', 'root', 'root', 'root', 'root', 'root', 128);
+(16, 'root', 'root', 'root', 'root', 'root', 'root', 'root', 'root', 148);
 
 --
 -- Disparadores `zoologia`
@@ -836,7 +816,7 @@ ALTER TABLE `botanica`
 -- AUTO_INCREMENT de la tabla `datos_eliminados`
 --
 ALTER TABLE `datos_eliminados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT de la tabla `donadores_eliminados`
@@ -848,19 +828,19 @@ ALTER TABLE `donadores_eliminados`
 -- AUTO_INCREMENT de la tabla `donante`
 --
 ALTER TABLE `donante`
-  MODIFY `idDonante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idDonante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `geologia`
 --
 ALTER TABLE `geologia`
-  MODIFY `idGeologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `idGeologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `ictiologia`
 --
 ALTER TABLE `ictiologia`
-  MODIFY `idIctiologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idIctiologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `octologia`
@@ -878,31 +858,31 @@ ALTER TABLE `osteologia`
 -- AUTO_INCREMENT de la tabla `paleontologia`
 --
 ALTER TABLE `paleontologia`
-  MODIFY `idPaleontologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `idPaleontologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `pieza`
 --
 ALTER TABLE `pieza`
-  MODIFY `idPieza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
+  MODIFY `idPieza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
 
 --
 -- AUTO_INCREMENT de la tabla `registros_eliminados`
 --
 ALTER TABLE `registros_eliminados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `zoologia`
 --
 ALTER TABLE `zoologia`
-  MODIFY `idZoologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `idZoologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Restricciones para tablas volcadas
