@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-04-2025 a las 03:32:14
+-- Tiempo de generación: 11-04-2025 a las 18:40:28
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -85,6 +85,13 @@ CREATE TABLE `botanica` (
   `descripcion` longtext DEFAULT NULL,
   `Pieza_idPieza` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `botanica`
+--
+
+INSERT INTO `botanica` (`idBotanica`, `reino`, `familia`, `especie`, `orden`, `division`, `clase`, `descripcion`, `Pieza_idPieza`) VALUES
+(14, 'root', 'root', 'root', 'root', 'root', 'root', 'root', 151);
 
 --
 -- Disparadores `botanica`
@@ -215,7 +222,8 @@ CREATE TABLE `geologia` (
 --
 
 INSERT INTO `geologia` (`idGeologia`, `tipo_rocas`, `descripcion`, `Pieza_idPieza`) VALUES
-(45, 'sedimentarias', 'root', 147);
+(45, 'sedimentarias', 'root', 147),
+(46, 'sedimentarias', 'aaaaaaaaaaaaa', 149);
 
 --
 -- Disparadores `geologia`
@@ -430,11 +438,13 @@ CREATE TABLE `pieza` (
 --
 
 INSERT INTO `pieza` (`idPieza`, `num_inventario`, `especie`, `estado_conservacion`, `fecha_ingreso`, `cantidad_de_piezas`, `clasificacion`, `observacion`, `imagen`, `Donante_idDonante`) VALUES
-(130, 'MCN5', 'root', 'root', '2024-12-19', '1', 'Arqueología', 'root', 'arqueologia.webp', 6),
-(142, 'NDH-127', 'root', 'bueno', '2024-12-19', '6', 'Ictiología', 'root', '', 4),
+(130, 'NDH-130', 'root', 'root', '2024-12-19', '1', 'Arqueología', 'root', '', 6),
+(142, 'NDH-142', 'root', 'bueno', '2024-12-19', '6', 'Ictiología', 'root', '', 4),
 (144, 'NDH-144', 'root', 'root', '2025-03-30', '1 Kilo', 'Paleontología', 'aaaaaaaaaaa', '', 6),
-(147, 'NVH1', 'root', 'root', '2024-11-12', '1', 'Geología', 'root', 'adios definitivo.jpeg', 6),
-(148, 'NDH-148', 'root', 'root', '2024-12-19', '2', 'Zoología', 'root', '', 6);
+(147, 'NDH-147', 'root', 'root', '2024-11-12', '1', 'Geología', 'root', '', 6),
+(148, 'NDH-148', 'root', 'root', '2024-12-19', '2', 'Zoología', 'root', '', 6),
+(149, 'NDH-149', 'root', '1', '2025-04-14', '1', 'Geología', 'aaaaaaaaaa', '', 6),
+(151, 'NDH-151', 'root', 'root', '2025-04-28', '1', 'Botánica', 'root', '', 6);
 
 --
 -- Disparadores `pieza`
@@ -606,7 +616,7 @@ INSERT INTO `usuario` (`idUsuario`, `dni`, `nombre`, `apellido`, `email`, `clave
 (26, '11111111', 'admin', 'admin', 'admin@gmail.com', 'admin', '2025-02-28', 'administrador'),
 (27, '22222222', 'gerentea', 'gerente', 'gerente@gmail.com', '$2y$10$4lHpKJsWGMfRInTs5d00sORfE/2/0aDl/LolfLxC2t7Jx/OU0SFUe', '2025-02-03', 'gerente'),
 (28, '10000000', 'root', 'root', 'root@gmail.com', '$2y$10$iGfIVm1aFvmhllCp/RF0Ee2jrDH.AhwqIlqyQwblcVwglaItABhY2', '2025-03-30', 'gerente'),
-(29, '10000001', 'root', '1', 'test@example.us', '$2y$10$ktNn4rKyGNSLuX9DYNuB3./tAX7Xu5tqvYnHiCc49JeYOid3IaIW6', '2025-03-30', 'gerente');
+(29, '10000001', 'root', 'aaaaa', 'test@example.us', '$2y$10$ktNn4rKyGNSLuX9DYNuB3./tAX7Xu5tqvYnHiCc49JeYOid3IaIW6', '2025-03-30', 'gerente');
 
 -- --------------------------------------------------------
 
@@ -626,9 +636,11 @@ CREATE TABLE `usuario_has_pieza` (
 --
 
 INSERT INTO `usuario_has_pieza` (`Usuario_idUsuario`, `Pieza_idPieza`, `fecha_registro`, `ultima_actualizacion`) VALUES
-(15, 130, '2024-12-19 19:45:10', '2025-03-30 00:00:00'),
+(11, 149, '2025-04-02 17:00:46', '2025-04-02 14:01:07'),
+(11, 151, '2025-04-02 17:03:11', '2025-04-02 14:03:34'),
+(15, 130, '2024-12-19 19:45:10', '2025-04-02 14:01:33'),
 (26, 144, '2025-03-30 21:34:59', '2025-03-30 18:35:22'),
-(26, 147, '2025-03-30 21:38:56', '0000-00-00 00:00:00'),
+(26, 147, '2025-03-30 21:38:56', '2025-04-02 14:01:27'),
 (26, 148, '2025-03-30 21:39:19', '2025-03-30 18:39:52');
 
 -- --------------------------------------------------------
@@ -810,13 +822,13 @@ ALTER TABLE `arqueologia`
 -- AUTO_INCREMENT de la tabla `botanica`
 --
 ALTER TABLE `botanica`
-  MODIFY `idBotanica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `idBotanica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `datos_eliminados`
 --
 ALTER TABLE `datos_eliminados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT de la tabla `donadores_eliminados`
@@ -834,7 +846,7 @@ ALTER TABLE `donante`
 -- AUTO_INCREMENT de la tabla `geologia`
 --
 ALTER TABLE `geologia`
-  MODIFY `idGeologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `idGeologia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT de la tabla `ictiologia`
@@ -864,13 +876,13 @@ ALTER TABLE `paleontologia`
 -- AUTO_INCREMENT de la tabla `pieza`
 --
 ALTER TABLE `pieza`
-  MODIFY `idPieza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
+  MODIFY `idPieza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- AUTO_INCREMENT de la tabla `registros_eliminados`
 --
 ALTER TABLE `registros_eliminados`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
