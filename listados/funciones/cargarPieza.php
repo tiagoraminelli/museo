@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'imagen' => '', // Inicializamos el campo de imagen
     ];
 
+
     // Manejo de la imagen
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $imagen = $_FILES['imagen']['name']; // Nombre original del archivo

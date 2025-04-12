@@ -1,52 +1,85 @@
 <?php
 session_start();
+require_once('../modelo/bd.php');
+require_once('../modelo/usuario.php');
 
-// Incluimos las carpetas necesarias
-include_once('../modelo/bd.php'); // Asegúrate de que la conexión esté correcta
-require('../modelo/usuario.php'); // Asegúrate de que esta clase esté bien definida
+// Inicializar array de errores
+$_SESSION['errores_campos'] = [];
+$_SESSION['datos_formulario'] = $_POST;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recuperar datos del formulario
-    $dni = $_POST['dni'];
-    $nombre = $_POST['nombre'];
-    $apellido = $_POST['apellido'];
-    $email = $_POST['email'];
-    $clave = $_POST['clave'];
+// Validaciones
+if (empty($_POST['dni'])) {
+    $_SESSION['errores_campos']['dni'][] = 'El DNI es requerido';
+} elseif (!preg_match('/^\d{8}$/', $_POST['dni'])) {
+    $_SESSION['errores_campos']['dni'][] = 'El DNI debe tener 8 dígitos exactos';
+}
 
-    // Hash de la contraseña
-    $hashedClave = password_hash($clave, PASSWORD_DEFAULT);
+if (empty($_POST['nombre'])) {
+    $_SESSION['errores_campos']['nombre'][] = 'El nombre es requerido';
+} elseif (preg_match('/[0-9]/', $_POST['nombre'])) {
+    $_SESSION['errores_campos']['nombre'][] = 'El nombre no puede contener números';
+}
 
-    // Crear un array con los parámetros
-    $parametros = [
-        'dni' => $dni,
-        'nombre' => $nombre,
-        'apellido' => $apellido,
-        'email' => $email,
-        'clave' => $hashedClave,
-    ];
+if (empty($_POST['apellido'])) {
+    $_SESSION['errores_campos']['apellido'][] = 'El apellido es requerido';
+} elseif (preg_match('/[0-9]/', $_POST['apellido'])) {
+    $_SESSION['errores_campos']['apellido'][] = 'El apellido no puede contener números';
+}
 
-    // Crear una instancia de la clase Usuario
+if (empty($_POST['email'])) {
+    $_SESSION['errores_campos']['email'][] = 'El email es requerido';
+} elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    $_SESSION['errores_campos']['email'][] = 'El email no tiene un formato válido';
+}
+
+if (empty($_POST['clave'])) {
+    $_SESSION['errores_campos']['clave'][] = 'La contraseña es requerida';
+} elseif (strlen($_POST['clave']) < 8) {
+    $_SESSION['errores_campos']['clave'][] = 'La contraseña debe tener al menos 8 caracteres';
+} elseif (!preg_match('/[A-Z]/', $_POST['clave']) || !preg_match('/[a-z]/', $_POST['clave']) || !preg_match('/[0-9]/', $_POST['clave'])) {
+    $_SESSION['errores_campos']['clave'][] = 'La contraseña debe contener mayúsculas, minúsculas y números';
+}
+
+
+if (empty($_POST['tipo_de_usuario'])) {
+    $_SESSION['errores_campos']['tipo_de_usuario'][] = 'Seleccione un tipo de usuario';
+}
+
+// Verificar duplicados solo si no hay otros errores
+if (empty($_SESSION['errores_campos'])) {
     $usuario = new Usuario();
-
-    // Verificar si el correo ya existe
-    if ($usuario->getUsuarioPorEmail($email)) {
-        $_SESSION['error'] = 'El correo electrónico ya está registrado.';
-        header("Location: ../listados/crearGerente.php?errorCargarUsuario=1"); // Redirigir con mensaje de error
-        exit();
+    
+    if ($usuario->getUsuarioPorDni($_POST['dni'])) {
+        $_SESSION['errores_campos']['dni'][] = 'Este DNI ya está registrado en la base de datos';
     }
-
-    // Llamar al método save para guardar los datos
-    if ($usuario->save($parametros)) {
-        $_SESSION['mensaje'] = 'Usuario cargado exitosamente.';
-        header("Location: ../index.php?success=1"); // Redirigir al índice
-        exit();
-    } else {
-        $_SESSION['error'] = 'Error al cargar el usuario.';
-        header("Location: ../index.php?success=0"); // Redirigir al índice
-        exit();
+    
+    if ($usuario->getUsuarioPorEmail($_POST['email'])) {
+        $_SESSION['errores_campos']['email'][] = 'Este email ya está registrado en la base de datos';
     }
-} else {
-    //header('Location: formulario.php'); // Redirigir si no es una petición POST
+}
+
+// Si hay errores, redirigir de vuelta al formulario
+if (!empty($_SESSION['errores_campos'])) {
+    header("Location: ../listados/crearGerente.php");
     exit();
 }
+
+
+$parametros = [
+    'dni' => $_POST['dni'],
+    'nombre' => $_POST['nombre'],
+    'apellido' => $_POST['apellido'],
+    'email' => $_POST['email'],
+    'clave' => $_POST['clave'],
+    'tipo_de_usuario' => $_POST['tipo_de_usuario']
+];
+
+if ($usuario->save($parametros)) {
+    $_SESSION['mensaje_exito'] = 'Usuario creado exitosamente';
+    header("Location: ../listados/gerentesListados.php");
+} else {
+    $_SESSION['error_general'] = 'Error al guardar el usuario';
+    header("Location: ../listados/crearGerente.php");
+}
+exit();
 ?>

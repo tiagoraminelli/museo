@@ -1,26 +1,11 @@
 <?php
 session_start();
-// Verificar si el usuario está logueado
 require_once "../modelo/pieza.php";
 
-// Crear una instancia de la clase Pieza
 $breadcrumb = "Pieza";
 $pieza = new Pieza();
-
-// Parámetros de paginación
-$porPagina = 10; // Número de piezas por página
-$paginaActual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
-$offset = ($paginaActual - 1) * $porPagina;
-
-// Obtener todas las piezas con límite de paginación
-$piezas = $pieza->getPiezasPaginadas($porPagina, $offset);
-
-// Obtener el número total de piezas para calcular la paginación
-$totalPiezas = $pieza->getTotalPiezas();
-$totalPaginas = ceil($totalPiezas / $porPagina);
-
-// Verificar si hay un mensaje de eliminación
-$eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 si no hay mensaje
+$piezas = $pieza->getAllPiezas(); // Cambiamos para obtener todas las piezas (DataTables manejará la paginación)
+$eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1;
 ?>
 
 <!DOCTYPE html>
@@ -31,113 +16,152 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
     <title>Listado de Piezas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
- 
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="../public/css/index.css">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    
 </head>
 
-
+<body>
 <?php include('../includes/navListados.php')?>
 <?php include('../includes/breadcrumb.php')?>
 
-<!-- Contenedor de información sobre crear pieza y descargar PDF -->
 <?php if (isset($_SESSION['usuario_activo'])): ?>
 <div class="container mt-8 text-center">
     <div class="bg-white shadow-md rounded-lg p-6">
         <h4 class="text-2xl font-bold text-gray-800 mb-4">Crear una Nueva Pieza</h4>
         <p class="text-gray-600 mb-4">
-            Si deseas añadir una nueva pieza a nuestro registro, dirígete al formulario correspondiente. Esto te permitirá mantener nuestra base de datos actualizada con las últimas adiciones y garantizar una gestión eficiente de nuestras piezas.
+            Si deseas añadir una nueva pieza a nuestro registro, dirígete al formulario correspondiente.
         </p>
         <a href="./funciones/formularioAgregar.php" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition">Cargar Nueva Pieza</a>
-        <hr class="my-4 border-gray-300">
-        <p class="mb-2 text-gray-600">
-            También puedes descargar el PDF con información de todas las piezas. Esto es útil para la documentación, auditorías o para compartir información con otros interesados.
-        </p>
-        <a target="_blank" href="./funciones/generarPDFall.php" class="text-blue-600 hover:underline">Descargar PDF de Todas las Piezas</a>
     </div>
 </div>
 <?php endif; ?>
-<!-- Buscador -->
-<div class="container mt-4">
-    <div class="search-box">
-        <form class="d-flex" id="searchForm" action="./funciones/buscarPieza.php" method="post">
-            <input class="form-control me-2" type="search" id="searchInput" placeholder="Buscar..." aria-label="Buscar">
-            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
-        </form>
-    </div>
-</div>
 
 <div class="container mt-5">
     <h1 class="mb-4 text-center text-2xl font-bold">Listado de Piezas</h1>
     
-    <table class="table table-hover table-bordered">
-    <thead class="table-dark text-center">
-        <tr>
-            <th>ID</th>
-            <th>Número de Inventario</th>
-            <th>Especie</th>
-            <th>Estado de Conservación</th>
-            <th>Fecha de ingreso</th>
-            <th>Cantidad de Piezas</th>
-            <th>Clasificación</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (!empty($piezas)) : ?>
-            <?php foreach ($piezas as $p) : ?>
-                <tr id="pieza-<?php echo $p['idPieza']; ?>" class="text-center">
-                  
-                    <td><?php echo $p['idPieza']; ?></td>
-                    <td><?php echo $p['num_inventario']; ?></td>
-                    <td><?php echo $p['especie']; ?></td>
-                    <td><?php echo $p['estado_conservacion']; ?></td>
-                    <td><?php echo $p['fecha_ingreso']; ?></td>
-                    <td><?php echo $p['cantidad_de_piezas']; ?></td>
-                    <td><?php echo $p['clasificacion']; ?></td>
-                    <td>
-                        <a href="funciones/verPieza.php?id=<?php echo $p['idPieza']; ?>" class="btn btn-success btn-sm">Ver</a>
-                        <?php if (isset($_SESSION['usuario_activo'])): ?>
-                        <a href="funciones/editarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="funciones/eliminarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php else : ?>
+    <table id="tablaPiezas" class="table table-hover table-bordered w-100">
+        <thead class="table-dark">
             <tr>
-                <td colspan="9" class="text-center">No hay piezas registradas.</td>
+                <th>ID</th>
+                <th>N° Inventario</th>
+                <th>Especie</th>
+                <th>Estado</th>
+                <th>Fecha Ingreso</th>
+                <th>Cantidad</th>
+                <th>Clasificación</th>
+                <th>Acciones</th>
             </tr>
-        <?php endif; ?>
-    </tbody>
-</table>
-
-
-      <!-- Paginación -->
-      <nav aria-label="Paginación" class="mt-4">
-        <ul class="pagination justify-content-center">
-            <!-- Botón anterior -->
-            <li class="page-item <?php echo $paginaActual == 1 ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?pagina=<?php echo $paginaActual - 1; ?>" tabindex="-1">Anterior</a>
-            </li>
-
-            <!-- Páginas numeradas -->
-            <?php for ($i = 1; $i <= $totalPaginas; $i++) : ?>
-                <li class="page-item <?php echo $i == $paginaActual ? 'active' : ''; ?>">
-                    <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php endfor; ?>
-
-            <!-- Botón siguiente -->
-            <li class="page-item <?php echo $paginaActual == $totalPaginas ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?pagina=<?php echo $paginaActual + 1; ?>">Siguiente</a>
-            </li>
-        </ul>
-    </nav>
+        </thead>
+        <tbody>
+            <?php if (!empty($piezas)) : ?>
+                <?php foreach ($piezas as $p) : ?>
+                    <tr id="pieza-<?php echo $p['idPieza']; ?>">
+                        <td><?php echo $p['idPieza']; ?></td>
+                        <td><?php echo $p['num_inventario']; ?></td>
+                        <td><?php echo $p['especie']; ?></td>
+                        <td><?php echo $p['estado_conservacion']; ?></td>
+                        <td><?php echo $p['fecha_ingreso']; ?></td>
+                        <td><?php echo $p['cantidad_de_piezas']; ?></td>
+                        <td><?php echo $p['clasificacion']; ?></td>
+                        <td>
+                            <a href="funciones/verPieza.php?id=<?php echo $p['idPieza']; ?>" class="btn btn-success btn-sm">Ver</a>
+                            <?php if (isset($_SESSION['usuario_activo'])): ?>
+                            <a href="funciones/editarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="funciones/eliminarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <tr>
+                    <td colspan="8" class="text-center">No hay piezas registradas.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
 </div>
+
+<!-- Scripts necesarios -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<!-- Botones de exportación -->
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#tablaPiezas').DataTable({
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay datos disponibles",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "No se encontraron registros coincidentes",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+            "aria": {
+                "sortAscending": ": activar para ordenar ascendente",
+                "sortDescending": ": activar para ordenar descendente"
+            }
+        },
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'pdf',
+                text: 'Exportar a PDF',
+                title: 'Listado de Piezas del Museo',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6], // Excluye la columna de acciones (índice 7)
+                    modifier: {
+                        page: 'current'
+                    }
+                },
+                customize: function (doc) {
+                    doc.content[1].table.widths = ['10%', '15%', '15%', '15%', '15%', '15%', '15%'];
+                    doc.styles.tableHeader = {
+                        fillColor: '#343a40',
+                        color: '#ffffff',
+                        bold: true
+                    };
+                }
+            }
+        ],
+        responsive: true,
+        pageLength: 10,
+        order: [[0, 'asc']]
+    });
+    
+    // Mostrar modal si hay mensaje de eliminación
+    <?php if ($eliminado != -1): ?>
+        var eliminarModal = new bootstrap.Modal(document.getElementById('eliminarModal'));
+        eliminarModal.show();
+    <?php endif; ?>
+});
+
+function cerrarModal() {
+    $('#modalNoDatos').modal('hide');
+}
+</script>
 
 <!-- Modal para mostrar resultado de la eliminación -->
 <div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
@@ -152,8 +176,6 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
                     La pieza ha sido eliminada exitosamente.
                 <?php elseif ($eliminado == 0): ?>
                     Hubo un error al eliminar la pieza.
-                <?php else: ?>
-                    <!-- No se muestra nada si no hay un mensaje -->
                 <?php endif; ?>
             </div>
             <div class="modal-footer">
@@ -168,78 +190,15 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content rounded-lg shadow-lg border-0">
             <div class="modal-body p-5 text-center">
-                <!-- Imagen de marcador de posición -->
                 <img src="../assets/img/error.webp" alt="No data" class="mb-4 mx-auto rounded-full">
-
-                <!-- Mensaje profesional -->
                 <h5 class="text-lg font-semibold text-gray-800">No se han encontrado datos asociados</h5>
-                <p class="text-gray-600">La pieza solicitada no tiene datos asociados en la clasificación seleccionada. Por favor, verifica los detalles y vuelve a intentarlo.</p>
-                
-                <!-- Botón para cerrar el modal -->
+                <p class="text-gray-600">La pieza solicitada no tiene datos asociados en la clasificación seleccionada.</p>
                 <button type="button" class="btn btn-primary mt-4" onclick="cerrarModal()">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    // Mostrar el modal al cargar la página si hay un mensaje de eliminación
-    document.addEventListener("DOMContentLoaded", function() {
-        <?php if ($eliminado != -1): ?>
-            var eliminarModal = new bootstrap.Modal(document.getElementById('eliminarModal'));
-            eliminarModal.show();
-        <?php endif; ?>
-    });
-</script>
-<script>
-    document.querySelector('.search-box form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const searchTerm = this.querySelector('input[type="search"]').value;
-
-        fetch(`./funciones/buscarPieza.php?search=${encodeURIComponent(searchTerm)}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Actualizar la tabla con los datos devueltos
-                const tbody = document.querySelector('tbody');
-                tbody.innerHTML = '';
-
-                if (data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="8" class="text-center">No hay resultados.</td></tr>';
-                } else {
-                    data.forEach(p => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${p.idPieza}</td>
-                            <td>${p.num_inventario}</td>
-                            <td>${p.especie}</td>
-                            <td>${p.estado_conservacion}</td>
-                            <td>${p.fecha_ingreso}</td>
-                            <td>${p.cantidad_de_piezas}</td>
-                            <td>${p.Donante_idDonante}</td>
-                            <td>
-                                <a href="funciones/verPieza.php?id=${p.idPieza}" class="btn btn-success btn-sm">Ver</a>
-                                <a href="funciones/editarPieza.php?id=${p.idPieza}" class="btn btn-warning btn-sm">Editar</a>
-                                <a href="funciones/eliminarPieza.php?id=${p.idPieza}" class="btn btn-danger btn-sm">Eliminar</a>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
-</script>
-<!-- Script para activar el modal -->
-
-
-</body>
 <?php include('../includes/footer.php') ?>
+</body>
 </html>
-

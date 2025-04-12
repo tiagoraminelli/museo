@@ -1,182 +1,313 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario_activo'])) {
+require_once("../modelo/bd.php");
+require_once("../modelo/usuario.php");
+
+// Verificar permisos
+if(!isset($_SESSION['usuario_activo']) || $_SESSION['nivel'] != 'administrador'){
     header("Location: ../index.php");
-    exit;
+    exit();
 }
-if($_SESSION['nivel'] != 'administrador'){
-    header("Location: ./piezaslistado.php");
-    exit;
+
+// Usar datos de sesión si existen (por errores en el formulario)
+$datosFormulario = isset($_SESSION['datos_formulario']) ? $_SESSION['datos_formulario'] : [
+    'dni' => '',
+    'nombre' => '',
+    'apellido' => '',
+    'email' => '',
+    'tipo_de_usuario' => ''
+];
+
+if (isset($_SESSION['datos_formulario'])) {
+    unset($_SESSION['datos_formulario']);
 }
-$breadcrumb = "Crear Gerente";
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Gerente</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Bootstrap (solo para modales) -->
+    <title>Crear Nuevo Gerente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .error-message p {
+            margin-bottom: 0.2rem;
+            font-size: 0.8rem;
+        }
+        .error-message p:not(:last-child) {
+            margin-bottom: 0.3rem;
+        }
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
-
-<!-- Navbar -->
+<body>
 <?php include('../includes/navListados.php')?>
-<?php include('../includes/breadcrumb.php')?>
 
-<!-- Contenedor principal -->
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="md:flex">
-            <!-- Formulario de Registro -->
-            <div class="w-full md:w-1/2 p-8">
-                <h3 class="text-3xl font-bold text-gray-800 mb-8 text-center">Registro de Gerente</h3>
-                <form action="../funciones/cargarUsuario.php" method="post" class="space-y-6">
-                    <div>
-                        <label for="dni" class="block text-sm font-medium text-gray-700 mb-1">DNI</label>
-                        <input type="text" id="dni" name="dni" 
-                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                               placeholder="Ingresa tu DNI" required>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                            <input type="text" id="nombre" name="nombre" 
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                                   placeholder="Ingresa tu nombre" required>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0 text-center">Crear Nuevo Gerente</h2>
+                </div>
+                <div class="card-body">
+                    <?php if (isset($_SESSION['error_general'])): ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?php echo htmlspecialchars($_SESSION['error_general']); ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <div>
-                            <label for="apellido" class="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
-                            <input type="text" id="apellido" name="apellido" 
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                                   placeholder="Ingresa tu apellido" required>
+                        <?php unset($_SESSION['error_general']); ?>
+                    <?php endif; ?>
+
+                    <form method="POST" action="../funciones/cargarUsuario.php" id="formCrearGerente">
+                        <div class="mb-3">
+                            <label for="dni" class="form-label">DNI <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control <?php echo (isset($_SESSION['errores_campos']['dni'])) ? 'is-invalid' : ''; ?>" 
+                                   id="dni" name="dni" value="<?php echo htmlspecialchars($datosFormulario['dni']); ?>" 
+                                   placeholder="Ingrese 8 dígitos" required>
+                            <?php if (isset($_SESSION['errores_campos']['dni'])): ?>
+                                <div class="error-message">
+                                    <?php foreach ((array)$_SESSION['errores_campos']['dni'] as $error): ?>
+                                        <p><?php echo htmlspecialchars($error); ?></p>
+                                    <?php endforeach; ?>
+                                </div>
+                                <?php unset($_SESSION['errores_campos']['dni']); ?>
+                            <?php endif; ?>
+                            <small class="text-muted">Debe contener exactamente 8 dígitos numéricos</small>
                         </div>
-                    </div>
-                    
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
-                        <input type="email" id="email" name="email" 
-                               class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                               placeholder="Ingresa tu correo" required>
-                    </div>
-                    
-                    <div>
-                        <label for="clave" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-                        <div class="relative">
-                            <input id="clave" name="clave" type="password" 
-                                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 pr-10"
-                                   placeholder="Ingresa tu contraseña" required>
-                            <button type="button" onclick="togglePassword('clave')" 
-                                    class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-blue-600">
-                                <i class="far fa-eye"></i>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control <?php echo (isset($_SESSION['errores_campos']['nombre'])) ? 'is-invalid' : ''; ?>" 
+                                       id="nombre" name="nombre" value="<?php echo htmlspecialchars($datosFormulario['nombre']); ?>" 
+                                       placeholder="Ej: Juan" required>
+                                <?php if (isset($_SESSION['errores_campos']['nombre'])): ?>
+                                    <div class="error-message">
+                                        <?php foreach ((array)$_SESSION['errores_campos']['nombre'] as $error): ?>
+                                            <p><?php echo htmlspecialchars($error); ?></p>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php unset($_SESSION['errores_campos']['nombre']); ?>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="apellido" class="form-label">Apellido <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control <?php echo (isset($_SESSION['errores_campos']['apellido'])) ? 'is-invalid' : ''; ?>" 
+                                       id="apellido" name="apellido" value="<?php echo htmlspecialchars($datosFormulario['apellido']); ?>" 
+                                       placeholder="Ej: Pérez" required>
+                                <?php if (isset($_SESSION['errores_campos']['apellido'])): ?>
+                                    <div class="error-message">
+                                        <?php foreach ((array)$_SESSION['errores_campos']['apellido'] as $error): ?>
+                                            <p><?php echo htmlspecialchars($error); ?></p>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php unset($_SESSION['errores_campos']['apellido']); ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control <?php echo (isset($_SESSION['errores_campos']['email'])) ? 'is-invalid' : ''; ?>" 
+                                   id="email" name="email" value="<?php echo htmlspecialchars($datosFormulario['email']); ?>" 
+                                   placeholder="Ej: ejemplo@dominio.com" required>
+                            <?php if (isset($_SESSION['errores_campos']['email'])): ?>
+                                <div class="error-message">
+                                    <?php foreach ((array)$_SESSION['errores_campos']['email'] as $error): ?>
+                                        <p><?php echo htmlspecialchars($error); ?></p>
+                                    <?php endforeach; ?>
+                                </div>
+                                <?php unset($_SESSION['errores_campos']['email']); ?>
+                            <?php endif; ?>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="clave" class="form-label">Contraseña <span class="text-danger">*</span></label>
+                            <div class="position-relative">
+                                <input type="password" class="form-control <?php echo (isset($_SESSION['errores_campos']['clave'])) ? 'is-invalid' : ''; ?>" 
+                                       id="clave" name="clave" placeholder="Ingrese una contraseña segura" required>
+                                <i class="fas fa-eye password-toggle" onclick="togglePassword('clave')"></i>
+                            </div>
+                            <?php if (isset($_SESSION['errores_campos']['clave'])): ?>
+                                <div class="error-message">
+                                    <?php foreach ((array)$_SESSION['errores_campos']['clave'] as $error): ?>
+                                        <p><?php echo htmlspecialchars($error); ?></p>
+                                    <?php endforeach; ?>
+                                </div>
+                                <?php unset($_SESSION['errores_campos']['clave']); ?>
+                            <?php endif; ?>
+                            <small class="text-muted">Mínimo 8 caracteres, con al menos 1 mayúscula, 1 minúscula y 1 número</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="tipo_de_usuario" class="form-label">Tipo de Usuario <span class="text-danger">*</span></label>
+                            <select class="form-select <?php echo (isset($_SESSION['errores_campos']['tipo_de_usuario'])) ? 'is-invalid' : ''; ?>" 
+                                    id="tipo_de_usuario" name="tipo_de_usuario" required>
+                                <option value="gerente" <?php echo ($datosFormulario['tipo_de_usuario'] == 'gerente') ? 'selected' : ''; ?>>Gerente</option>
+                                <option value="administrador" <?php echo ($datosFormulario['tipo_de_usuario'] == 'administrador') ? 'selected' : ''; ?>>Administrador</option>
+                            </select>
+                            <?php if (isset($_SESSION['errores_campos']['tipo_de_usuario'])): ?>
+                                <div class="error-message">
+                                    <?php foreach ((array)$_SESSION['errores_campos']['tipo_de_usuario'] as $error): ?>
+                                        <p><?php echo htmlspecialchars($error); ?></p>
+                                    <?php endforeach; ?>
+                                </div>
+                                <?php unset($_SESSION['errores_campos']['tipo_de_usuario']); ?>
+                            <?php endif; ?>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="../gerentesListados.php" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-times-circle me-1"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Crear Gerente
                             </button>
                         </div>
-                    </div>
-                    
-                    <button type="submit" 
-                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 transform hover:scale-[1.01] shadow-md">
-                        Crear Gerente
-                    </button>
-                </form>
-            </div>
-
-            <!-- Imagen lateral -->
-            <div class="hidden md:block md:w-1/2 bg-gradient-to-br from-blue-500 to-blue-700">
-                <div class="h-full flex items-center justify-center p-8">
-                    <div class="text-center text-white">
-                        <img src="../assets/img/contacto.jpg" alt="Imagen de contacto" class="w-full h-auto rounded-xl shadow-2xl object-cover max-h-[500px]">
-                        <h3 class="text-2xl font-bold mt-6">Gestión de Usuarios</h3>
-                        <p class="mt-2 opacity-90">Administra los perfiles de gerentes y personal autorizado</p>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modales (se mantienen igual) -->
-<!-- Error Modal -->
-<div class="modal fade" id="errorModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Error</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">Se produjo un error al enviar el formulario. Por favor, inténtalo de nuevo.</div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
+<?php include('../includes/footer.php')?>
 
-<!-- Success Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Éxito</h5>
-                <button type="button" class="btn-close" data-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">¡La operación se realizó con éxito!</div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal de Error: Correo ya registrado -->
-<div class="modal fade" id="errorCorreoModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Error</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">El correo electrónico ya está registrado. Por favor, utiliza otro correo.</div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 <script>
-    function togglePassword(inputId) {
-        const input = document.getElementById(inputId);
-        const icon = input.nextElementSibling.querySelector('i');
-        if (input.type === "password") {
-            input.type = "text";
+    // Función para mostrar/ocultar contraseña
+    function togglePassword(fieldId) {
+        const field = document.getElementById(fieldId);
+        const icon = field.nextElementSibling;
+        
+        if (field.type === "password") {
+            field.type = "text";
             icon.classList.replace('fa-eye', 'fa-eye-slash');
         } else {
-            input.type = "password";
+            field.type = "password";
             icon.classList.replace('fa-eye-slash', 'fa-eye');
         }
     }
+
+    // Validación del formulario con jQuery Validation
+    $(document).ready(function() {
+        $('#formCrearGerente').validate({
+            rules: {
+                dni: {
+                    required: true,
+                    digits: true,
+                    minlength: 8,
+                    maxlength: 8
+                },
+                nombre: {
+                    required: true,
+                    lettersonly: true,
+                    minlength: 2
+                },
+                apellido: {
+                    required: true,
+                    lettersonly: true,
+                    minlength: 2
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                clave: {
+                    required: true,
+                    minlength: 8,
+                    strongPassword: true
+                },
+                confirmar_clave: {
+                    required: true,
+                    equalTo: "#clave"
+                },
+                tipo_de_usuario: {
+                    required: true
+                }
+            },
+            messages: {
+                dni: {
+                    required: "El DNI es requerido",
+                    digits: "Solo se permiten números",
+                    minlength: "El DNI debe tener 8 dígitos",
+                    maxlength: "El DNI debe tener 8 dígitos"
+                },
+                nombre: {
+                    required: "El nombre es requerido",
+                    lettersonly: "Solo se permiten letras",
+                    minlength: "Mínimo 2 caracteres"
+                },
+                apellido: {
+                    required: "El apellido es requerido",
+                    lettersonly: "Solo se permiten letras",
+                    minlength: "Mínimo 2 caracteres"
+                },
+                email: {
+                    required: "El email es requerido",
+                    email: "Ingrese un email válido"
+                },
+                clave: {
+                    required: "La contraseña es requerida",
+                    minlength: "Mínimo 8 caracteres"
+                },
+                confirmar_clave: {
+                    required: "Confirme la contraseña",
+                    equalTo: "Las contraseñas no coinciden"
+                },
+                tipo_de_usuario: {
+                    required: "Seleccione un tipo de usuario"
+                }
+            },
+            errorElement: "div",
+            errorClass: "error-message",
+            highlight: function(element, errorClass) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function(element, errorClass) {
+                $(element).removeClass("is-invalid").addClass("is-valid");
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+
+        // Método personalizado para validar solo letras
+        $.validator.addMethod("lettersonly", function(value, element) {
+            return this.optional(element) || /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value);
+        });
+
+        // Método personalizado para contraseña segura
+        $.validator.addMethod("strongPassword", function(value, element) {
+            return this.optional(element) || 
+                   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(value);
+        }, "Debe contener al menos 1 mayúscula, 1 minúscula y 1 número");
+
+        // Cerrar automáticamente las alertas después de 5 segundos
+        setTimeout(function() {
+            $('.alert').alert('close');
+        }, 5000);
+    });
 </script>
-
-<?php
-if (isset($_GET['errorCargarUsuario']) && $_GET['errorCargarUsuario'] == 1) {
-    echo "<script>
-            $(document).ready(function() {
-                $('#errorCorreoModal').modal('show');
-            });
-          </script>";
-}
-?>
-
-<?php include('../includes/footer.php'); ?>
 </body>
 </html>

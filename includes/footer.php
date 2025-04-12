@@ -38,7 +38,7 @@
     <!-- Sección de Derechos Reservados y Enlaces Legales -->
     <div class="row">
       <div class="col-md-6">
-        <p>&copy; 2024 Museo de Ciencias Naturales. Todos los derechos reservados.</p>
+        <p>&copy; <?php echo date('Y'); ?> Museo de Ciencias Naturales. Todos los derechos reservados.</p>
       </div>
       <div class="col-md-6 text-md-end">
         <ul class="list-inline">

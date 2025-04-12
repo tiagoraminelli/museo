@@ -26,8 +26,8 @@ if($_SESSION['nivel'] != 'administrador'){
 
 // Usar datos de sesión si existen (por errores en el formulario)
 $datosFormulario = isset($_SESSION['datos_formulario']) ? $_SESSION['datos_formulario'] : $usuarioActual;
-if (isset($_SESSION['datos_formulario'])) {
-    unset($_SESSION['datos_formulario']);
+if (isset($_SESSION['error'])) {
+    unset($_SESSION['error']);
 }
 ?>
 

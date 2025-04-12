@@ -37,7 +37,8 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="num_inventario" class="form-label">Número de Inventario</label>
-                <input type="text" class="form-control" id="num_inventario" name="num_inventario" required>
+                <input type="text" class="form-control" id="num_inventario" name="num_inventario" required 
+                value="NDH-">
             </div>
             <div class="col-md-6 mb-3">
                 <label for="especie" class="form-label">Especie</label>
@@ -45,19 +46,39 @@ $breadcrumb = "Formulario para agregar nuevas pieza"
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="estado_conservacion" class="form-label">Estado de Conservación</label>
-                <input type="text" class="form-control" id="estado_conservacion" name="estado_conservacion" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="fecha_ingreso" class="form-label">Fecha de Ingreso</label>
-                <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" required>
-            </div>
+
+        <div class="mb-3 col-md-6">
+    <label for="estado_conservacion" class="form-label">Estado de Conservación</label>
+    <select class="form-select form-control" id="estado_conservacion" name="estado_conservacion" required>
+        <option value="">Seleccione un estado...</option>
+        <option value="Excelente" <?= (isset($datos['estado_conservacion']) && $datos['estado_conservacion'] == 'Excelente') ? 'selected' : '' ?>>Excelente</option>
+        <option value="Bueno" <?= (isset($datos['estado_conservacion']) && $datos['estado_conservacion'] == 'Bueno') ? 'selected' : '' ?>>Bueno</option>
+        <option value="Regular" <?= (isset($datos['estado_conservacion']) && $datos['estado_conservacion'] == 'Regular') ? 'selected' : '' ?>>Regular</option>
+        <option value="Malo" <?= (isset($datos['estado_conservacion']) && $datos['estado_conservacion'] == 'Malo') ? 'selected' : '' ?>>Malo</option>
+        <option value="Pérdida total" <?= (isset($datos['estado_conservacion']) && $datos['estado_conservacion'] == 'Pérdida total') ? 'selected' : '' ?>>Pérdida total</option>
+        <option value="En restauración" <?= (isset($datos['estado_conservacion']) && $datos['estado_conservacion'] == 'En restauración') ? 'selected' : '' ?>>En restauración</option>
+    </select>
+</div>
+
+    <div class="mb-3 col-md-6">
+    <label for="fecha_ingreso" class="form-label">Fecha de Ingreso</label>
+    <input 
+        type="date" 
+        class="form-control" 
+        id="fecha_ingreso" 
+        name="fecha_ingreso" 
+        required
+        max="<?= date('Y-m-d') ?>"
+        value="<?= isset($datos['fecha_ingreso']) ? htmlspecialchars($datos['fecha_ingreso']) : '' ?>"
+        onchange="validarFecha(this)"
+    >
+    <div id="error-fecha" class="text-danger small d-none">La fecha no puede ser futura</div>
+</div>
         </div>
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="cantidad_de_piezas" class="form-label">Cantidad de Piezas</label>
-                <input type="text" class="form-control" id="cantidad_de_piezas" name="cantidad_de_piezas" required>
+                <input type="number" class="form-control" id="cantidad_de_piezas" name="cantidad_de_piezas" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="clasificacion" class="form-label">Clasificación</label>

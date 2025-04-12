@@ -98,7 +98,7 @@ $totalPaginas = ceil($totalUsuarios / $porPagina);
                             <td>
                                 <a href="funciones/editarUsuario.php?id=<?php echo $u['idUsuario']; ?>" 
                                    class="btn btn-warning btn-sm">Editar</a>
-                                <a href="eliminarUsuario.php?id=<?php echo $u['idUsuario']; ?>" 
+                                <a href="funciones/eliminarUsuario.php?id=<?php echo $u['idUsuario']; ?>" 
                                    class="btn btn-danger btn-sm"
                                    onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</a>
                             </td>
@@ -155,14 +155,64 @@ $totalPaginas = ceil($totalUsuarios / $porPagina);
     <?php endif; ?>
 </div>
 
-<!-- Modales (se mantienen igual) -->
+<!-- Modal para operaciones exitosas (crear/editar) -->
 <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
-    <!-- Contenido del modal -->
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-5">
+                <!-- Icono de éxito -->
+                <div class="text-success mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                </div>
+                
+                <!-- Mensaje dinámico -->
+                <h3 class="h4 mb-3" id="successModalTitle">Operación Exitosa</h3>
+                <p class="text-muted" id="successModalMessage">La pieza se ha guardado correctamente.</p>
+                
+                <!-- Botón de acción -->
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+                    <button type="button" class="btn btn-success px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-check-circle me-2"></i> Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+
+<!-- Modal para eliminación exitosa -->
 <div class="modal fade" id="deleteSuccessModal" tabindex="-1" aria-hidden="true">
-    <!-- Contenido del modal -->
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-5">
+                <!-- Icono de confirmación -->
+                <div class="text-danger mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                    </svg>
+                </div>
+                
+                <!-- Mensaje -->
+                <h3 class="h4 mb-3">Eliminación Confirmada</h3>
+                <p class="text-muted">La pieza ha sido eliminada permanentemente del sistema.</p>
+                
+                <!-- Botones de acción -->
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+                    <button type="button" class="btn btn-outline-secondary px-4 me-2" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i> Cerrar
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn" data-bs-dismiss="modal">
+                        <i class="bi bi-trash me-2"></i> Entendido
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>

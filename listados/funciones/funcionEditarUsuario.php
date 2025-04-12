@@ -101,12 +101,12 @@ if (!empty($clave) && strlen($clave) < 8) {
     $usuarioActual = $usuario->getUsuariosById($idUsuario);
 
     if ($usuarioActual['dni'] !== $dni && $usuario->existeDni($dni, $idUsuario)) {
-        $errores_campos['dni'] = "Este DNI ya está registrado";
+        $errores_campos['dni'] = "Este DNI ya está registrado desde la db";
         $errores[] = "El DNI ya está registrado por otro usuario";
     }
 
     if ($usuarioActual['email'] !== $email && $usuario->existeEmail($email, $idUsuario)) {
-        $errores_campos['email'] = "Este email ya está registrado";
+        $errores_campos['email'] = "Este email ya está registrado desde la bd";
         $errores[] = "El email ya está registrado por otro usuario";
     }
 
@@ -145,10 +145,10 @@ if (!empty($clave) && strlen($clave) < 8) {
     // Intentar guardar
     try {
         $resultado = $usuario->save($param);
-        echo "resultado: " . $resultado;
+        echo "resultado: <br>" . $resultado;
         if ($resultado) {
             $_SESSION['mensaje_exito'] = "Usuario actualizado correctamente";
-            header("Location: ../gerentesListados.php");
+            header("Location: ../gerentesListados.php?actualizado=1");
             exit();
         } else {
             throw new Exception("No se realizaron cambios en el usuario");
