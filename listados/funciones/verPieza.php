@@ -115,9 +115,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <li class="nav-item">
           <a class="nav-link text-gray-800" href="../donadoresLista.php">Donadores</a>
         </li>
+        <?php if (isset($_SESSION['nivel']) && $_SESSION['nivel'] == 'administrador'): ?>
         <li class="nav-item">
           <a class="nav-link text-gray-800" href="../historial.php">Historial</a>
         </li>
+        <?php endif; ?>
       </ul>
       <?php if (isset($_SESSION['usuario_activo'])): ?>
       <!-- Dropdown Usuario Activo -->

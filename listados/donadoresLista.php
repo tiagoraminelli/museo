@@ -3,7 +3,10 @@ session_start();
 
 // Verificar si el usuario está logueado
 require_once "../modelo/donante.php";
-
+if (!isset($_SESSION['usuario_activo'])) {
+    header("Location: ../index.php");
+    exit;
+}
 // Crear una instancia de la clase Donante
 $breadcrumb = "Donante";
 $donante = new Donante();
@@ -36,6 +39,7 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1; // -1 
 
 <body>
 <?php include('../includes/navListados.php')?>
+
 <?php include('../includes/breadcrumb.php')?>
 
 <!-- Contenedor de información sobre crear donante -->

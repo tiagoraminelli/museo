@@ -21,17 +21,15 @@ if ($idDonante) {
 
     // Verificar el resultado de la eliminación
     if ($resultado) {
-        $_SESSION['mensaje'] = "Donante eliminado correctamente.";
-        header("Location: ../donadoresLista.php?eliminado=1");
-    } else {
         $_SESSION['mensaje'] = "Error al eliminar el elemento, problemas con las claves foraneas.";
         header("Location: ../donadoresLista.php?eliminado=0");
+    } else {
+        $_SESSION['mensaje'] = "Error al eliminar el elemento, problemas con las claves foraneas.";
+        header("Location: ../donadoresLista.php?eliminado=1");
     }
 } else {
     $_SESSION['mensaje'] = "ID inválido.";
 }
 
-// Redirigir de vuelta al historial
-header("Location: ../donadoresLista.php");
 exit();
 ?>
