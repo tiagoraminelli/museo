@@ -41,46 +41,49 @@ $eliminado = isset($_GET['eliminado']) ? intval($_GET['eliminado']) : -1;
 <div class="container mt-5">
     <h1 class="mb-4 text-center text-2xl font-bold">Listado de Piezas</h1>
     
-    <table id="tablaPiezas" class="table table-hover table-bordered w-100">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>N° Inventario</th>
-                <th>Especie</th>
-                <th>Estado</th>
-                <th>Fecha Ingreso</th>
-                <th>Cantidad</th>
-                <th>Clasificación</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (!empty($piezas)) : ?>
-                <?php foreach ($piezas as $p) : ?>
-                    <tr id="pieza-<?php echo $p['idPieza']; ?>">
-                        <td><?php echo $p['idPieza']; ?></td>
-                        <td><?php echo $p['num_inventario']; ?></td>
-                        <td><?php echo $p['especie']; ?></td>
-                        <td><?php echo $p['estado_conservacion']; ?></td>
-                        <td><?php echo $p['fecha_ingreso']; ?></td>
-                        <td><?php echo $p['cantidad_de_piezas']; ?></td>
-                        <td><?php echo $p['clasificacion']; ?></td>
-                        <td>
-                            <a href="funciones/verPieza.php?id=<?php echo $p['idPieza']; ?>" class="btn btn-success btn-sm">Ver</a>
+    <!-- Modifica la tabla en tu archivo PHP -->
+<table id="tablaPiezas" class="table table-hover table-bordered w-100">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th class="d-none d-sm-table-cell">N° Inventario</th> <!-- Oculta en xs -->
+            <th>Especie</th>
+            <th class="d-none d-md-table-cell">Estado</th> <!-- Oculta en xs y sm -->
+            <th class="d-none d-lg-table-cell">Fecha Ingreso</th> <!-- Oculta en xs, sm y md -->
+            <th class="d-none d-sm-table-cell">Cantidad</th>
+            <th class="d-none d-md-table-cell">Clasificación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($piezas)) : ?>
+            <?php foreach ($piezas as $p) : ?>
+                <tr id="pieza-<?php echo $p['idPieza']; ?>">
+                    <td><?php echo $p['idPieza']; ?></td>
+                    <td class="d-none d-sm-table-cell"><?php echo $p['num_inventario']; ?></td>
+                    <td><?php echo $p['especie']; ?></td>
+                    <td class="d-none d-md-table-cell"><?php echo $p['estado_conservacion']; ?></td>
+                    <td class="d-none d-lg-table-cell"><?php echo $p['fecha_ingreso']; ?></td>
+                    <td class="d-none d-sm-table-cell"><?php echo $p['cantidad_de_piezas']; ?></td>
+                    <td class="d-none d-md-table-cell"><?php echo $p['clasificacion']; ?></td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a href="funciones/verPieza.php?id=<?php echo $p['idPieza']; ?>" class="btn btn-success">Ver</a>
                             <?php if (isset($_SESSION['usuario_activo'])): ?>
-                            <a href="funciones/editarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="funciones/eliminarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="funciones/editarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-warning">Editar</a>
+                            <a href="funciones/eliminarPieza.php?id=<?php echo $p['idPieza']; ?>&clasificacion=<?php echo $p['clasificacion']; ?>" class="btn btn-danger">Eliminar</a>
                             <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else : ?>
-                <tr>
-                    <td colspan="8" class="text-center">No hay piezas registradas.</td>
+                        </div>
+                    </td>
                 </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <tr>
+                <td colspan="8" class="text-center">No hay piezas registradas.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
 </div>
 
 <!-- Scripts necesarios -->
