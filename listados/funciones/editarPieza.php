@@ -127,6 +127,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <div class="mb-4">
             <label for="imagen" class="form-label">Imagen (opcional)</label>
             <input type="file" class="form-control" id="imagen" name="imagen">
+            <!-- Mostrar la imagen actual si existe -->
+            <?php if (isset($datos['imagen']) && !empty($datos['imagen'])) { ?>
+                <img src="../../assets/uploads/<?= $datos['imagen'] ?>" alt="Imagen actual" class="mt-2" width="200">
+            <?php } ?>
         </div>
 
         <div class="mb-4 bg-white rounded ">

@@ -30,15 +30,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'cantidad_de_piezas' => $_POST['cantidad_de_piezas'],
         'clasificacion' => $_POST['clasificacion'],
         'observacion' => $_POST['observacion'],
-        'imagen' => '', // Inicializamos el campo de imagen
+        'imagen' => $_POST['imagen'], // Inicializamos el campo de imagen
     ];
 
 
     // Manejo de la imagen
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+        $manejo_imagen = new Pieza();
+        if(isset($_POST['idPieza'])) {
+            $manejo_imagen->eliminarImagen($manejo_imagen->getPiezaByIdImage()['imagen']);
+        }
+
         $imagen = $_FILES['imagen']['name']; // Nombre original del archivo
         $ruta_tmp = $_FILES['imagen']['tmp_name']; // Ruta temporal del archivo
-
         // Define la ruta de destino
         $ruta_destino = '../../assets/uploads/' . $imagen; // Asegúrate de que la carpeta uploads exista y tenga permisos de escritura
         // Mover el archivo subido a la carpeta deseada
@@ -51,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo "No se ha subido ninguna imagen o ha ocurrido un error en la carga.<br>";
     }
+
 
     // Echo de cada uno de los datos
     //echo "Número de Inventario: " . htmlspecialchars($parametro['num_inventario']) . "<br>";

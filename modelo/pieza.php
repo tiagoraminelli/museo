@@ -149,7 +149,7 @@ class Pieza {
        }
 
        public function getPiezaByIdImage() {
-        $sql = "SELECT * FROM " . $this->table . "";
+        $sql = "SELECT imagen FROM " . $this->table . "";
         $stmt = $this->conection->prepare($sql);
         $stmt->execute();
         $pieza = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -408,6 +408,18 @@ private function getImagePath($imagen) {
     
         return $this->idPrimaria;
     }
+
+    // Función para eliminar una imagen del almacenamiento
+    public function eliminarImagen($nombreImagen) {
+    if ($nombreImagen && file_exists('../../assets/uploads/' . $nombreImagen)) {
+        if (unlink('../../assets/uploads/' . $nombreImagen)) {
+            return true; // Imagen eliminada con éxito
+        } else {
+            return false; // Error al eliminar
+        }
+    }
+    return true; // No había imagen que eliminar
+}
     
 
 
