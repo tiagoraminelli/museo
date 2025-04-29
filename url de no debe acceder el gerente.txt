@@ -1,0 +1,13 @@
+url de no debe acceder el gerente:
+http://localhost/proyectomuseo/listados/gerentesListados.php CHEACK
+http://localhost/proyectomuseo/listados/funciones/editarUsuario.php?id=15 CHEACK
+http://localhost/proyectomuseo/listados/historial.php CHEACK
+http://localhost/proyectomuseo/listados/crearGerente.php CHEACK
+http://localhost/proyectomuseo/listados/eliminados.php CHEACK
+http://localhost/proyectomuseo/listados/verPiezaEliminada.php CHEACK
+http://localhost/proyectomuseo/listados/donadoresEliminadosList.php
+
+url q no debe acceder el gerente PRACTICA 1:
+
+http://localhost/practica/personal.php
+http://localhost/practica/editarUser.php?id=2
