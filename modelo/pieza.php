@@ -84,7 +84,7 @@ class Pieza {
 
     // Reemplazar el método getImagen
     public function getImagen() {
-    return $this->getImagePath($this->imagen);
+    return $this->imagen;
     }
 
     public function getDonanteIdDonante() {
@@ -156,7 +156,7 @@ class Pieza {
     
         // Agregar la URL de la imagen si existe
         if ($pieza) {
-            $pieza['imagen'] = $this->getImagePath($pieza['imagen']);
+            $pieza['imagen'] = $pieza['imagen'];
         }
         return $pieza; // Retorna todos los resultados de la consulta
     }
@@ -238,11 +238,12 @@ public function getPiezaByIdAndClasificacionAndDonante($id, $clasificacion) {
 
 
     // Método para obtener la ruta completa de la imagen
-private function getImagePath($imagen) {
-    $rutaUploads = 'uploads/'; // Ruta de la carpeta donde se almacenan las imágenes
-    return !empty($imagen) ? $rutaUploads . $imagen : 'ruta/por/defecto/placeholder.png'; // Ruta por defecto si no hay imagen
+public function getImagenesPieza($idPieza) {
+    $sql = "SELECT imagen FROM pieza WHERE pieza.idPieza = ?";
+    $stmt = $this->conection->prepare($sql);
+    $stmt->execute([$idPieza]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 
 
     // Método para eliminar una pieza por idPrimaria

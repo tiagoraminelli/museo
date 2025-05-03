@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'cantidad_de_piezas' => $_POST['cantidad_de_piezas'],
         'clasificacion' => $_POST['clasificacion'],
         'observacion' => $_POST['observacion'],
-        'imagen' => $_POST['imagen'], // Inicializamos el campo de imagen
+        'imagen' => '', // Inicializamos el campo de imagen
     ];
 
 

@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if ($idPieza > 0) {
         $detalles = new Pieza();
         $resultado = $detalles->getTablasRelacionadasConPieza($idPieza);
-
+        $imagenes = $detalles->getImagenesPieza($idPieza); // Nueva línea para obtener imágenes
         // Inicializar el array $resultados
         $resultados = [];
 
@@ -179,7 +179,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <a href="../funciones/generaPDF.php?id=<?php echo $idPieza?>" class="text-blue-600 hover:underline">Descargar PDF de Todas las Piezas</a>
     </div>
 </div>
-
+<!-- Sección para mostrar imágenes -->
+<div class="container my-5">
+    <h4 class="text-center mb-4">Imágenes de la Pieza</h4>
+    <div class="row">
+        <?php if (!empty($imagenes)): ?>
+            <?php foreach ($imagenes as $imagen): ?>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="../../assets/uploads/<?php echo htmlspecialchars($imagen['imagen']); ?>" 
+                             class="card-img-top img-fluid" 
+                             alt="Imagen de la pieza"
+                             style="height: 400px; object-fit: cover;">
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-12">
+                <p class="text-center text-muted">No hay imágenes disponibles para esta pieza.</p>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
 <div class="container my-5">
     <?php
     if (!empty($resultados)) {
@@ -195,9 +216,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     echo "<th>" . ucfirst(str_replace('_', ' ', $campo)) . "</th>";
                 }
             }
-
-            echo "</tr></thead><tbody>";
-
             // Mostrar filas dinámicas
             foreach ($filas as $fila) {
                 echo "<tr>";

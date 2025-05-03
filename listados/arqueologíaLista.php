@@ -56,7 +56,9 @@ $totalPaginas = ceil($totalArqueologias / $porPagina);
                 <th>Estética</th>
                 <th>Material</th>
                 <th>ID de la Pieza</th>
+                <?php if (isset($_SESSION['usuario_activo'])): ?>
                 <th>Acciones</th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
@@ -68,9 +70,13 @@ $totalPaginas = ceil($totalArqueologias / $porPagina);
                         <td><?php echo $a['estetica']; ?></td>
                         <td><?php echo $a['material']; ?></td>
                         <td><?php echo $a['Pieza_idPieza']; ?></td>
+                        <?php if (isset($_SESSION['usuario_activo'])): ?>
                         <td>
-                            <a href="funciones/editarPieza.php?id=<?php echo $a['Pieza_idPieza']; ?>&clasificacion=<?php echo $getClasificacion; ?>" class="btn btn-warning btn-sm">Editar</a>
+                            <div class="d-flex justify-content-center">
+                            <a href="funciones/editarPieza.php?id=<?php echo $b['Pieza_idPieza']; ?>&clasificacion=<?php echo $getClasificacion; ?>" class="btn btn-warning btn-sm">Editar</a>
+                            </div>
                         </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>
